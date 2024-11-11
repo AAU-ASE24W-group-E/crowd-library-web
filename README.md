@@ -14,6 +14,11 @@ TypeScript cannot handle type information for `.vue` imports by default, so we r
 
 See [Vite Configuration Reference](https://vite.dev/config/).
 
+## Open Cypress
+```sh
+npx cypress open
+```
+
 ## Project Setup
 
 ```sh
