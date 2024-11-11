@@ -25,6 +25,11 @@ npx cypress open
 npm install
 ```
 
+### Vitex Testing with Coverage
+```sh
+npx vitest run --coverage
+```
+
 ### Compile and Hot-Reload for Development
 
 ```sh
