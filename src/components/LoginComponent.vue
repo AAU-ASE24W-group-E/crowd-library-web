@@ -46,6 +46,13 @@
             </button>
           </div>
         </div>
+        <div class="flex flex-row w-full mb-6 justify-end">
+          <router-link class="text-end text-base text-link-style max-sm:text-center" to="/reset-password">
+            Forgot your password?
+          </router-link>
+        </div>
+
+
       </form>
     </div>
   </div>
@@ -59,6 +66,7 @@ import {faEnvelope, faLock, faEyeSlash, faEye} from "@fortawesome/free-solid-svg
 import {library} from "@fortawesome/fontawesome-svg-core";
 library.add(faEye, faEyeSlash); // TODO
 const hidePassword = false;
+const isLoading = false;
 
 function test() {
   const hidePassword = false;

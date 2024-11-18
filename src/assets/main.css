@@ -96,6 +96,14 @@
         text-gray-900
         dark:text-gray-200;
     }
+
+    .text-link-style {
+        @apply font-medium
+        text-blue-500
+        z-50
+        transition-all duration-200
+        hover:text-blue-600;
+    }
 }
 
 
