@@ -1,29 +1,65 @@
-@import './base.css';
+/*@import './base.css';*/
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-#app {
+@layer components {
+    /*Used as main class for components*/
+    .tw-component-container {
+        @apply w-[95%]
+        max-w-[1400px]
+        max-sm:w-full
+        h-auto
+        relative
+        flex
+        flex-col
+        items-center
+        justify-center
+        p-6
+        max-sm:p-4
+        bg-white
+        dark:bg-dark-mode;
+    }
+
+    /*Used as main class in pages (where components are added)*/
+    .tw-page-container {
+        @apply w-full
+        flex
+        flex-col
+        overflow-auto
+        min-h-screen
+        items-center
+        justify-start
+
+        bg-white
+        dark:bg-dark-mode;
+    }
+}
+
+
+/*Todo if needed, currently ony outcommented - Marked for removal*/
+/*#app {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   font-weight: normal;
-}
+}*/
 
-a,
+/*a,
 .green {
   text-decoration: none;
   color: hsla(160, 100%, 37%, 1);
   transition: 0.4s;
   padding: 3px;
-}
+}*/
 
-@media (hover: hover) {
+/*@media (hover: hover) {
   a:hover {
     background-color: hsla(160, 100%, 37%, 0.2);
   }
-}
+}*/
 
+/*
 @media (min-width: 1024px) {
   body {
     display: flex;
@@ -36,3 +72,4 @@ a,
     padding: 0 2rem;
   }
 }
+*/
