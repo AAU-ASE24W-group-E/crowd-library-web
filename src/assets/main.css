@@ -87,6 +87,15 @@
         text-black
         dark:text-title-dark-mode-text;
     }
+
+    .tw-input-label {
+        @apply block
+        mb-1
+        text-base
+        font-medium
+        text-gray-900
+        dark:text-gray-200;
+    }
 }
 
 

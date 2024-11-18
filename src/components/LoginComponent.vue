@@ -9,7 +9,7 @@
       >
         <div class="w-full mb-6">
           <label for="username-email" class="tw-input-label">
-            LOGIN.USERNAME_OR_EMAIL_LABEL
+            Username or Email
           </label>
           <div class="relative">
             <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
@@ -23,6 +23,22 @@
             />
           </div>
         </div>
+
+        <div class="w-full mb-2">
+          <label for="password" class="tw-input-label">
+            Password
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+              <font-awesome-icon class="tw-icon text-gray-500 dark:text-gray-300" :icon="faLock"/>
+            </div>
+            <input
+              class="tw-input"
+              id="password"
+              autocomplete="current-password"
+            />
+          </div>
+        </div>
       </form>
     </div>
   </div>
@@ -30,5 +46,5 @@
 <script setup>
 
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import {faEnvelope} from "@fortawesome/free-solid-svg-icons";
+import {faEnvelope, faLock} from "@fortawesome/free-solid-svg-icons";
 </script>
