@@ -34,6 +34,59 @@
         bg-white
         dark:bg-dark-mode;
     }
+
+    .tw-input,
+    .tw-textarea {
+        @apply bg-gray-50
+        h-12
+        border
+        border-gray-300
+        text-gray-900
+        text-sm
+        rounded-lg
+        focus:ring-blue-500
+        focus:border-blue-500
+        block
+        w-full
+        ps-10
+        p-2.5
+        transition-all duration-100
+
+        disabled:bg-gray-300
+        disabled:cursor-not-allowed
+        disabled:dark:disabled:bg-gray-800
+
+        dark:bg-dark-mode-inside
+        dark:border-gray-600
+        dark:placeholder-gray-400
+        dark:text-dark-mode-text
+        dark:focus:ring-blue-500
+        dark:focus:border-blue-500;
+    }
+
+    .tw-subheading {
+        @apply text-3xl
+        self-center
+        text-center
+        font-semibold
+        mb-10
+        animate-fadeInLeft
+
+        text-black
+        dark:text-title-dark-mode-text;
+    }
+
+    .tw-heading {
+        @apply text-[40px]
+        self-center
+        text-center
+        font-semibold
+        mb-10
+        animate-fadeInDown
+
+        text-black
+        dark:text-title-dark-mode-text;
+    }
 }
 
 
