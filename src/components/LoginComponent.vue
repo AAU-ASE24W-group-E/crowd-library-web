@@ -1,7 +1,6 @@
 <template>
-  <!-- Template represents html -->
   <div class="tw-component-container">
-    <!--    TODO-->
+    Works
   </div>
 </template>
 <script setup>
