@@ -37,14 +37,31 @@
               id="password"
               autocomplete="current-password"
             />
+            <button
+              type="button"
+              @click="test"
+              class="absolute inset-y-0 end-0 flex items-center pe-3 text-gray-500 dark:text-gray-400"
+            >
+              <font-awesome-icon class="tw-icon text-gray-500 dark:text-gray-300" :icon="hidePassword ? 'eyeSlash' : 'eye'" :title="'Toggle password visibility'"/>
+            </button>
           </div>
         </div>
       </form>
     </div>
   </div>
 </template>
+
+
 <script setup>
 
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import {faEnvelope, faLock} from "@fortawesome/free-solid-svg-icons";
+import {faEnvelope, faLock, faEyeSlash, faEye} from "@fortawesome/free-solid-svg-icons";
+import {library} from "@fortawesome/fontawesome-svg-core";
+library.add(faEye, faEyeSlash); // TODO
+const hidePassword = false;
+
+function test() {
+  const hidePassword = false;
+  console.log("Hallo")
+}
 </script>
