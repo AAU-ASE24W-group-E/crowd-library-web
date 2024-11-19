@@ -20,6 +20,7 @@
               id="username-email"
               autocomplete="username"
               type="text"
+              :placeholder="'Enter username or email'"
             />
           </div>
         </div>
@@ -36,6 +37,7 @@
               class="tw-input"
               id="password"
               autocomplete="current-password"
+              :placeholder="'******'"
             />
             <button
               type="button"
