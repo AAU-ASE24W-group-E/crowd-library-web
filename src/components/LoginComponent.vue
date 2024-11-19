@@ -56,11 +56,11 @@
             />
             <button
               type="button"
-              @click="test"
+              @click="togglePasswordVisibility"
               class="absolute inset-y-0 end-0 flex items-center pe-3 text-gray-500 dark:text-gray-400"
             >
               <font-awesome-icon class="tw-icon text-gray-500 dark:text-gray-300"
-                                 :icon="hidePassword ? 'eyeSlash' : 'eye'" :title="'Toggle password visibility'"/>
+                                 :icon="hidePassword ? 'eye-slash' : 'eye'" :title="'Toggle password visibility'"/>
             </button>
             <div class="relative">
               <div :class="{
@@ -130,7 +130,7 @@ const errors = reactive({
   password: {required: false},
 });
 
-const hidePassword = ref(false);
+const hidePassword = ref(true);
 const isLoading = ref(false);
 
 // TODO make utility function?
@@ -141,14 +141,54 @@ const isControlInvalid = (field) => {
   return isEmpty;
 };
 
+const togglePasswordVisibility = () => {
+  hidePassword.value = !hidePassword.value;
+};
+
 const validateForm = () => {
   const fields = ["usernameOrEmail", "password"];
   fields.forEach((field) => isControlInvalid(field));
   return fields.every((field) => !errors[field].required);
 };
 
-function test() {
-  const hidePassword = false;
-  console.log("Hallo")
+const login = async () => {
+  if (isLoading.value) return;
+
+  if (!validateForm()) return;
+
+  isLoading.value = true;
+
+  try {
+    // Simulation of delay to prevent bruteforce attempts
+    await new Promise((resolve) =>
+      setTimeout(resolve, 1000)
+    );
+
+    let usernameOrEmail = (loginForm.usernameOrEmail || "").trim().toLowerCase();
+    console.log(usernameOrEmail);
+
+    // TODO fetch email by username
+    if (!usernameOrEmail.includes('@')) {
+      // usernameOrEmail = await authService.fetchEmailByUsername(usernameOrEmail);
+    }
+
+    // TODO handle login
+    // const result = await authService.login(usernameOrEmail,loginForm.password);
+    const result = null;
+
+    //TODO handle unverified email logic
+    /*if (!result.emailVerified) {
+        // handling...
+        this.isLoading = false;
+        return;
+        }*/
+
+    // Successful log in attempt
+    await router.push("/");
+  } catch (e) {
+    console.error("Login error:", e);
+  } finally {
+    isLoading.value = false;
+  }
 }
 </script>
