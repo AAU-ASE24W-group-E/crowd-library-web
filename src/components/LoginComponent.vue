@@ -23,6 +23,7 @@
               autocomplete="username"
               type="text"
               :placeholder="'Enter username or email'"
+              @blur="handleBlur('usernameOrEmail')"
             />
             <div class="relative">
               <div :class="{
@@ -53,6 +54,7 @@
               v-model="loginForm.password"
               autocomplete="current-password"
               :placeholder="'******'"
+              @blur="handleBlur('password')"
             />
             <button
               type="button"
@@ -126,8 +128,8 @@ const loginForm = reactive({
 })
 
 const errors = reactive({
-  usernameOrEmail: {required: false},
-  password: {required: false},
+  usernameOrEmail: {required: false, touched: false},
+  password: {required: false, touched: false},
 });
 
 const hidePassword = ref(true);
@@ -138,7 +140,12 @@ const isControlInvalid = (field) => {
   const value = loginForm[field];
   const isEmpty = !value || value.trim() === "";
   errors[field].required = isEmpty;
-  return isEmpty;
+  return isEmpty && errors[field].touched;
+};
+
+const handleBlur = (field) => {
+  errors[field].touched = true;
+  isControlInvalid(field);
 };
 
 const togglePasswordVisibility = () => {
