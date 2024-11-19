@@ -3,6 +3,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/*Used for debugging*/
+.border-1 {
+    border: 1px solid red;
+}
+
+
 @layer components {
     /*Used as main class for components*/
     .tw-component-container {
@@ -92,7 +98,7 @@
         @apply block
         mb-1
         text-base
-        font-medium
+        font-semibold
         text-gray-900
         dark:text-gray-200;
     }
@@ -103,6 +109,66 @@
         z-50
         transition-all duration-200
         hover:text-blue-600;
+    }
+
+    .btn-primary {
+        @apply appearance-none
+        border-solid
+        border border-[#1b1f2326]
+        rounded-md
+        box-border
+        cursor-pointer
+        inline-block
+        text-sm
+        text-white
+        text-center
+        font-medium
+        leading-5
+        py-2
+        px-4
+        relative
+        select-none
+        touch-manipulation
+        align-middle
+        whitespace-nowrap
+        transition ease-in-out hover:-translate-y-1 hover:scale-102 duration-200
+        font-sans
+
+        disabled:transition-none
+        disabled:hover:translate-y-0
+        disabled:hover:scale-100
+        disabled:cursor-not-allowed
+        disabled:bg-gray-500;
+    }
+
+    .btn-blue {
+        @apply bg-blue-500
+        hover:bg-blue-600
+        disabled:hover:bg-gray-500
+        dark:text-title-dark-mode-text
+        dark:bg-blue-700
+        dark:hover:bg-blue-800;
+    }
+
+    .tw-loading-animation {
+        @apply
+        h-4
+        w-4
+        border-t-transparent
+        border-solid
+        animate-spin
+        rounded-full
+        border-white
+        border-4;
+    }
+
+    .text-hint-style {
+        @apply text-gray-500
+        text-sm
+        font-normal
+        text-justify
+        italic
+        dark:text-gray-400;
     }
 }
 

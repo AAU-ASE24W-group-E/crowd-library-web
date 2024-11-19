@@ -4,6 +4,10 @@ module.exports = {
   // darkMode: ['variant', '&:not(.light *)'], // force darkmode until we have a proper selector
   theme: {
     extend: {
+      scale: {
+        '101': '1.01',
+        '102': '1.02',
+      },
       colors: {
         'dark-mode': '#050505',
         'dark-mode-inside': '#1f2937',

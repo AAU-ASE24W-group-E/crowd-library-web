@@ -1,13 +1,13 @@
 <template>
   <div class="flex items-center justify-center">
     <div
-      class="flex justify-start flex-col items-center relative rounded-lg w-[450px] max-sm:w-11/12 h-auto px-4 bg-white dark:bg-gray-700">
-      <div class="tw-heading mt-2">Login</div>
+      class="flex justify-start flex-col items-center relative rounded-lg w-[450px] max-sm:w-11/12 h-auto px-4 bg-white dark:bg-gray-700 ">
+      <div class="tw-heading mb-5 mt-2 ">Login</div>
       <form
         @submit.prevent="login"
-        class="flex flex-col items-center w-full h-full mb-3"
+        class="flex flex-col items-center w-full h-full mb-3 "
       >
-        <div class="w-full mb-6">
+        <div class="w-full mb-6 ">
           <label for="username-email" class="tw-input-label">
             Username or Email
           </label>
@@ -52,6 +52,25 @@
           </router-link>
         </div>
 
+        <div class="w-full mb-2">
+          <button
+            :disabled="isLoading"
+            class="w-full btn-primary btn-blue"
+            type="submit"
+          >
+            <div class="flex items-center justify-center">
+              <div v-if="isLoading" class="tw-loading-animation"></div>
+              <div class="ml-2">Login</div>
+            </div>
+          </button>
+        </div>
+
+        <span class="text-hint-style">When you sign in, you accept the Terms of Use and acknowledge the Privacy Statement and Cookie Policy.</span>
+        <span class="mt-2 text-hint-style text-base">Don't have an account yet?</span>
+        <router-link class="text-link-style" to="/register">
+          Click here to register
+        </router-link>
+
 
       </form>
     </div>
@@ -64,9 +83,10 @@
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {faEnvelope, faLock, faEyeSlash, faEye} from "@fortawesome/free-solid-svg-icons";
 import {library} from "@fortawesome/fontawesome-svg-core";
+import {ref} from "vue";
 library.add(faEye, faEyeSlash); // TODO
-const hidePassword = false;
-const isLoading = false;
+const hidePassword = ref(false);
+const isLoading = ref(false);
 
 function test() {
   const hidePassword = false;
