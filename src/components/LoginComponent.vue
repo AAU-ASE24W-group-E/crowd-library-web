@@ -193,7 +193,7 @@ const login = async () => {
     // Successful log in attempt
     await router.push("/");
   } catch (e) {
-    console.error("Login error:", e);
+    console.error("Login error:", e); // TODO add snackbars to better handle errors
   } finally {
     isLoading.value = false;
   }
