@@ -24,6 +24,16 @@
               type="text"
               :placeholder="'Enter username or email'"
             />
+            <div class="relative">
+              <div :class="{
+                  'opacity-100 visible': isControlInvalid('usernameOrEmail'),
+                  'opacity-0 invisible': !isControlInvalid('usernameOrEmail'),
+                }" class="tw-input-error-label">
+                <div v-if="errors.usernameOrEmail.required">
+                  This field is required
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -49,8 +59,20 @@
               @click="test"
               class="absolute inset-y-0 end-0 flex items-center pe-3 text-gray-500 dark:text-gray-400"
             >
-              <font-awesome-icon class="tw-icon text-gray-500 dark:text-gray-300" :icon="hidePassword ? 'eyeSlash' : 'eye'" :title="'Toggle password visibility'"/>
+              <font-awesome-icon class="tw-icon text-gray-500 dark:text-gray-300"
+                                 :icon="hidePassword ? 'eyeSlash' : 'eye'" :title="'Toggle password visibility'"/>
             </button>
+            <div class="relative">
+              <div :class="{
+                  'opacity-100 visible': isControlInvalid('password'),
+                  'opacity-0 invisible': !isControlInvalid('password'),
+                }"
+                   class="tw-input-error-label">
+                <div v-if="errors.password.required">
+                  This field is required
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="flex flex-row w-full mb-6 justify-end">
@@ -88,7 +110,7 @@
 <script setup>
 
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import {faEnvelope, faLock, faEyeSlash, faEye} from "@fortawesome/free-solid-svg-icons";
+import {faEnvelope, faEye, faEyeSlash, faLock} from "@fortawesome/free-solid-svg-icons";
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {reactive, ref} from "vue";
 import {useRouter} from "vue-router";
@@ -104,8 +126,8 @@ const loginForm = reactive({
 })
 
 const errors = reactive({
-  usernameOrEmail: { required: false },
-  password: { required: false },
+  usernameOrEmail: {required: false},
+  password: {required: false},
 });
 
 const hidePassword = ref(false);

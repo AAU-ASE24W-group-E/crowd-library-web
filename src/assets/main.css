@@ -188,6 +188,18 @@
         dark:focus:border-red-500
         dark:placeholder:text-red-500;
     }
+
+    .tw-input-error-label {
+        @apply absolute
+        left-0
+        top-full
+        ml-3
+        mt-0.5
+        text-red-500
+        text-xs
+        transition-opacity
+        duration-300;
+    }
 }
 
 
