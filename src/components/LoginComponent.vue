@@ -17,6 +17,8 @@
             </div>
             <input
               class="tw-input"
+              v-bind:class="{ 'tw-input-error': isControlInvalid('usernameOrEmail') }"
+              v-model="loginForm.usernameOrEmail"
               id="username-email"
               autocomplete="username"
               type="text"
@@ -36,6 +38,9 @@
             <input
               class="tw-input"
               id="password"
+              v-bind:class="{ 'tw-input-error': isControlInvalid('password') }"
+              :type="hidePassword ? 'password' : 'text'"
+              v-model="loginForm.password"
               autocomplete="current-password"
               :placeholder="'******'"
             />
@@ -85,10 +90,40 @@
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {faEnvelope, faLock, faEyeSlash, faEye} from "@fortawesome/free-solid-svg-icons";
 import {library} from "@fortawesome/fontawesome-svg-core";
-import {ref} from "vue";
+import {reactive, ref} from "vue";
+import {useRouter} from "vue-router";
+
 library.add(faEye, faEyeSlash); // TODO
+
+
+const router = useRouter();
+
+const loginForm = reactive({
+  usernameOrEmail: "",
+  password: "",
+})
+
+const errors = reactive({
+  usernameOrEmail: { required: false },
+  password: { required: false },
+});
+
 const hidePassword = ref(false);
 const isLoading = ref(false);
+
+// TODO make utility function?
+const isControlInvalid = (field) => {
+  const value = loginForm[field];
+  const isEmpty = !value || value.trim() === "";
+  errors[field].required = isEmpty;
+  return isEmpty;
+};
+
+const validateForm = () => {
+  const fields = ["usernameOrEmail", "password"];
+  fields.forEach((field) => isControlInvalid(field));
+  return fields.every((field) => !errors[field].required);
+};
 
 function test() {
   const hidePassword = false;

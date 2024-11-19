@@ -170,6 +170,24 @@
         italic
         dark:text-gray-400;
     }
+
+    .tw-input-error,
+    .tw-textarea-error {
+        @apply
+        border-red-500
+        focus:border-2
+        focus:border-solid
+        focus:border-red-500
+        placeholder:text-red-500
+        placeholder:opacity-100
+
+
+        dark:border-red-500
+        dark:focus:border-2
+        dark:focus:border-solid
+        dark:focus:border-red-500
+        dark:placeholder:text-red-500;
+    }
 }
 
 
