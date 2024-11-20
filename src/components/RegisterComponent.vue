@@ -46,7 +46,7 @@
             <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
               <font-awesome-icon
                 class="tw-icon text-gray-500 dark:text-gray-300"
-                :icon="faEnvelope"
+                :icon="faUser"
               />
             </div>
             <input
@@ -177,7 +177,7 @@
 
 <script setup>
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
-import {faEnvelope, faEye, faEyeSlash, faLock} from '@fortawesome/free-solid-svg-icons'
+import {faEnvelope, faUser, faEye, faEyeSlash, faLock} from '@fortawesome/free-solid-svg-icons'
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {reactive, ref} from 'vue'
 import {useRouter} from 'vue-router'
