@@ -1,29 +1,231 @@
-@import './base.css';
+/*@import './base.css';*/
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-#app {
+/*Used for debugging*/
+.border-1 {
+    border: 1px solid red;
+}
+
+
+@layer components {
+    /*Used as main class for components*/
+    .tw-component-container {
+        @apply w-[95%]
+        max-w-[1400px]
+        max-sm:w-full
+        h-auto
+        relative
+        flex
+        flex-col
+        items-center
+        justify-center
+        p-6
+        max-sm:p-4
+        bg-white
+        dark:bg-dark-mode;
+    }
+
+    /*Used as main class in pages (where components are added)*/
+    .tw-page-container {
+        @apply w-full
+        flex
+        flex-col
+        overflow-auto
+        min-h-screen
+        items-center
+        justify-start
+
+        bg-white
+        dark:bg-dark-mode;
+    }
+
+    .tw-input,
+    .tw-textarea {
+        @apply bg-gray-50
+        h-12
+        border
+        border-gray-300
+        text-gray-900
+        text-sm
+        rounded-lg
+        focus:ring-blue-500
+        focus:border-blue-500
+        block
+        w-full
+        ps-10
+        p-2.5
+        transition-all duration-100
+
+        disabled:bg-gray-300
+        disabled:cursor-not-allowed
+        disabled:dark:disabled:bg-gray-800
+
+        dark:bg-dark-mode-inside
+        dark:border-gray-600
+        dark:placeholder-gray-400
+        dark:text-dark-mode-text
+        dark:focus:ring-blue-500
+        dark:focus:border-blue-500;
+    }
+
+    .tw-subheading {
+        @apply text-3xl
+        self-center
+        text-center
+        font-semibold
+        mb-10
+        animate-fadeInLeft
+
+        text-black
+        dark:text-title-dark-mode-text;
+    }
+
+    .tw-heading {
+        @apply text-[40px]
+        self-center
+        text-center
+        font-semibold
+        mb-10
+        animate-fadeInDown
+
+        text-black
+        dark:text-title-dark-mode-text;
+    }
+
+    .tw-input-label {
+        @apply block
+        mb-1
+        text-base
+        font-semibold
+        text-gray-900
+        dark:text-gray-200;
+    }
+
+    .text-link-style {
+        @apply font-medium
+        text-blue-500
+        z-50
+        transition-all duration-200
+        hover:text-blue-600;
+    }
+
+    .btn-primary {
+        @apply appearance-none
+        border-solid
+        border border-[#1b1f2326]
+        rounded-md
+        box-border
+        cursor-pointer
+        inline-block
+        text-sm
+        text-white
+        text-center
+        font-medium
+        leading-5
+        py-2
+        px-4
+        relative
+        select-none
+        touch-manipulation
+        align-middle
+        whitespace-nowrap
+        transition ease-in-out hover:-translate-y-1 hover:scale-102 duration-200
+        font-sans
+
+        disabled:transition-none
+        disabled:hover:translate-y-0
+        disabled:hover:scale-100
+        disabled:cursor-not-allowed
+        disabled:bg-gray-500;
+    }
+
+    .btn-blue {
+        @apply bg-blue-500
+        hover:bg-blue-600
+        disabled:hover:bg-gray-500
+        dark:text-title-dark-mode-text
+        dark:bg-blue-700
+        dark:hover:bg-blue-800;
+    }
+
+    .tw-loading-animation {
+        @apply
+        h-4
+        w-4
+        border-t-transparent
+        border-solid
+        animate-spin
+        rounded-full
+        border-white
+        border-4;
+    }
+
+    .text-hint-style {
+        @apply text-gray-500
+        text-sm
+        font-normal
+        text-justify
+        italic
+        dark:text-gray-400;
+    }
+
+    .tw-input-error,
+    .tw-textarea-error {
+        @apply
+        border-red-500
+        focus:border-2
+        focus:border-solid
+        focus:border-red-500
+        placeholder:text-red-500
+        placeholder:opacity-100
+
+
+        dark:border-red-500
+        dark:focus:border-2
+        dark:focus:border-solid
+        dark:focus:border-red-500
+        dark:placeholder:text-red-500;
+    }
+
+    .tw-input-error-label {
+        @apply absolute
+        left-0
+        top-full
+        ml-3
+        mt-0.5
+        text-red-500
+        text-xs
+        transition-opacity
+        duration-300;
+    }
+}
+
+
+/*Todo if needed, currently ony outcommented - Marked for removal*/
+/*#app {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   font-weight: normal;
-}
+}*/
 
-a,
+/*a,
 .green {
   text-decoration: none;
   color: hsla(160, 100%, 37%, 1);
   transition: 0.4s;
   padding: 3px;
-}
+}*/
 
-@media (hover: hover) {
+/*@media (hover: hover) {
   a:hover {
     background-color: hsla(160, 100%, 37%, 0.2);
   }
-}
+}*/
 
+/*
 @media (min-width: 1024px) {
   body {
     display: flex;
@@ -36,3 +238,4 @@ a,
     padding: 0 2rem;
   }
 }
+*/
