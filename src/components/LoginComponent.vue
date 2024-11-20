@@ -1,11 +1,11 @@
 <template>
   <div class="flex items-center justify-center">
     <div
-      class="flex justify-start flex-col items-center relative rounded-lg w-[450px] max-sm:w-11/12 h-auto px-4 bg-white dark:bg-gray-700 ">
-      <div class="tw-heading mb-5 mt-2 ">Login</div>
+      class="flex justify-start flex-col items-center relative rounded-lg w-[450px] max-sm:w-11/12 h-auto px-4 bg-white dark:bg-gray-700">
+      <div class="tw-heading mb-5 mt-2">Login</div>
       <form
         @submit.prevent="login"
-        class="flex flex-col items-center w-full h-full mb-3 "
+        class="flex flex-col items-center w-full h-full mb-3"
       >
         <div class="w-full mb-6 ">
           <label for="username-email" class="tw-input-label">
