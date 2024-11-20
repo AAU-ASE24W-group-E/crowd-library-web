@@ -69,8 +69,10 @@
                 class="tw-input-error-label"
               >
                 <div v-if="errors.username.required">This field is required</div>
-                <div v-else-if="errors.username.invalid">Username can only contain letters (a-z, A-Z)</div>
-                <div v-else-if="errors.username.maxLength">Username can be max. 20 characters</div>
+                <div v-else-if="errors.username.invalid">Username can only contain letters and numbers</div>
+                <div v-else-if="errors.username.maxLength">Username can be max. {{ config.USERNAME_MAX_LENGTH }}
+                  characters
+                </div>
               </div>
             </div>
           </div>
@@ -109,7 +111,9 @@
                 }"
                    class="tw-input-error-label">
                 <div v-if="errors.password.required">This field is required</div>
-                <div v-else-if="errors.password.minLength">Password must be at least 8 characters long</div>
+                <div v-else-if="errors.password.minLength">Password must be at least {{ config.PASSWORD_MIN_LENGTH }}
+                  characters long
+                </div>
               </div>
             </div>
           </div>
@@ -184,8 +188,13 @@ import {library} from '@fortawesome/fontawesome-svg-core'
 import {reactive, ref} from 'vue'
 import {useRouter} from 'vue-router'
 
-library.add(faEye, faEyeSlash) // TODO
+library.add(faEye, faEyeSlash)
 
+const config = {
+  USERNAME_MAX_LENGTH: 20,
+  USERNAME_CHARACTER_PATTERN: /^[a-zA-Z0-9-]+$/,
+  PASSWORD_MIN_LENGTH: 8,
+};
 const router = useRouter()
 const hidePassword = ref(true)
 const hideConfirmPassword = ref(true)
@@ -213,13 +222,19 @@ const handleBlur = (field) => {
 
 const validateForm = () => {
   const fields = ["email", "username", "password", "confirmPassword"];
-  fields.forEach((field) => isControlInvalid(field));
+
+  fields.forEach((field) => {
+    errors[field].touched = true;
+    isControlInvalid(field);
+  });
+
   return fields.every((field) => {
     const errorState = errors[field];
     return Object.values(errorState).every((isValid) => !isValid);
   });
 };
 
+// TODO maybe rework with yup in future
 const isControlInvalid = (field) => {
   const value = registerForm[field];
   const trimmedValue = value?.trim();
@@ -234,14 +249,14 @@ const isControlInvalid = (field) => {
 
     case "username":
       errors.username.required = !trimmedValue;
-      errors.username.invalid = !/^[a-zA-Z]+$/.test(trimmedValue);
-      errors.username.maxLength = trimmedValue?.length > 20;
+      errors.username.invalid = !config.USERNAME_CHARACTER_PATTERN.test(trimmedValue);
+      errors.username.maxLength = trimmedValue?.length > config.USERNAME_MAX_LENGTH;
       invalid = errors.username.required || errors.username.invalid || errors.username.maxLength;
       break;
 
     case "password":
       errors.password.required = !trimmedValue;
-      errors.password.minLength = trimmedValue?.length < 8;
+      errors.password.minLength = trimmedValue?.length < config.PASSWORD_MIN_LENGTH;
       invalid = errors.password.required || errors.password.minLength;
       break;
 
@@ -264,4 +279,40 @@ const togglePasswordVisibility = () => {
 const toggleConfirmPasswordVisibility = () => {
   hideConfirmPassword.value = !hideConfirmPassword.value;
 }
+
+const register = async () => {
+  if (isLoading.value) return;
+
+  if (!validateForm()) return;
+
+  isLoading.value = true;
+
+  // TODO better error handling
+  try {
+    const email = (registerForm.email || "").trim().toLowerCase();
+    const emailExists = false; // todo check if email already exists with backend
+
+    if (emailExists) {
+      console.error("This email already exists");
+      return;
+    }
+
+    const username = (registerForm.username || "").trim().toLowerCase();
+    const usernameExists = false; // todo check if email already exists with backend
+
+    if (usernameExists) {
+      console.error("This username already exists");
+      return;
+    }
+
+    // TODO register(username, email, password) via backend
+
+  } catch (e) {
+    console.error('Registration error:', e);
+  } finally {
+    isLoading.value = false;
+  }
+
+}
+
 </script>
