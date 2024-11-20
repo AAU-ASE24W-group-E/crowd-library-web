@@ -8,7 +8,7 @@
         @submit.prevent="register"
         class="flex flex-col items-center w-full h-full mb-3">
         <div class="w-full mb-6">
-          <label for="email" class="tw-input-label"> Email</label>
+          <label for="email" class="tw-input-label">Email</label>
           <div class="relative">
             <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
               <font-awesome-icon
@@ -35,6 +35,7 @@
                 class="tw-input-error-label"
               >
                 <div v-if="errors.email.required">This field is required</div>
+                <div v-else-if="errors.email.invalid">Please enter a valid email address</div>
               </div>
             </div>
           </div>
@@ -68,6 +69,8 @@
                 class="tw-input-error-label"
               >
                 <div v-if="errors.username.required">This field is required</div>
+                <div v-else-if="errors.username.invalid">Username can only contain letters (a-z, A-Z)</div>
+                <div v-else-if="errors.username.maxLength">Username can be max. 20 characters</div>
               </div>
             </div>
           </div>
@@ -105,9 +108,8 @@
                   'opacity-0 invisible': !isControlInvalid('password'),
                 }"
                    class="tw-input-error-label">
-                <div v-if="errors.password.required">
-                  This field is required
-                </div>
+                <div v-if="errors.password.required">This field is required</div>
+                <div v-else-if="errors.password.minLength">Password must be at least 8 characters long</div>
               </div>
             </div>
           </div>
@@ -137,7 +139,8 @@
               class="absolute inset-y-0 end-0 flex items-center pe-3 text-gray-500 dark:text-gray-400"
             >
               <font-awesome-icon class="tw-icon text-gray-500 dark:text-gray-300"
-                                 :icon="hideConfirmPassword ? 'eye-slash' : 'eye'" :title="'Toggle password visibility'"/>
+                                 :icon="hideConfirmPassword ? 'eye-slash' : 'eye'"
+                                 :title="'Toggle password visibility'"/>
             </button>
             <div class="relative">
               <div :class="{
@@ -145,9 +148,8 @@
                   'opacity-0 invisible': !isControlInvalid('confirmPassword'),
                 }"
                    class="tw-input-error-label">
-                <div v-if="errors.confirmPassword.required">
-                  This field is required
-                </div>
+                <div v-if="errors.confirmPassword.required">This field is required</div>
+                <div v-else-if="errors.confirmPassword.notMatch">Passwords do not match</div>
               </div>
             </div>
           </div>
@@ -177,7 +179,7 @@
 
 <script setup>
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
-import {faEnvelope, faUser, faEye, faEyeSlash, faLock} from '@fortawesome/free-solid-svg-icons'
+import {faEnvelope, faEye, faEyeSlash, faLock, faUser} from '@fortawesome/free-solid-svg-icons'
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {reactive, ref} from 'vue'
 import {useRouter} from 'vue-router'
@@ -198,11 +200,12 @@ const registerForm = reactive({
 })
 
 const errors = reactive({
-  email: {required: false, touched: false},
-  username: {required: false, touched: false},
-  password: {required: false, touched: false},
-  confirmPassword: {required: false, touched: false},
-})
+  email: {required: false, invalid: false, touched: false},
+  username: {required: false, maxLength: false, invalid: false, touched: false},
+  password: {required: false, minLength: false, touched: false},
+  confirmPassword: {required: false, notMatch: false, touched: false},
+});
+
 const handleBlur = (field) => {
   errors[field].touched = true;
   isControlInvalid(field);
@@ -211,16 +214,49 @@ const handleBlur = (field) => {
 const validateForm = () => {
   const fields = ["email", "username", "password", "confirmPassword"];
   fields.forEach((field) => isControlInvalid(field));
-  return fields.every((field) => !errors[field].required);
+  return fields.every((field) => {
+    const errorState = errors[field];
+    return Object.values(errorState).every((isValid) => !isValid);
+  });
 };
 
 const isControlInvalid = (field) => {
-  const value = registerForm[field]
-  const isEmpty = !value || value.trim() === ''
-  errors[field].required = isEmpty
-  return isEmpty && errors[field].touched
-}
+  const value = registerForm[field];
+  const trimmedValue = value?.trim();
+  let invalid = false;
 
+  switch (field) {
+    case "email":
+      errors.email.required = !trimmedValue;
+      errors.email.invalid = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedValue);
+      invalid = errors.email.required || errors.email.invalid;
+      break;
+
+    case "username":
+      errors.username.required = !trimmedValue;
+      errors.username.invalid = !/^[a-zA-Z]+$/.test(trimmedValue);
+      errors.username.maxLength = trimmedValue?.length > 20;
+      invalid = errors.username.required || errors.username.invalid || errors.username.maxLength;
+      break;
+
+    case "password":
+      errors.password.required = !trimmedValue;
+      errors.password.minLength = trimmedValue?.length < 8;
+      invalid = errors.password.required || errors.password.minLength;
+      break;
+
+    case "confirmPassword":
+      errors.confirmPassword.required = !trimmedValue;
+      errors.confirmPassword.notMatch = trimmedValue !== registerForm.password;
+      invalid = errors.confirmPassword.required || errors.confirmPassword.notMatch;
+      break;
+
+    default:
+      break;
+  }
+
+  return invalid && errors[field].touched;
+};
 const togglePasswordVisibility = () => {
   hidePassword.value = !hidePassword.value;
 }
