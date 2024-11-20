@@ -153,7 +153,12 @@ const togglePasswordVisibility = () => {
 
 const validateForm = () => {
   const fields = ["usernameOrEmail", "password"];
-  fields.forEach((field) => isControlInvalid(field));
+
+  fields.forEach((field) => {
+    errors[field].touched = true;
+    isControlInvalid(field);
+  });
+
   return fields.every((field) => !errors[field].required);
 };
 
@@ -185,7 +190,6 @@ const login = async () => {
     //TODO handle unverified email logic
     /*if (!result.emailVerified) {
         // handling...
-        this.isLoading = false;
         return;
         }*/
 
