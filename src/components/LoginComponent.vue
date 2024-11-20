@@ -102,7 +102,6 @@
           Click here to register
         </router-link>
 
-
       </form>
     </div>
   </div>

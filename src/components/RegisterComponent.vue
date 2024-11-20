@@ -125,7 +125,7 @@
               class="tw-input"
               id="confirm-password"
               v-bind:class="{ 'tw-input-error': isControlInvalid('confirmPassword') }"
-              :type="hidePassword ? 'password' : 'text'"
+              :type="hideConfirmPassword ? 'password' : 'text'"
               v-model="registerForm.confirmPassword"
               autocomplete="current-password"
               :placeholder="'******'"
@@ -137,7 +137,7 @@
               class="absolute inset-y-0 end-0 flex items-center pe-3 text-gray-500 dark:text-gray-400"
             >
               <font-awesome-icon class="tw-icon text-gray-500 dark:text-gray-300"
-                                 :icon="hidePassword ? 'eye-slash' : 'eye'" :title="'Toggle password visibility'"/>
+                                 :icon="hideConfirmPassword ? 'eye-slash' : 'eye'" :title="'Toggle password visibility'"/>
             </button>
             <div class="relative">
               <div :class="{
@@ -206,6 +206,12 @@ const errors = reactive({
 const handleBlur = (field) => {
   errors[field].touched = true;
   isControlInvalid(field);
+};
+
+const validateForm = () => {
+  const fields = ["email", "username", "password", "confirmPassword"];
+  fields.forEach((field) => isControlInvalid(field));
+  return fields.every((field) => !errors[field].required);
 };
 
 const isControlInvalid = (field) => {
