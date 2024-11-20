@@ -243,7 +243,7 @@ const isControlInvalid = (field) => {
   switch (field) {
     case "email":
       errors.email.required = !trimmedValue;
-      errors.email.invalid = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedValue);
+      errors.email.invalid = !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(trimmedValue);
       invalid = errors.email.required || errors.email.invalid;
       break;
 
