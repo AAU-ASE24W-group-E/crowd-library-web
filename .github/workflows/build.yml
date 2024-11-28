@@ -1,20 +1,46 @@
 name: Build
+
 on:
   push:
     branches:
       - main
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
-  sonarcloud:
-    name: SonarQube Cloud
+  build:
+    name: Build and Test
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: SonarQube Cloud Scan
+          fetch-depth: 0
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # Adjust to match your project's Node.js version
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci  # Use 'npm ci' for clean installs in CI environments
+
+      - name: Run Vitest with Coverage
+        run: npm run test:coverage
+
+      - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
+        with:
+          args: >
+            -Dsonar.organization=your_organization_key
+            -Dsonar.projectKey=your_project_key
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.sources=src
+            -Dsonar.tests=tests
+            -Dsonar.test.inclusions=**/*.spec.js,**/*.test.js
+            -Dsonar.sourceEncoding=UTF-8
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Automatically provided by GitHub
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}     # Define this secret in your repository settings
