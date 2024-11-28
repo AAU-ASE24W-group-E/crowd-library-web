@@ -32,15 +32,6 @@ jobs:
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
-        with:
-          args: >
-            -Dsonar.organization=your_organization_key
-            -Dsonar.projectKey=your_project_key
-            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-            -Dsonar.sources=src
-            -Dsonar.tests=tests
-            -Dsonar.test.inclusions=**/*.spec.js,**/*.test.js
-            -Dsonar.sourceEncoding=UTF-8
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Automatically provided by GitHub
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}     # Define this secret in your repository settings
