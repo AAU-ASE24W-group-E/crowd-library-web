@@ -42,7 +42,7 @@ describe('RegisterComponent', () => {
     expect(wrapper.find('.tw-input-error-label').text());
   });
 
-  it('validates username field correctly', async () => {
+  it('validates username required correctly', async () => {
     const usernameInput = wrapper.find('#username');
     await usernameInput.setValue('');
     await usernameInput.trigger('blur');
@@ -50,12 +50,32 @@ describe('RegisterComponent', () => {
     expect(wrapper.vm.errors.username.required).toBe(true);
     expect(wrapper.find('.tw-input-error-label').text());
 
+
+  });
+
+  it('validates username length correctly', async () => {
+    const usernameInput = wrapper.find('#username');
     await usernameInput.setValue('a'.repeat(21));
     await usernameInput.trigger('blur');
 
     expect(wrapper.vm.errors.username.maxLength).toBe(true);
     expect(wrapper.find('.tw-input-error-label').text())
-  });
+  })
+
+  it('validates username pattern correctly', async () => {
+    const usernameInput = wrapper.find('#username');
+    await usernameInput.setValue('testing');
+    await usernameInput.trigger('blur');
+
+    expect(wrapper.vm.errors.username.invalid).toBe(false);
+    expect(wrapper.find('.tw-input-error-label').text())
+
+    await usernameInput.setValue('testing@29d--x_');
+    await usernameInput.trigger('blur');
+
+    expect(wrapper.vm.errors.username.invalid).toBe(true);
+    expect(wrapper.find('.tw-input-error-label').text())
+  })
 
   it('validates password field correctly', async () => {
     const passwordInput = wrapper.find('#password');
