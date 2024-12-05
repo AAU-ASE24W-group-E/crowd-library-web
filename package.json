@@ -21,7 +21,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.7.1",
     "@fortawesome/free-brands-svg-icons": "^6.7.1",
     "@fortawesome/free-regular-svg-icons": "^6.7.1",
-    "@fortawesome/free-solid-svg-icons": "^6.7.0",
+    "@fortawesome/free-solid-svg-icons": "^6.7.1",
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@tailwindcss/forms": "^0.5.9",
     "@vitest/ui": "^2.1.6",
