@@ -69,3 +69,8 @@ npm run test:e2e
 ```sh
 npm run lint
 ```
+
+### Vitest UI
+```sh
+vitest --ui
+```
