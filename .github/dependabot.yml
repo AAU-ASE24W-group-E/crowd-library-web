@@ -10,9 +10,8 @@ updates:
     schedule:
       interval: "daily"
       time: "00:00"
-    open-pull-requests-limit: 7
-    allow:
-      - dependency-type: "all"
-        update-type: "all"
-      - update-type: "major"
-      - update-type: "minor"
+    open-pull-requests-limit: 100
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-patch"
