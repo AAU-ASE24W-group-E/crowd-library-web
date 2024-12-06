@@ -319,6 +319,8 @@ const register = async () => {
     const response = await apiClient.post('/user', payload);
     console.log('User registered successfully:', response.data);
 
+    // TODO handle login session token
+
     // Redirect to a success page or login
     await router.push('/login');
 
