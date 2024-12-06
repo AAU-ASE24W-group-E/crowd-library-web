@@ -126,4 +126,28 @@ describe('RegisterComponent', () => {
     expect(push).not.toHaveBeenCalled();
   });
 
+  it('testing password visibility toggle button', async () => {
+    const passwordInput = wrapper.find('input#password');
+    const toggleButton = wrapper.find('#toggle-password-visibility');
+    expect(passwordInput.attributes('type')).toBe('password');
+
+    await toggleButton.trigger('click');
+    expect(passwordInput.attributes('type')).toBe('text');
+
+    await toggleButton.trigger('click');
+    expect(passwordInput.attributes('type')).toBe('password');
+  })
+
+  it('testing confirm password visibility toggle button', async () => {
+    const confirmPasswordInput = wrapper.find('input#confirm-password');
+    const toggleButton = wrapper.find('#toggle-confirm-password-visibility');
+    expect(confirmPasswordInput.attributes('type')).toBe('password');
+
+    await toggleButton.trigger('click');
+    expect(confirmPasswordInput.attributes('type')).toBe('text');
+
+    await toggleButton.trigger('click');
+    expect(confirmPasswordInput.attributes('type')).toBe('password');
+  })
+
 });
