@@ -204,6 +204,7 @@ import {
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import apiClient from "../../api.js";
 
 library.add(faEye, faEyeSlash)
 
@@ -286,6 +287,8 @@ const isControlInvalid = (field) => {
       break
   }
 
+  console.log(`Field: ${field} ` + invalid)
+
   return invalid && errors[field].touched
 }
 const togglePasswordVisibility = () => {
@@ -297,7 +300,9 @@ const toggleConfirmPasswordVisibility = () => {
 }
 
 const register = async () => {
+  console.log("Trying to register1")
   if (isLoading.value) return
+  console.log("Trying to register2")
 
   if (!validateForm()) return
 
@@ -305,24 +310,25 @@ const register = async () => {
 
   // TODO better error handling
   try {
-    const email = (registerForm.email || '').trim().toLowerCase()
-    const emailExists = false // todo check if email already exists with backend
+    console.log("Trying to register")
 
-    if (emailExists) {
-      console.error('This email already exists')
-      return
-    }
+    const payload = {
+      email: (registerForm.email || '').trim().toLowerCase(),
+      username: (registerForm.username || '').trim(),
+      // TODO marked for removal
+      firstName: 'undefined',
+      lastName: 'undefined',
+      password: (registerForm.password || '').trim(), // Include if the backend requires it
+    };
 
-    const username = (registerForm.username || '').trim().toLowerCase()
-    const usernameExists = false // todo check if email already exists with backend
+    const response = await apiClient.post('/user', payload);
+    console.log('User registered successfully:', response.data);
 
-    if (usernameExists) {
-      console.error('This username already exists')
-      return
-    }
+    // Redirect to a success page or login
+    await router.push('/login');
 
-    // TODO register(username, email, password) via backend
   } catch (e) {
+    // todo handle all errors like already existing mail, username, other error and so on
     console.error('Registration error:', e)
   } finally {
     isLoading.value = false
