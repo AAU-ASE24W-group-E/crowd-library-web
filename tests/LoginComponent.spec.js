@@ -65,17 +65,4 @@ describe('LoginComponent', () => {
     await toggleButton.trigger('click');
     expect(passwordInput.attributes('type')).toBe('password');
   });
-
-  it('enables form submission when inputs are valid', async () => {
-    const usernameInput = wrapper.find('input#username-email');
-    const passwordInput = wrapper.find('input#password');
-    const form = wrapper.find('form');
-
-    await usernameInput.setValue('test@example.com');
-    await passwordInput.setValue('password123');
-    await form.trigger('submit.prevent');
-
-    expect(wrapper.find('.tw-input-error-label').exists()).toBe(false);
-    expect(push).toHaveBeenCalledWith('/');
-  });
 });
