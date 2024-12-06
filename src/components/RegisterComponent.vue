@@ -211,7 +211,7 @@ library.add(faEye, faEyeSlash)
 const config = {
   USERNAME_MAX_LENGTH: 20,
   USERNAME_CHARACTER_PATTERN: /^[a-zA-Z0-9-]+$/,
-  PASSWORD_MIN_LENGTH: 8,
+  PASSWORD_MIN_LENGTH: 2,
 }
 const router = useRouter()
 const hidePassword = ref(true)
@@ -238,18 +238,18 @@ const handleBlur = (field) => {
 }
 
 const validateForm = () => {
-  const fields = ['email', 'username', 'password', 'confirmPassword']
+  const fields = ['email', 'username', 'password', 'confirmPassword'];
 
   fields.forEach((field) => {
-    errors[field].touched = true
-    isControlInvalid(field)
-  })
+    handleBlur(field);
+  });
 
   return fields.every((field) => {
-    const errorState = errors[field]
-    return Object.values(errorState).every((isValid) => !isValid)
-  })
-}
+    const { touched, ...errorState } = errors[field]; // Destructure to exclude "touched"
+    return Object.values(errorState).every((isValid) => !isValid); // All error flags must be false
+  });
+};
+
 
 // TODO maybe rework with yup in future
 const isControlInvalid = (field) => {
@@ -287,8 +287,6 @@ const isControlInvalid = (field) => {
       break
   }
 
-  console.log(`Field: ${field} ` + invalid)
-
   return invalid && errors[field].touched
 }
 const togglePasswordVisibility = () => {
@@ -300,17 +298,14 @@ const toggleConfirmPasswordVisibility = () => {
 }
 
 const register = async () => {
-  console.log("Trying to register1")
   if (isLoading.value) return
-  console.log("Trying to register2")
 
   if (!validateForm()) return
 
   isLoading.value = true
 
-  // TODO better error handling
   try {
-    console.log("Trying to register")
+    console.log("Trying to register...")
 
     const payload = {
       email: (registerForm.email || '').trim().toLowerCase(),
@@ -318,7 +313,7 @@ const register = async () => {
       // TODO marked for removal
       firstName: 'undefined',
       lastName: 'undefined',
-      password: (registerForm.password || '').trim(), // Include if the backend requires it
+      password: (registerForm.password || '').trim(),
     };
 
     const response = await apiClient.post('/user', payload);
