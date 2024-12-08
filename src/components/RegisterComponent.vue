@@ -186,15 +186,11 @@ import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 import {faEnvelope, faEye, faEyeSlash, faLock, faUser} from '@fortawesome/free-solid-svg-icons'
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {reactive, ref} from 'vue'
+import config from "@/config.json";
 import {useRouter} from 'vue-router'
 
 library.add(faEye, faEyeSlash)
 
-const config = {
-  USERNAME_MAX_LENGTH: 20,
-  USERNAME_CHARACTER_PATTERN: /^[a-zA-Z0-9-]+$/,
-  PASSWORD_MIN_LENGTH: 8,
-};
 const router = useRouter()
 const hidePassword = ref(true)
 const hideConfirmPassword = ref(true)
@@ -243,13 +239,13 @@ const isControlInvalid = (field) => {
   switch (field) {
     case "email":
       errors.email.required = !trimmedValue;
-      errors.email.invalid = !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(trimmedValue);
+      errors.email.invalid = !(new RegExp(config.USERNAME_EMAIL_PATTERN)).test(trimmedValue);
       invalid = errors.email.required || errors.email.invalid;
       break;
 
     case "username":
       errors.username.required = !trimmedValue;
-      errors.username.invalid = !config.USERNAME_CHARACTER_PATTERN.test(trimmedValue);
+      errors.username.invalid = !new RegExp(config.USERNAME_CHARACTER_PATTERN).test(trimmedValue);
       errors.username.maxLength = trimmedValue?.length > config.USERNAME_MAX_LENGTH;
       invalid = errors.username.required || errors.username.invalid || errors.username.maxLength;
       break;
