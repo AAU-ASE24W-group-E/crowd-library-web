@@ -79,7 +79,7 @@ describe('RegisterComponent', () => {
 
   it('validates password field correctly', async () => {
     const passwordInput = wrapper.find('#password');
-    await passwordInput.setValue('123');
+    await passwordInput.setValue('1');
     await passwordInput.trigger('blur');
 
     expect(wrapper.vm.errors.password.minLength).toBe(true);
