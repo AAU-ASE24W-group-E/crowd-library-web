@@ -98,6 +98,7 @@
             />
             <button
               type="button"
+              id="toggle-password-visibility"
               @click="togglePasswordVisibility"
               class="absolute inset-y-0 end-0 flex items-center pe-3 text-gray-500 dark:text-gray-400"
             >
@@ -139,6 +140,7 @@
             />
             <button
               type="button"
+              id="toggle-confirm-password-visibility"
               @click="toggleConfirmPasswordVisibility"
               class="absolute inset-y-0 end-0 flex items-center pe-3 text-gray-500 dark:text-gray-400"
             >
