@@ -8,7 +8,6 @@
     border: 1px solid red;
 }
 
-
 @layer components {
     /*Used as main class for components*/
     .tw-component-container {
@@ -90,6 +89,15 @@
         mb-10
         animate-fadeInDown
 
+        text-black
+        dark:text-title-dark-mode-text;
+    }
+
+  .tw-heading-2 {
+    @apply text-[25px]
+        self-center
+        mb-10
+        animate-fadeInDown
         text-black
         dark:text-title-dark-mode-text;
     }
@@ -200,8 +208,23 @@
         transition-opacity
         duration-300;
     }
-}
 
+    #map {
+        @apply h-[90%] mb-20;
+    }
+
+    .poi-sidebar-container {
+        @apply w-[30%] bg-gray-200 p-4 space-y-4;
+    }
+
+    .map-sidebar-container {
+        @apply flex h-screen w-[100%];
+    }
+
+    .map-container {
+        @apply flex-1 w-[70%] bg-gray-100 p-8;
+      }
+}
 
 /*Todo if needed, currently ony outcommented - Marked for removal*/
 /*#app {
