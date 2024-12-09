@@ -9,6 +9,12 @@
 }
 
 @layer components {
+    .tw-icon {
+        @apply
+        transition-all hover:scale-105 cursor-pointer text-lg duration-200
+        text-gray-900 dark:text-gray-300
+    }
+
     /*Used as main class for components*/
     .tw-component-container {
         @apply w-[95%]
