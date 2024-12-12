@@ -2,7 +2,6 @@
 import POIMapComponent from "@/components/POIMapComponent.vue";
 import POISidebarList from "@/components/POISidebarList.vue";
 import POILegend from "@/components/POILegend.vue";
-const poi_list_title = "Points of Interest"
 </script>
 
 <template>
@@ -15,7 +14,6 @@ const poi_list_title = "Points of Interest"
       <aside class="poi-sidebar-container">
         <POILegend/>
         <POISidebarList/>
-
       </aside>
     </div>
   </div>

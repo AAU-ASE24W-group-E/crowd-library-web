@@ -1,13 +1,14 @@
 <template>
   <div class="poi-legend-item">
     <Toggle v-model="isToggled" />
-    <h3 class="poi-legend-title" :style="{ color: color }">{{ title }}</h3>
+    <h3 class="poi-legend-title" :style="{ color: colors[type] }">{{ title }}</h3>
   </div>
 </template>
 
 <script>
 // Import the ToggleButton component
 import Toggle from '@vueform/toggle'
+import colors from '@/assets/color'
 
 export default {
   components: {
@@ -18,13 +19,14 @@ export default {
       type: String,
       required: true
     },
-    color: {
+    type: {
       type: String,
       required: true
     }
   },
   data() {
     return {
+      colors,
       isToggled: false, // Track the toggle state
     };
   }
