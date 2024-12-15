@@ -11,10 +11,11 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import maplibregl from 'maplibre-gl';
 import { MapLibreSearchControl } from "@stadiamaps/maplibre-search-box";
 import "@stadiamaps/maplibre-search-box/dist/style.css";
-import axios from "axios";
-import { featureCollection, point } from "@turf/helpers";
+import { featureCollection } from "@turf/helpers";
 import colors from "@/assets/color";
 import map_icons from "@/assets/map_icons";
+import fetchOverpassData from "@/utils/osmService"
+import { getPopupHTML } from "@/utils/poiPopup"
 
 const default_center = [14.26492, 46.616308]
 const default_zoom = 13
@@ -44,104 +45,29 @@ const map_style = {
   ]
 }
 
-const overpassUrl = "https://overpass-api.de/api/interpreter";
-const osm_types = ['"amenity"="public_bookcase"', '"amenity"="library"', '"shop"="books"']
-let poi_types = ["library", "public_bookcase", "shop_books"]
+
+
+let poi_info = {
+  "library": {
+    "osm_type": '"amenity"="public_bookcase"',
+    "display_type": "Library"
+  },
+  "public_bookcase": {
+    "osm_type": '"amenity"="library"',
+    "display_type": "Tiny Library"
+  },
+  "shop_books": {
+    "osm_type": '"shop"="books"',
+    "display_type": "Book Shop"
+  }
+}
 let poi_geojson = featureCollection([])
 let poi_points = {}
 
-//auslagern
-const calculateCentroid = (geometry) => {
-  const latitudes = geometry.map((point) => point.lat);
-  const longitudes = geometry.map((point) => point.lon);
-
-  const centroidLat = latitudes.reduce((sum, lat) => sum + lat, 0) / latitudes.length;
-  const centroidLon = longitudes.reduce((sum, lon) => sum + lon, 0) / longitudes.length;
-
-  return { lat: centroidLat, lon: centroidLon };
-};
-
-
-
-//auslagern
-const getLonLatOfElement = (element) => {
-  let p;
-  if (element.type === "node" && element.lat && element.lon) {
-    p = element;
-  }
-  else if (element.type === "way" && element.geometry) {
-    p = calculateCentroid(element.geometry);
-  }
-  else return false;
-  if (isNaN(p.lat) || isNaN(p.lon)) return false;
-  return p;
-}
-
-const getTypeOfElement = (element) => {
-  let element_tags = Object.keys(element.tags);
-  let t;
-  if (element_tags.includes('amenity')) {
-    t =  element["tags"]["amenity"];
-  } else if (element_tags.includes('shop')) {
-    t = "shop_" + element["tags"]["shop"] // the osm data includes "shop": "books" the type is shop_books
-  }
-  if(!poi_types.includes(t)) return "default";
-  else return t;
-}
-
-const OSMtoGeoJsonFeaturePoints = (elements) => {
-  let features = []
-  elements.forEach((element) => {
-    if (Object.keys(poi_points).includes(String(element.id))) {
-      return
-    }
-
-    let p = getLonLatOfElement(element)
-    if (!p) return;
-
-    element["tags"]["type"] = getTypeOfElement(element)
-
-    let poi = point([p.lon, p.lat], { ...element.tags, id: element.id })
-    features.push(poi);
-    poi_points[element.id] = poi
-  });
-  return features
-}
-
-const getGeoJsonWithAddedPOIs = (elements) => {
-  const features = [];
-  Object.values(poi_points).forEach((value) => {
-    features.push(value);
-  })
-  features.push(...OSMtoGeoJsonFeaturePoints(elements));
-  return featureCollection(features);
-}
-
-//auslagern
-const getOSMQuery = (bbox) => {
-  let s = "[out:json][timeout:25]; (";
-  osm_types.forEach(type => s += `nwr[${type}](${bbox});`);
-  s += `);out geom;`;
-  return s;
-}
-
-//auslagern
-const fetchOverpassData = async (bbox) => {
-  try {
-    const response = await axios.post(overpassUrl, getOSMQuery(bbox), {
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    });
-    poi_geojson = getGeoJsonWithAddedPOIs(response.data.elements);
-    return poi_geojson;
-  } catch (error) {
-    console.error("Error fetching data from Overpass API:", error);
-    return [];
-  }
-};
 
 const getIconImage = () => {
-  let icon_image =  ["match", ["get", "type"]]
-  poi_types.forEach(type => {
+  let icon_image = ["match", ["get", "type"]]
+  Object.keys(poi_info).forEach(type => {
     // looks weird but the icon_image of maplibre layer takes
     // "icon-image": [ "match", ["get", "type"], "library", "library", "shop_books", "shop_books", "public_bookcase", "public_bookcase", "default-icon"]
     icon_image.push(type)
@@ -150,6 +76,22 @@ const getIconImage = () => {
   icon_image.push("default-icon")
   console.log(icon_image)
   return icon_image
+}
+
+const svgStringToImageSrc = (svgString) => {
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgString)
+}
+
+const addSVGDefintions = (map) => {
+  Object.keys(map_icons).forEach(icon_name => {
+    const svgImage = new Image(35, 35);
+    svgImage.onload = () => {
+      map.addImage(icon_name, svgImage)
+    }
+    const pin = map_icons[icon_name].replaceAll('fill:#', 'fill:' + colors[icon_name]);
+    svgImage.src = svgStringToImageSrc(pin);
+  });
+  return map
 }
 
 const addLayerToMap = async (map) => {
@@ -170,23 +112,6 @@ const addLayerToMap = async (map) => {
     }
   });
 }
-
-const addSVGDefintions = (map) => {
-  Object.keys(map_icons).forEach(icon_name => {
-    const svgImage = new Image(35, 35);
-    svgImage.onload = () => {
-      map.addImage(icon_name, svgImage)
-    }
-    function svgStringToImageSrc(svgString) {
-      return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgString)
-    }
-
-    const pin = map_icons[icon_name].replaceAll('fill:#', 'fill:' + colors[icon_name]);
-    svgImage.src = svgStringToImageSrc(pin);
-  });
-  return map
-}
-
 
 onMounted(() => {
   let map = new maplibregl.Map({
@@ -214,13 +139,31 @@ onMounted(() => {
       }
       const bounds = map.getBounds();
       const bbox = `${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()}`;
-      await fetchOverpassData(bbox);
+      [poi_geojson, poi_points] = await fetchOverpassData(bbox, poi_info, poi_points);
       map.getSource("pois").setData(poi_geojson);
     };
 
     updateData()
     addLayerToMap(map)
     map.on("moveend", updateData);
+  });
+
+  map.on("click", "poi-layer", (e) => {
+    if(e.features != null && e.features.length > 0) return
+    const coordinates = e.features[0].geometry.coordinates.slice();
+
+    new maplibregl.Popup({ offset: 25 })
+      .setLngLat(coordinates)
+      .setHTML(getPopupHTML(e.features[0].properties, poi_info))
+      .addTo(map);
+  });
+
+  map.on("mouseenter", "poi-layer", () => {
+    map.getCanvas().style.cursor = "pointer";
+  });
+
+  map.on("mouseleave", "poi-layer", () => {
+    map.getCanvas().style.cursor = "";
   });
 
   map.on('mousedown', (e) => {
