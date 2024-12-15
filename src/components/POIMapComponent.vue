@@ -149,12 +149,13 @@ onMounted(() => {
   });
 
   map.on("click", "poi-layer", (e) => {
-    if(e.features != null && e.features.length > 0) return
     const coordinates = e.features[0].geometry.coordinates.slice();
+    const popupHTML = getPopupHTML(e.features[0].properties, poi_info)
 
+    console.log(popupHTML)
     new maplibregl.Popup({ offset: 25 })
       .setLngLat(coordinates)
-      .setHTML(getPopupHTML(e.features[0].properties, poi_info))
+      .setHTML(popupHTML)
       .addTo(map);
   });
 

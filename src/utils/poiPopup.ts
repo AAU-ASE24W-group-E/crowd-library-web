@@ -20,7 +20,7 @@ export const getPopupHTML = (poi_properties: any, poi_info: any) => {
     poi_properties = popUpGetName(poi_properties)
     poi_properties = popUpGetType(poi_properties, poi_info)
 
-    return `<h3>${poi_properties.type}</h3>
+    return `<h3><b>${poi_properties.type}</b></h3>
           <p>${poi_properties['show_name']}</p>
           <p> </p>`
 }
