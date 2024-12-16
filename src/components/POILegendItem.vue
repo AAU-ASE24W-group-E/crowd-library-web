@@ -1,44 +1,69 @@
 <template>
   <div class="poi-legend-item">
-    <Toggle v-model="isToggled" />
-    <h3 class="poi-legend-title" :style="{ color: colors[type] }">{{ title }}</h3>
+    <VueToggles
+      :value="isActive"
+      :height="25"
+      :width="60"
+      checkedText="On"
+      uncheckedText="Off"
+      :checkedBg= "colors[type]"
+      uncheckedBg="lightgrey"
+      @click="toggleActive"
+    />
+    <h3 class="poi-legend-label" :style="{ color: colors[type] }">{{ title }}</h3>
   </div>
 </template>
 
 <script>
 // Import the ToggleButton component
-import Toggle from '@vueform/toggle'
+import { VueToggles } from "vue-toggles";
 import colors from '@/assets/color'
 
 export default {
-  components: {
-    Toggle,
+  components:{
+    VueToggles,
   },
   props: {
+    modelValue: Boolean,
+    onLabel: {
+      type: String,
+      default: 'On',
+    },
+    offLabel: {
+      type: String,
+      default: 'Off',
+    },
     title: {
       type: String,
-      required: true
+      required: true,
     },
     type: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       colors,
-      isToggled: false, // Track the toggle state
-    };
+      isActive: true,
+    }
+  },
+  methods: {
+    toggleActive() {
+      this.isActive = !this.isActive;
+      this.$emit('toggle_changed', this.isActive);
+    }
   }
-};
+}
 </script>
 
 <style scoped>
+
 .poi-legend-item {
   @apply p-1 pl-2 hover:bg-gray-100 cursor-pointer flex items-center;
 }
 
-.poi-legend-title {
-  @apply text-lg font-semibold text-gray-800;
+.poi-legend-label {
+  @apply text-lg font-semibold text-gray-800 pl-2;
 }
 </style>
