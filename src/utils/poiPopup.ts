@@ -16,9 +16,17 @@ const popUpGetType = (poi_properties: any, poi_info: any) => {
   return poi_properties
 }
 
+const popUpGetWebsite = (poi_properties: any) => {
+  if (!Object.keys(poi_properties).includes('website') && Object.keys(poi_properties).includes('contact:website')) {
+    poi_properties['website'] = poi_properties['contact:website']
+  }
+  return poi_properties
+}
+
 export const getPopupHTML = (poi_properties: any, poi_info: any) => {
   poi_properties = popUpGetName(poi_properties)
   poi_properties = popUpGetType(poi_properties, poi_info)
+  poi_properties = popUpGetWebsite(poi_properties)
 
   return `
         <div style="text-align: center;">

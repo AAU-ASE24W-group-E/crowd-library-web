@@ -10,11 +10,4 @@ const marker = `<?xml version="1.0" encoding="utf-8"?>
   </g>
 </svg>`
 
-
-const map_icons = {
-  shop_books: marker,
-  library: marker,
-  public_bookcase: marker,
-}
-
-export default map_icons
+export default marker

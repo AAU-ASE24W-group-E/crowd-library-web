@@ -1,7 +1,7 @@
 <template>
   <div class="poi-sidebar-item">
-    <h3 class="poi-sidebar-title">{{ title }}</h3>
-    <p class="poi-sidebar-description">{{ description }}</p>
+    <h3 class="poi-sidebar-title" :style="{ color: color }">{{ display_title }}</h3>
+    <p class="poi-sidebar-description">{{ display_type }}</p>
   </div>
 </template>
 
@@ -10,13 +10,30 @@ export default {
   props: {
     title: {
       type: String,
+      required: false
+    },
+    type: {
+      type: String,
       required: true
     },
-    description: {
-      type: String,
+    poi_info: {
       required: true
     }
   },
+  setup(props) {
+    let display_type = props.poi_info[props.type]["display_type"];
+    let color = props.poi_info[props.type]["color"];
+    let display_title = props.title;
+    if(display_title == null){
+      display_title = display_type;
+    }
+
+    return {
+      display_type,
+      display_title,
+      color
+    }
+  }
 };
 </script>
 

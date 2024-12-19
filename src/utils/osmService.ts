@@ -1,6 +1,8 @@
 import axios from 'axios'
 const overpassUrl = 'https://overpass-api.de/api/interpreter'
 import { featureCollection, point } from "@turf/helpers";
+import type { FeatureCollection, Feature } from 'geojson'
+
 
 const getOSMQuery = (bbox:string, poi_info:any) => {
   let s = '[out:json][timeout:25]; ('
@@ -43,7 +45,7 @@ const getLonLatOfElement = (element:any) => {
 }
 
 const OSMtoGeoJsonFeaturePoints = (elements: any, poi_info:any, poi_points: any) => {
-  let features:any = []
+  let all_features:any = []
   elements.forEach((element:any) => {
     if (Object.keys(poi_points).includes(String(element.id))) {
       return
@@ -55,10 +57,10 @@ const OSMtoGeoJsonFeaturePoints = (elements: any, poi_info:any, poi_points: any)
     element['tags']['type'] = getTypeOfElement(element, poi_info)
 
     let poi = point([p.lon, p.lat], { ...element.tags, id: element.id })
-    features.push(poi)
+    all_features.push(poi)
     poi_points[element.id] = poi
   })
-  return [features, poi_points]
+  return [all_features, poi_points]
 }
 
 const getGeoJsonWithAddedPOIs = (elements: any, poi_info: any, poi_points: any) => {
@@ -66,8 +68,8 @@ const getGeoJsonWithAddedPOIs = (elements: any, poi_info: any, poi_points: any) 
   Object.values(poi_points).forEach((value) => {
     features.push(value)
   })
-  let [features_points, points] = OSMtoGeoJsonFeaturePoints(elements, poi_info, poi_points)
-  features.push(...features_points)
+  let [new_feature_points, points] = OSMtoGeoJsonFeaturePoints(elements, poi_info, poi_points)
+  features.push(...new_feature_points)
   return [featureCollection(features), points]
 }
 

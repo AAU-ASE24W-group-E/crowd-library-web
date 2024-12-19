@@ -1,58 +1,55 @@
 <template>
   <div class="poi-legend-item">
     <VueToggles
-      :value="isActive"
+      :value="mapLegendStore.getTypeState(type)"
       :height="25"
       :width="60"
       checkedText="On"
       uncheckedText="Off"
-      :checkedBg= "colors[type]"
+      :checkedBg= "color"
       uncheckedBg="lightgrey"
-      @click="toggleActive"
+      @click="handleToggle"
     />
-    <h3 class="poi-legend-label" :style="{ color: colors[type] }">{{ title }}</h3>
+    <h3 class="poi-legend-label" :style="{ color: color }">{{ title }}</h3>
   </div>
 </template>
 
 <script>
-// Import the ToggleButton component
 import { VueToggles } from "vue-toggles";
-import colors from '@/assets/color'
+import { useMapLegendStore } from '@/stores/poiMapLegend'
 
 export default {
   components:{
     VueToggles,
   },
   props: {
-    modelValue: Boolean,
-    onLabel: {
-      type: String,
-      default: 'On',
-    },
-    offLabel: {
-      type: String,
-      default: 'Off',
-    },
     title: {
+      type: String,
+      required: true,
+    },
+    color: {
       type: String,
       required: true,
     },
     type: {
       type: String,
       required: true,
-    },
+    }
   },
-  data() {
+  setup(props) {
+    const mapLegendStore = useMapLegendStore();
+
+    const handleToggle = () => {
+      mapLegendStore.toggleTypeState(props.type);
+    };
+
+    // default toggle true (on)
+    handleToggle()
+
     return {
-      colors,
-      isActive: true,
-    }
-  },
-  methods: {
-    toggleActive() {
-      this.isActive = !this.isActive;
-      this.$emit('toggle_changed', this.isActive);
-    }
+      mapLegendStore,
+      handleToggle
+    };
   }
 }
 </script>

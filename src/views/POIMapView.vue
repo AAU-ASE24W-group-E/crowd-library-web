@@ -1,42 +1,54 @@
-
 <template>
   <div class="bg-gray-200 dark:bg-dark-mode">
-    <!-- <div class="tw-component-container bg-gray-200 dark:bg-dark-mode"> -->
     <div class="map-sidebar-container">
       <div class="map-container">
         <POIMapComponent :poi_info="poi_info" />
       </div>
       <aside class="poi-sidebar-container">
-        <POILegend :poi_info="poi_info"/>
-        <POISidebarList/>
+        <POILegend :poi_info="poi_info" />
+        <POISidebarList :poi_info="poi_info" />
       </aside>
     </div>
   </div>
 </template>
 
-<script setup>
+<script>
 import POIMapComponent from '@/components/POIMapComponent.vue'
 import POISidebarList from '@/components/POISidebarList.vue'
 import POILegend from '@/components/POILegend.vue'
 
-//to do color
-// toggle emit
-
-const poi_info = {
-  library: {
-    osm_type: '"amenity"="public_bookcase"',
-    display_type: 'Library',
-    color: ''
+export default {
+  components:{
+    POIMapComponent,
+    POISidebarList,
+    POILegend
   },
-  public_bookcase: {
-    osm_type: '"amenity"="library"',
-    display_type: 'Tiny Library',
-    color: ''
+  data() {
+    return {
+      poi_info: {
+        library: {
+          osm_type: '"amenity"="public_bookcase"',
+          display_type: 'Library',
+          color: '#55ad07',
+        },
+        public_bookcase: {
+          osm_type: '"amenity"="library"',
+          display_type: 'Tiny Library',
+          color: '#1881c9',
+        },
+        shop_books: {
+          osm_type: '"shop"="books"',
+          display_type: 'Book Shop',
+          color: "#cc0000",
+        },
+        // can be extended here like this
+        // drinking_water:{
+        //   osm_type: '"amenity"="drinking_water"',
+        //   display_type: 'Drinking Water',
+        //   color: "#0948ad",
+        // }
+      },
+    }
   },
-  shop_books: {
-    osm_type: '"shop"="books"',
-    display_type: 'Book Shop',
-    color: ''
-  }
 }
 </script>

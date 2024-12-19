@@ -4,17 +4,17 @@
 </template>
 
 <script>
-
 import { onMounted } from 'vue'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import maplibregl from 'maplibre-gl'
 import { MapLibreSearchControl } from '@stadiamaps/maplibre-search-box'
 import '@stadiamaps/maplibre-search-box/dist/style.css'
 import { featureCollection } from '@turf/helpers'
-import colors from '@/assets/color'
-import map_icons from '@/assets/map_icons'
+import marker from '@/assets/map_icons'
 import fetchOverpassData from '@/utils/osmService'
 import { getPopupHTML } from '@/utils/poiPopup'
+import { useMapLegendStore } from '@/stores/poiMapLegend'
+import { usePoiMapFeatureStore } from '@/stores/poiMapFeatures'
 
 const default_center = [14.26492, 46.616308]
 const default_zoom = 13
@@ -43,22 +43,25 @@ const map_style = {
 }
 
 let poi_geojson = featureCollection([])
-let poi_points = {}
+let poi_geojson_filtered = featureCollection([])
+let all_poi_points = {}
 
 export default {
   props: ['poi_info'],
   setup(props) {
-    let poi_info = props.poi_info
+    let map;
+    let poi_info = props.poi_info;
+    const mapLegendStore = useMapLegendStore();
+    const poiMapFeatureStore = usePoiMapFeatureStore();
+
     const getIconImage = () => {
       let icon_image = ['match', ['get', 'type']]
       Object.keys(poi_info).forEach((type) => {
-        // looks weird but the icon_image of maplibre layer takes
-        // "icon-image": [ "match", ["get", "type"], "library", "library", "shop_books", "shop_books", "public_bookcase", "public_bookcase", "default-icon"]
-        icon_image.push(type)
-        icon_image.push(type)
+        icon_image.push(type);
+        icon_image.push(type);
       })
-      icon_image.push('default-icon')
-      return icon_image
+      icon_image.push('default-icon');
+      return icon_image;
     }
 
     const svgStringToImageSrc = (svgString) => {
@@ -66,15 +69,27 @@ export default {
     }
 
     const addSVGDefintions = (map) => {
-      Object.keys(map_icons).forEach((icon_name) => {
-        const svgImage = new Image(35, 35)
+      Object.keys(poi_info).forEach((type) => {
+        const svgImage = new Image(35, 35);
         svgImage.onload = () => {
-          map.addImage(icon_name, svgImage)
+          map.addImage(type, svgImage);
         }
-        const pin = map_icons[icon_name].replaceAll('fill:#', 'fill:' + colors[icon_name])
-        svgImage.src = svgStringToImageSrc(pin)
+        const pin = marker.replaceAll('fill:#', 'fill:' + poi_info[type]["color"])
+        svgImage.src = svgStringToImageSrc(pin);
       })
-      return map
+      return map;
+    }
+
+    const filterFeaturesByTypes = (features, types) => {
+      return features.filter(feature => types.includes(feature.properties.type));
+    }
+
+    const filterDataSource = (active_types) => {
+      poi_geojson_filtered = featureCollection(filterFeaturesByTypes(poi_geojson.features, active_types));
+      if(map){
+        poiMapFeatureStore.setPOIs(poi_geojson_filtered);
+        map.getSource('pois').setData(poi_geojson_filtered);
+      }
     }
 
     const addLayerToMap = async (map) => {
@@ -97,7 +112,7 @@ export default {
     }
 
     onMounted(() => {
-      let map = new maplibregl.Map({
+      map = new maplibregl.Map({
         container: 'map',
         style: map_style,
         center: default_center,
@@ -107,13 +122,13 @@ export default {
 
       const control = new MapLibreSearchControl({
         maxResults: max_search_results,
-        zoom: min_zoom_for_pois + 1,
+        zoom: min_zoom_for_pois + 2,
       })
       map.addControl(control, map_search_position)
       map.addControl(new maplibregl.NavigationControl(), 'top-right')
       map.addControl(new maplibregl.GeolocateControl(), 'bottom-right')
 
-      map = addSVGDefintions(map)
+      map = addSVGDefintions(map);
 
       map.on('load', async () => {
         const updateData = async () => {
@@ -121,21 +136,22 @@ export default {
             return // pois are not loaded for zoom levels smaller than min_zoom_pois
           }
           const bounds = map.getBounds()
-          const bbox = `${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()}`
-          ;[poi_geojson, poi_points] = await fetchOverpassData(bbox, poi_info, poi_points)
-          map.getSource('pois').setData(poi_geojson)
+          const bbox = `${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()}`;
+          [poi_geojson, all_poi_points] = await fetchOverpassData(bbox, poi_info, all_poi_points)
+          
+          filterDataSource(mapLegendStore.getActiveTypes(mapLegendStore.typeStates))
         }
 
-        updateData()
-        addLayerToMap(map)
-        map.on('moveend', updateData)
+        updateData();
+        addLayerToMap(map);
+        map.on('moveend', updateData);
       })
 
       map.on('click', 'poi-layer', (e) => {
         const coordinates = e.features[0].geometry.coordinates.slice()
         const popupHTML = getPopupHTML(e.features[0].properties, poi_info)
 
-        new maplibregl.Popup({ offset: 25 }).setLngLat(coordinates).setHTML(popupHTML).addTo(map)
+        new maplibregl.Popup({ offset: 25 }).setLngLat(coordinates).setHTML(popupHTML).addTo(map);
       })
 
       map.on('mouseenter', 'poi-layer', () => {
@@ -150,6 +166,20 @@ export default {
         if (e.originalEvent.button !== 1) return
       })
     })
+
+    return {
+      filterDataSource,
+      mapLegendStore
+    }
   },
+  watch: {
+    'mapLegendStore.typeStates': {
+      handler(newTypes) {
+        let activeTypes = this.mapLegendStore.getActiveTypes(newTypes);
+        this.filterDataSource(activeTypes);
+      },
+      deep: true
+    }
+  }
 }
 </script>
