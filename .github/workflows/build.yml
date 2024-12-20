@@ -59,7 +59,7 @@ jobs:
         run: npm ci  # Use 'npm ci' for clean installs in CI environments
 
       - name: Build application
-        run: npm run build
+        run: npm run build-only
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
