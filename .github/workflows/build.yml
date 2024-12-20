@@ -79,5 +79,5 @@ jobs:
           docker buildx build \
             --platform linux/amd64,linux/arm64 \
             --push \
-            --tag ghcr.io/AAU-ASE24W-group-E/crowd-library-web:latest \
+            --tag ghcr.io/aau-ase24w-group-e/crowd-library-web:latest \
             .
