@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node.js Environment
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'  # Adjust to match your project's Node.js version
+          node-version: '20'  # Adjust to match your project's Node.js version
           cache: 'npm'
 
       - name: Install Dependencies
@@ -52,7 +52,7 @@ jobs:
       - name: Setup Node.js Environment
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
+          node-version: '20'
           cache: 'npm'
 
       - name: Install Dependencies
