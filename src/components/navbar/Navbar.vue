@@ -6,7 +6,7 @@
     <div class="w-full h-full flex items-center justify-between">
       <router-link to="/">
         <img
-          src="../assets/logo_simple.png"
+          src="../../assets/logo_simple.png"
           alt="logo"
           class="w-20 h-20 mr-12 object-contain pr-8 decoration-0"
         />
