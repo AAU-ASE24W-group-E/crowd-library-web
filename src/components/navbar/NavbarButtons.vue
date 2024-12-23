@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center flex-row justify-between space-x-6 max-lg:space-x-1"
+  <div class="flex items-center flex-row justify-between space-x-6 max-lg:space-x-3 max-sm:space-x-6"
        ref="dropdownRef">
     <div class="tw-navbar-dropdown-container">
       <button
@@ -76,10 +76,7 @@
   </div>
 </template>
 
-<!--circle-user, clipboard-list -->
-
 <script setup>
-//
 import {
   faBook,
   faCircleUser,

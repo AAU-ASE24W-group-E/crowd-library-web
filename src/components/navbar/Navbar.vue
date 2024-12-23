@@ -14,7 +14,7 @@
       <nav
         class="lg:flex-1 lg:flex lg:items-center lg:flex-row lg:justify-start max-lg:flex max-lg:items-start max-lg:self-start max-lg:flex-col w-full"
       >
-        <div class="relative w-full">
+        <div class="relative w-full max-sm:hidden">
           <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
             <font-awesome-icon
               class="tw-icon text-gray-500 dark:text-gray-300"
