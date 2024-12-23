@@ -12,6 +12,8 @@ module.exports = {
         'dark-mode': '#050505',
         'dark-mode-inside': '#1f2937',
         'dark-mode-inside-hover': '#2a3748',
+        'dark-mode-dropdown': '#131e21',
+        'dark-mode-dropdown-hover': '#1b2b31',
         'title-dark-mode-text': '#c7c7c7',
         'dark-mode-text': '#909090',
       },
