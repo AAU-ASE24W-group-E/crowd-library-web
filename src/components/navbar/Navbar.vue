@@ -26,7 +26,7 @@
       </nav>
 
       <div class="flex justify-end max-lg:justify-end ml-10">
-        <!--       TODO-->
+        <NavbarButtons/>
       </div>
 
     </div>
@@ -36,4 +36,5 @@
 <script setup>
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import NavbarButtons from "@/components/navbar/NavbarButtons.vue";
 </script>
