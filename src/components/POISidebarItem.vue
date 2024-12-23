@@ -1,5 +1,5 @@
 <template>
-  <div class="poi-sidebar-item">
+  <div class="poi-sidebar-item" @click="itemClicked">
     <h3 class="poi-sidebar-title" :style="{ color: color }">{{ display_title }}</h3>
     <p class="poi-sidebar-description">{{ display_type }}</p>
   </div>
@@ -8,22 +8,25 @@
 <script>
 export default {
   props: {
-    title: {
-      type: String,
-      required: false
-    },
-    type: {
-      type: String,
+    feature: {
       required: true
     },
     poi_info: {
       required: true
     }
   },
+  emits: ['item-clicked'],
+  methods: {
+    itemClicked() {
+      this.$emit('item-clicked', this.feature);
+    },
+  },
   setup(props) {
-    let display_type = props.poi_info[props.type]["display_type"];
-    let color = props.poi_info[props.type]["color"];
-    let display_title = props.title;
+    const type = props.feature.properties.type;
+    let display_type = props.poi_info[type]["display_type"];
+    let color = props.poi_info[type]["color"];
+
+    let display_title =  props.feature.properties.name;
     if(display_title == null){
       display_title = display_type;
     }

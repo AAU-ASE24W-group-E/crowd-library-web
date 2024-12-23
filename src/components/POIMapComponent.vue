@@ -45,23 +45,24 @@ const map_style = {
 let poi_geojson = featureCollection([])
 let poi_geojson_filtered = featureCollection([])
 let all_poi_points = {}
+let all_popups = []
 
 export default {
   props: ['poi_info'],
   setup(props) {
-    let map;
-    let poi_info = props.poi_info;
-    const mapLegendStore = useMapLegendStore();
-    const poiMapFeatureStore = usePoiMapFeatureStore();
+    let map
+    let poi_info = props.poi_info
+    const mapLegendStore = useMapLegendStore()
+    const poiMapFeatureStore = usePoiMapFeatureStore()
 
     const getIconImage = () => {
       let icon_image = ['match', ['get', 'type']]
       Object.keys(poi_info).forEach((type) => {
-        icon_image.push(type);
-        icon_image.push(type);
+        icon_image.push(type)
+        icon_image.push(type)
       })
-      icon_image.push('default-icon');
-      return icon_image;
+      icon_image.push('default-icon')
+      return icon_image
     }
 
     const svgStringToImageSrc = (svgString) => {
@@ -70,25 +71,27 @@ export default {
 
     const addSVGDefintions = (map) => {
       Object.keys(poi_info).forEach((type) => {
-        const svgImage = new Image(35, 35);
+        const svgImage = new Image(35, 35)
         svgImage.onload = () => {
-          map.addImage(type, svgImage);
+          map.addImage(type, svgImage)
         }
-        const pin = marker.replaceAll('fill:#', 'fill:' + poi_info[type]["color"])
-        svgImage.src = svgStringToImageSrc(pin);
+        const pin = marker.replaceAll('fill:#', 'fill:' + poi_info[type]['color'])
+        svgImage.src = svgStringToImageSrc(pin)
       })
-      return map;
+      return map
     }
 
     const filterFeaturesByTypes = (features, types) => {
-      return features.filter(feature => types.includes(feature.properties.type));
+      return features.filter((feature) => types.includes(feature.properties.type))
     }
 
     const filterDataSource = (active_types) => {
-      poi_geojson_filtered = featureCollection(filterFeaturesByTypes(poi_geojson.features, active_types));
-      if(map){
-        poiMapFeatureStore.setPOIs(poi_geojson_filtered);
-        map.getSource('pois').setData(poi_geojson_filtered);
+      poi_geojson_filtered = featureCollection(
+        filterFeaturesByTypes(poi_geojson.features, active_types),
+      )
+      if (map) {
+        poiMapFeatureStore.setPOIs(poi_geojson_filtered)
+        map.getSource('pois').setData(poi_geojson_filtered)
       }
     }
 
@@ -128,7 +131,7 @@ export default {
       map.addControl(new maplibregl.NavigationControl(), 'top-right')
       map.addControl(new maplibregl.GeolocateControl(), 'bottom-right')
 
-      map = addSVGDefintions(map);
+      map = addSVGDefintions(map)
 
       map.on('load', async () => {
         const updateData = async () => {
@@ -136,23 +139,24 @@ export default {
             return // pois are not loaded for zoom levels smaller than min_zoom_pois
           }
           const bounds = map.getBounds()
-          const bbox = `${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()}`;
-          [poi_geojson, all_poi_points] = await fetchOverpassData(bbox, poi_info, all_poi_points)
-          
+          const bbox = `${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()}`
+          ;[poi_geojson, all_poi_points] = await fetchOverpassData(bbox, poi_info, all_poi_points)
+
           filterDataSource(mapLegendStore.getActiveTypes(mapLegendStore.typeStates))
         }
 
-        updateData();
-        addLayerToMap(map);
-        map.on('moveend', updateData);
+        updateData()
+        addLayerToMap(map)
+        map.on('moveend', updateData)
       })
 
       map.on('click', 'poi-layer', (e) => {
         const coordinates = e.features[0].geometry.coordinates.slice()
         const popupHTML = getPopupHTML(e.features[0].properties, poi_info)
 
-        new maplibregl.Popup({ offset: 25 }).setLngLat(coordinates).setHTML(popupHTML).addTo(map);
-      })
+        let popup = new maplibregl.Popup({ offset: 25 }).setLngLat(coordinates).setHTML(popupHTML).addTo(map)
+        all_popups.push(popup)
+      });
 
       map.on('mouseenter', 'poi-layer', () => {
         map.getCanvas().style.cursor = 'pointer'
@@ -167,19 +171,42 @@ export default {
       })
     })
 
+    const zoomToClickedItem = (feature) => {
+      map.flyTo({
+        center: feature.geometry.coordinates,
+        zoom: 17,
+        speed: 3,
+        curve: 1.5,
+        easing: function (t) {
+          return t
+        },
+      })
+    }
+
+    const closeAllPopups = () => {
+      if (!map) return
+      all_popups.forEach((popup) => {
+        popup.remove();
+      });
+      all_popups = []
+    }
+
     return {
       filterDataSource,
-      mapLegendStore
+      mapLegendStore,
+      zoomToClickedItem,
+      closeAllPopups,
     }
   },
   watch: {
     'mapLegendStore.typeStates': {
       handler(newTypes) {
-        let activeTypes = this.mapLegendStore.getActiveTypes(newTypes);
-        this.filterDataSource(activeTypes);
+        let activeTypes = this.mapLegendStore.getActiveTypes(newTypes)
+        this.closeAllPopups()
+        this.filterDataSource(activeTypes)
       },
-      deep: true
-    }
-  }
+      deep: true,
+    },
+  },
 }
 </script>

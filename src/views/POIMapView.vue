@@ -2,11 +2,11 @@
   <div class="bg-gray-200 dark:bg-dark-mode">
     <div class="map-sidebar-container">
       <div class="map-container">
-        <POIMapComponent :poi_info="poi_info" />
+        <POIMapComponent ref="mapComponent" :poi_info="poi_info" />
       </div>
-      <aside class="poi-sidebar-container">
+      <aside class="poi-sidebar-container" >
         <POILegend :poi_info="poi_info" />
-        <POISidebarList :poi_info="poi_info" />
+        <POISidebarList  :poi_info="poi_info" @item-clicked="itemClicked"/>
       </aside>
     </div>
   </div>
@@ -22,6 +22,11 @@ export default {
     POIMapComponent,
     POISidebarList,
     POILegend
+  },
+  methods: {
+    itemClicked(feature) {
+      this.$refs.mapComponent.zoomToClickedItem(feature)
+    }
   },
   data() {
     return {

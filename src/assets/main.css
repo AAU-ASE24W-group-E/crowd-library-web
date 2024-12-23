@@ -220,7 +220,7 @@
     }
 
     .poi-sidebar-container {
-        @apply w-[30%] bg-gray-200 p-4 space-y-4;
+        @apply w-[25%] bg-gray-200 p-4 space-y-4;
     }
 
     .map-sidebar-container {
@@ -228,7 +228,7 @@
     }
 
     .map-container {
-        @apply flex-1 w-[70%] bg-gray-100 p-8;
+        @apply flex-1 w-[75%] bg-gray-100 p-8;
       }
 }
 
