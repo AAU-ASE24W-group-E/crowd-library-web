@@ -206,6 +206,13 @@
         transition-opacity
         duration-300;
     }
+    .tw-navbar-dropdown-container {
+        @apply inline-block relative text-left rounded;
+    }
+
+    .navbar-button-container {
+        @apply border-transparent py-1 px-1 w-full h-full flex justify-center items-center;
+    }
 }
 
 
