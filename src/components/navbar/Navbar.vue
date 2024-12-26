@@ -22,7 +22,7 @@
             />
           </div>
           <input class="tw-input w-full rounded-3xl h-9"
-                 @keyup.enter="handleSearch"
+                 @keyup.enter="handleSearch($event)"
                  :placeholder="'Search by title, author, ISBN...'">
         </div>
       </nav>
@@ -40,8 +40,14 @@ import {faSearch} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import NavbarButtons from "@/components/navbar/NavbarButtons.vue";
 
-const handleSearch = () => {
+const handleSearch = (event) => {
+  const inputValue = event.target.value;
+
+  if(inputValue === null || inputValue === undefined || inputValue === "") {
+    return;
+  }
+
+  console.log(inputValue)
   // TODO API Call
-  console.log("works")
 }
 </script>
