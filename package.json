@@ -37,12 +37,12 @@
     "@vitest/coverage-istanbul": "^2.1.8",
     "@vitest/eslint-plugin": "1.1.14",
     "@vue/eslint-config-prettier": "^10.1.0",
-    "@vue/eslint-config-typescript": "^14.1.4",
+    "@vue/eslint-config-typescript": "^14.2.0",
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.7.0",
     "autoprefixer": "^10.4.20",
-    "cypress": "^13.16.0",
-    "eslint": "^9.16.0",
+    "cypress": "^13.17.0",
+    "eslint": "^9.17.0",
     "eslint-plugin-cypress": "^4.1.0",
     "eslint-plugin-vue": "^9.32.0",
     "jsdom": "^25.0.1",
@@ -55,6 +55,6 @@
     "vite": "^6.0.2",
     "vite-plugin-vue-devtools": "^7.6.7",
     "vitest": "^2.1.8",
-    "vue-tsc": "^2.1.10"
+    "vue-tsc": "^2.2.0"
   }
 }
