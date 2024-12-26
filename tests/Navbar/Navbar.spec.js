@@ -35,4 +35,15 @@ describe('Navbar', () => {
     const buttons = wrapper.findComponent({ name: "NavbarButtons" });
     expect(buttons.exists()).toBe(true);
   });
+
+  it("triggers search when Enter is pressed", async () => {
+    const handleSearchSpy = vi.spyOn(wrapper.vm, "handleSearch");
+    const input = wrapper.find("input");
+
+    await input.setValue("Some search query");
+    await input.trigger("keyup.enter");
+
+    expect(handleSearchSpy).toHaveBeenCalled();
+  });
+
 });

@@ -47,7 +47,7 @@ const handleSearch = (event) => {
     return;
   }
 
-  console.log(inputValue)
+
   // TODO API Call
 }
 </script>
