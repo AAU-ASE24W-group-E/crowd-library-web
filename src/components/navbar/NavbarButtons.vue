@@ -22,6 +22,7 @@
     <div class="tw-navbar-dropdown-container">
       <button
         @click="handleAccountClick"
+        id="account-button"
         class="navbar-button-container btn-primary"
       >
         <font-awesome-icon class="tw-icon text-2xl" :icon="faCircleUser"/>
