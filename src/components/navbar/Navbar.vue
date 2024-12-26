@@ -21,7 +21,9 @@
               :icon="faSearch"
             />
           </div>
-          <input class="tw-input w-full rounded-3xl h-9" :placeholder="'Search by title, author, ISBN...'">
+          <input class="tw-input w-full rounded-3xl h-9"
+                 @keyup.enter="handleSearch"
+                 :placeholder="'Search by title, author, ISBN...'">
         </div>
       </nav>
 
@@ -37,4 +39,9 @@
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import NavbarButtons from "@/components/navbar/NavbarButtons.vue";
+
+const handleSearch = () => {
+  // TODO API Call
+  console.log("works")
+}
 </script>
