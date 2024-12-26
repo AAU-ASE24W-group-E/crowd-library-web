@@ -4,8 +4,8 @@
 
     <router-link to="/" class="contents">
       <img
-        src="../assets/logo.svg"
-        class="h-8 object-cover max-sm:mb-4"
+        src="../assets/logo_simple.png"
+        class="h-12 object-cover max-sm:mb-4"
         alt=""/>
     </router-link>
 

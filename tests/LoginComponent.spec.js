@@ -29,7 +29,6 @@ describe('LoginComponent', () => {
     vi.resetAllMocks();
   });
 
-  // TODO just a test case
   it('renders the component properly', () => {
     expect(wrapper.find('.tw-heading').text()).toBe('Login');
     expect(wrapper.find('form').exists()).toBe(true);
