@@ -1,7 +1,9 @@
 <template>
-  <BookEntry></BookEntry>
-  <BookEntry></BookEntry>
-  <BookEntry></BookEntry>
+  <div class="tw-component-container">
+    <BookEntry></BookEntry>
+    <BookEntry></BookEntry>
+    <BookEntry></BookEntry>
+  </div>
 </template>
 
 

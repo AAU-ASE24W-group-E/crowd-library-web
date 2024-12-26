@@ -2,6 +2,7 @@
 import Footer from "@/components/Footer.vue";
 import BookEntry from "@/components/BookEntry.vue";
 import Navbar from "@/components/navbar/Navbar.vue";
+import BookSearchList from "@/components/BookSearchList.vue";
 </script>
 
 <template>
