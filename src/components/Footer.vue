@@ -62,6 +62,7 @@
 
 
 <script setup>
-//
 import {faGithub, faInstagram, faYoutube} from "@fortawesome/free-brands-svg-icons";
+import {ref} from "vue";
+const currentYear = ref(new Date().getFullYear());
 </script>
