@@ -1,6 +1,6 @@
 <template>
-  <div class="tw-component-container border-1 dark:bg-dark-mode-inside">
-    <div class="flex flex-row w-full border-1">
+  <div class="tw-component-container w-full p-0 border-1  dark:bg-dark-mode-inside">
+    <div class="flex flex-row w-full ">
       <img
         src="../assets/logo_simple.png"
         alt="logo"
