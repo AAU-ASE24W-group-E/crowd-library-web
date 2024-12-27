@@ -1,6 +1,6 @@
 <template>
-  <div class="tw-component-container w-full p-0 border-1  dark:bg-dark-mode-inside">
-    <div class="flex flex-row w-full ">
+  <div class="tw-component-container w-full bg-white dark:bg-dark-mode-inside shadow-md rounded-lg border border-gray-200 dark:border-gray-600 transition duration-500 ease-in-out hover:scale-101 animate-fade-in">
+    <div class="flex flex-row w-full">
       <img
         src="../assets/logo_simple.png"
         alt="logo"
@@ -11,7 +11,7 @@
           class="text-xl font-semibold dark:text-title-dark-mode-text">{{ book.title }} ({{
             book.year
           }}) by {{ book.author }}</span>
-        <div class="flex flex-row space-x-8">
+        <div class="flex flex-row max-sm:flex-col sm:space-x-8 max-sm:space-y-2">
           <div class="flex flex-col">
             <span class="tw-book-entry-info-title">Publisher: <span
               class="tw-book-entry-info-value">{{ book.publisher }}</span></span>
@@ -53,13 +53,18 @@
         </div>
       </div>
     </div>
-
-
+    <div class="flex flex-row w-full mt-2 space-x-20 ml-48 max-sm:space-x-8 max-sm:justify-center max-sm:ml-0">
+      <button v-if="!isWishlist" class="btn-primary btn-gray rounded-2xl">Add to wishlist</button>
+      <button class="btn-primary btn-green rounded-2xl">Send request</button>
+    </div>
   </div>
 </template>
 
 
 <script setup>
+import {ref} from "vue";
+
+let isWishlist = ref(false);
 let book = {
   title: "Book1",
   year: "2020",

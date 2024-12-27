@@ -156,6 +156,25 @@
         dark:hover:bg-blue-800;
     }
 
+    .btn-gray {
+        @apply bg-gray-300
+        text-gray-700
+        hover:bg-gray-400
+        disabled:hover:bg-gray-500
+        dark:text-title-dark-mode-text
+        dark:bg-gray-600
+        dark:hover:bg-gray-700;
+    }
+
+    .btn-green {
+        @apply bg-green-700
+        hover:bg-green-800
+        disabled:hover:bg-gray-500
+        dark:text-title-dark-mode-text
+        dark:bg-green-800
+        dark:hover:bg-green-900;
+    }
+
     .tw-loading-animation {
         @apply
         h-4
