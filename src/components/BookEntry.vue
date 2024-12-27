@@ -1,5 +1,6 @@
 <template>
-  <div class="tw-component-container w-full bg-white dark:bg-dark-mode-inside shadow-md rounded-lg border border-gray-200 dark:border-gray-600 transition duration-500 ease-in-out hover:scale-101 animate-fade-in">
+  <div
+    class="tw-component-container w-full bg-white dark:bg-dark-mode-inside shadow-md rounded-lg border border-gray-200 dark:border-gray-600 transition duration-500 ease-in-out hover:scale-101 animate-fade-in">
     <div class="flex flex-row w-full">
       <img
         src="../assets/logo_simple.png"
@@ -62,25 +63,18 @@
 
 
 <script setup>
-import {ref} from "vue";
+// TODO delete button in wishlist
 
-let isWishlist = ref(false);
-let book = {
-  title: "Book1",
-  year: "2020",
-  author: "Testauthor",
-  publisher: "someone",
-  format: "paperback",
-  language: "DE",
-  ISBN: "12484823822",
-  owner: "Testowner",
-  isAvailable: true,
-  isLendable: true,
-  isExchangeable: true,
-  isGiftable: true,
-  status: "available",
-  lentDueDate: null
-}
+defineProps({
+  book: {
+    type: Object,
+    required: true,
+  },
+  isWishlist: {
+    type: Boolean,
+    default: false,
+  },
+});
 
 </script>
 
