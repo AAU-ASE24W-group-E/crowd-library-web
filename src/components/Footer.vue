@@ -26,7 +26,7 @@
 
       <div class="flex self-stretch items-start flex-col">
         <span class="self-stretch text-center max-sm:mb-4 dark:text-dark-mode-text">
-                © {{currentYear}} CrowdLibrary.at
+                © {{ currentYear }} CrowdLibrary.at
         </span>
       </div>
     </div>
@@ -64,5 +64,6 @@
 <script setup>
 import {faGithub, faInstagram, faYoutube} from "@fortawesome/free-brands-svg-icons";
 import {ref} from "vue";
+
 const currentYear = ref(new Date().getFullYear());
 </script>

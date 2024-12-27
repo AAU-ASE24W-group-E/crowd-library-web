@@ -1,17 +1,31 @@
 <template>
-  <div class="tw-component-container space-y-6">
-    <BookEntry
-      v-for="(book, index) in books"
-      :key="index"
-      :book="book"
-      :isWishlist="isWishlist"
-    />
+  <div class="tw-component-container">
+    <div class="flex flex-row w-full justify-between items-center">
+      <!--      TODO-->
+      <button class="btn-primary btn-green">Test</button>
+      <div class="flex flex-row items-center space-x-6 pr-1">
+        <span>Sort by</span>
+        <input type="text" class="tw-input h-8 w-40"/>
+        <font-awesome-icon :icon="faArrowDownWideShort" class="text-2xl tw-icon"/>
+      </div>
+    </div>
+
+    <div class="space-y-6 w-full mt-4">
+      <BookEntry
+        v-for="(book, index) in books"
+        :key="index"
+        :book="book"
+        :isWishlist="isWishlist"
+      />
+    </div>
   </div>
 </template>
 
 <script setup>
 import BookEntry from "@/components/BookEntry.vue";
-import { ref } from "vue";
+import {ref} from "vue";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import {faArrowDownWideShort} from "@fortawesome/free-solid-svg-icons";
 
 // Example array of books
 const books = ref([
