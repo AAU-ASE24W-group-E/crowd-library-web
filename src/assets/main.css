@@ -166,6 +166,15 @@
         dark:hover:bg-gray-700;
     }
 
+    .btn-transparent {
+        @apply bg-transparent
+            dark:bg-dark-mode-inside
+        hover:bg-gray-100
+        dark:hover:bg-dark-mode-inside-hover
+        text-black
+        dark:text-title-dark-mode-text
+    }
+
     .btn-green {
         @apply bg-green-700
         hover:bg-green-800
@@ -173,6 +182,27 @@
         dark:text-title-dark-mode-text
         dark:bg-green-800
         dark:hover:bg-green-900;
+    }
+
+    .tw-select {
+        @apply bg-gray-50
+        border
+        border-gray-300
+        text-gray-900
+        text-sm
+        rounded-lg
+        focus:ring-blue-500
+        focus:border-blue-500
+        block
+        w-full
+        p-2.5
+
+        dark:bg-dark-mode-inside
+        dark:border-gray-600
+        dark:placeholder-gray-400
+        dark:text-dark-mode-text
+        dark:focus:ring-blue-500
+        dark:focus:border-blue-500;
     }
 
     .tw-loading-animation {
