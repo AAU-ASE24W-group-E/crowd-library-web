@@ -11,7 +11,12 @@ const popUpGetName = (poi_properties: any) => {
 
 const popUpGetType = (poi_properties: any, poi_info: any) => {
   if (Object.keys(poi_properties).includes('type')) {
-    poi_properties['type'] = poi_info[poi_properties['type']]['display_type']
+    if (Object.keys(poi_info).includes(poi_properties['type'])){
+      poi_properties['type'] = poi_info[poi_properties['type']]['display_type']
+    }
+    else {
+      poi_properties['type'] = "Other"
+    }
   }
   return poi_properties
 }

@@ -4,14 +4,14 @@ import { featureCollection, point } from "@turf/helpers";
 import type { FeatureCollection, Feature } from 'geojson'
 
 
-const getOSMQuery = (bbox:string, poi_info:any) => {
+export const getOSMQuery = (bbox:string, poi_info:any) => {
   let s = '[out:json][timeout:25]; ('
   Object.values(poi_info).forEach((type: any) => (s += `nwr[${type['osm_type']}](${bbox});`))
   s += `);out geom;`
   return s
 }
 
-const getTypeOfElement = (element: any, poi_info: any) => {
+export const getTypeOfElement = (element: any, poi_info: any) => {
   let element_tags = Object.keys(element.tags)
   let t
   if (element_tags.includes('amenity')) {
@@ -23,7 +23,7 @@ const getTypeOfElement = (element: any, poi_info: any) => {
   else return t
 }
 
-const calculateCentroid = (geometry:any) => {
+export const calculateCentroid = (geometry:any) => {
   const latitudes = geometry.map((point: any) => point.lat)
   const longitudes = geometry.map((point: any) => point.lon)
 
@@ -33,7 +33,7 @@ const calculateCentroid = (geometry:any) => {
   return { lat: centroidLat, lon: centroidLon }
 }
 
-const getLonLatOfElement = (element:any) => {
+export const getLonLatOfElement = (element:any) => {
   let p
   if (element.type === 'node' && element.lat && element.lon) {
     p = element
@@ -44,7 +44,7 @@ const getLonLatOfElement = (element:any) => {
   return p
 }
 
-const OSMtoGeoJsonFeaturePoints = (elements: any, poi_info:any, poi_points: any) => {
+export const OSMtoGeoJsonFeaturePoints = (elements: any, poi_info:any, poi_points: any) => {
   let all_features:any = []
   elements.forEach((element:any) => {
     if (Object.keys(poi_points).includes(String(element.id))) {
@@ -63,7 +63,7 @@ const OSMtoGeoJsonFeaturePoints = (elements: any, poi_info:any, poi_points: any)
   return [all_features, poi_points]
 }
 
-const getGeoJsonWithAddedPOIs = (elements: any, poi_info: any, poi_points: any) => {
+export const getGeoJsonWithAddedPOIs = (elements: any, poi_info: any, poi_points: any) => {
   const features = []
   Object.values(poi_points).forEach((value) => {
     features.push(value)

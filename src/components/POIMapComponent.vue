@@ -18,7 +18,8 @@ import { usePoiMapFeatureStore } from '@/stores/poiMapFeatures'
 
 const default_center = [14.26492, 46.616308]
 const default_zoom = 13
-const min_zoom_for_pois = 11
+const min_zoom_for_pois = 12
+const clear_pois_at_zoom = 9
 const max_search_results = 5
 const map_search_position = 'top-left'
 const map_style = {
@@ -86,13 +87,33 @@ export default {
     }
 
     const filterDataSource = (active_types) => {
-      poi_geojson_filtered = featureCollection(
-        filterFeaturesByTypes(poi_geojson.features, active_types),
-      )
+      if (active_types) {
+        poi_geojson_filtered = featureCollection(
+          filterFeaturesByTypes(poi_geojson.features, active_types),
+        )
+      }
       if (map) {
         poiMapFeatureStore.setPOIs(poi_geojson_filtered)
         map.getSource('pois').setData(poi_geojson_filtered)
       }
+    }
+
+    const openPopUp = (feature) => {
+      const coordinates = feature.geometry.coordinates.slice()
+      const popupHTML = getPopupHTML(feature.properties, poi_info)
+
+      let popup = new maplibregl.Popup({ offset: 25 })
+        .setLngLat(coordinates)
+        .setHTML(popupHTML)
+        .addTo(map)
+      all_popups.push(popup)
+    }
+
+    const resetOSMFeatures = () => {
+      poi_geojson = featureCollection([])
+      poi_geojson_filtered = featureCollection([])
+      all_poi_points = {}
+      filterDataSource()
     }
 
     const addLayerToMap = async (map) => {
@@ -123,11 +144,22 @@ export default {
         attributionControl: false,
       })
 
-      const control = new MapLibreSearchControl({
+      const searchBoxControl = new MapLibreSearchControl({
         maxResults: max_search_results,
-        zoom: min_zoom_for_pois + 2,
+        zoom: min_zoom_for_pois,
+        mapFocusPointMinZoom: 5,
+        onResultSelected: (feature) => {
+          const mapBounds = map.getBounds();
+          const resultLngLat = new maplibregl.LngLat(feature.geometry.coordinates[0], feature.geometry.coordinates[1]);
+
+          // if the search result is outside of the current map extent the features are reset
+          if (!mapBounds.contains(resultLngLat)) {
+            resetOSMFeatures(); 
+          }
+        },
       })
-      map.addControl(control, map_search_position)
+
+      map.addControl(searchBoxControl, map_search_position)
       map.addControl(new maplibregl.NavigationControl(), 'top-right')
       map.addControl(new maplibregl.GeolocateControl(), 'bottom-right')
 
@@ -151,12 +183,8 @@ export default {
       })
 
       map.on('click', 'poi-layer', (e) => {
-        const coordinates = e.features[0].geometry.coordinates.slice()
-        const popupHTML = getPopupHTML(e.features[0].properties, poi_info)
-
-        let popup = new maplibregl.Popup({ offset: 25 }).setLngLat(coordinates).setHTML(popupHTML).addTo(map)
-        all_popups.push(popup)
-      });
+        openPopUp(e.features[0])
+      })
 
       map.on('mouseenter', 'poi-layer', () => {
         map.getCanvas().style.cursor = 'pointer'
@@ -168,6 +196,14 @@ export default {
 
       map.on('mousedown', (e) => {
         if (e.originalEvent.button !== 1) return
+      })
+
+      map.on('zoom', () => {
+        const currentZoom = map.getZoom() // Get the current zoom level
+        if (currentZoom <= clear_pois_at_zoom) {
+          resetOSMFeatures()
+          console.log('Zoom level is below 10:', currentZoom)
+        }
       })
     })
 
@@ -186,8 +222,8 @@ export default {
     const closeAllPopups = () => {
       if (!map) return
       all_popups.forEach((popup) => {
-        popup.remove();
-      });
+        popup.remove()
+      })
       all_popups = []
     }
 
@@ -196,6 +232,7 @@ export default {
       mapLegendStore,
       zoomToClickedItem,
       closeAllPopups,
+      map,
     }
   },
   watch: {
