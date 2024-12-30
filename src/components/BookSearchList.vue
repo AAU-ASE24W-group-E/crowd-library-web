@@ -21,7 +21,7 @@
               class="h-[40px] tw-select"
               @change="handleSelection($event)"
             >
-              <option value="" disabled selected>Sort by categories</option>
+              <option value="" disabled selected>Categories</option>
               <option v-for="category in categories" :key="category" :value="category">
                 {{ category }}
               </option>
