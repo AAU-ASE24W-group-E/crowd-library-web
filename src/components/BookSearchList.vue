@@ -1,5 +1,5 @@
 <template>
-  <div class="tw-component-container">
+  <div class="tw-component-container" ref="dropdownRef">
     <div class="flex flex-row w-full justify-between items-center">
       <!--      TODO auslagern-->
       <div>
@@ -28,7 +28,49 @@
             </select>
           </div>
         </div>
-        <font-awesome-icon :icon="faArrowDownWideShort" class="text-2xl tw-icon"/>
+
+        <div class="tw-navbar-dropdown-container">
+          <button
+            @click="handleSortClick"
+            id="sort-button"
+            class="navbar-button-container btn-primary"
+          >
+            <font-awesome-icon :icon="faArrowDownWideShort" class="text-2xl tw-icon"/>
+          </button>
+          <div v-if="dropdownSortOpen" class="-right-4 w-[400px] max-sm:w-[200px] tw-dropdown-inner-layout p-3">
+            <div class="flex-col flex  items-center justify-center space-y-3">
+              <span class="p-2 text-lg text-center">Filter by your preferences</span>
+              <div class="flex flex-row space-x-2 w-[80%] max-sm:w-full">
+                <span class="w-[50%]">Distance:</span>
+                <input class="w-[40%]" type="range">
+              </div>
+              <div class="flex flex-row space-x-2 w-[80%] max-sm:w-full">
+                <span class="w-[50%]">Author:</span>
+                <input class="tw-input px-2 h-4 rounded-md w-[40%]">
+              </div>
+              <div class="flex flex-row space-x-2 w-[80%] max-sm:w-full">
+                <span class="w-[50%]">Keywords:</span>
+                <input class="tw-input px-2 h-4 rounded-md w-[40%]">
+              </div>
+              <div class="flex flex-row space-x-6 max-sm:flex-col max-sm:space-x-0">
+                <div class="flex items-center">
+                  <input class="tw-checkbox" type="checkbox">
+                  <span>lendable</span>
+                </div>
+                <div class="flex items-center">
+                  <input class="tw-checkbox" type="checkbox">
+                  <span>exchangeable</span>
+                </div>
+                <div class="flex items-center">
+                  <input class="tw-checkbox" type="checkbox">
+                  <span>giftable</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </div>
     </div>
     <div v-if="selectedCategories.length > 0" class="flex flex-row w-full mt-4 space-x-2">
@@ -54,7 +96,7 @@
 
 <script setup>
 import BookEntry from "@/components/BookEntry.vue";
-import {ref} from "vue";
+import {onMounted, onUnmounted, ref} from "vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {faArrowDownWideShort, faX} from "@fortawesome/free-solid-svg-icons";
 
@@ -95,7 +137,9 @@ const books = ref([
   },
 ]);
 
+let dropdownSortOpen = ref(false);
 const isWishlist = ref(false); // needed to determine if book entry is shown on book list or wishlist
+const dropdownRef = ref(null);
 
 const handleSelection = (event) => {
   const selectedValue = event.target.value;
@@ -111,10 +155,34 @@ const handleSelection = (event) => {
   }
 };
 
+const handleSortClick = () => {
+  dropdownSortOpen.value = !dropdownSortOpen.value;
+}
+
 const removeSelectedCategory = (selectedCategory) => {
   categories.value.push(selectedCategory)
   selectedCategories.value = selectedCategories.value.filter((category) => category !== selectedCategory)
 
   categories.value.sort();
 }
+
+
+const handleClickOutside = (event) => {
+  if (
+    dropdownSortOpen.value &&
+    dropdownRef.value &&
+    !dropdownRef.value.contains(event.target)
+  ) {
+    dropdownSortOpen.value = false;
+  }
+};
+
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside);
+});
+
+onUnmounted(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
+
 </script>
