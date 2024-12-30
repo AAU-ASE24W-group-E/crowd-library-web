@@ -26,7 +26,8 @@
               class="tw-book-entry-info-value">{{ book.ISBN }}</span></span>
             <span class="tw-book-entry-info-title">Owner: <span class="tw-book-entry-info-value">{{ book.owner }}</span></span>
             <span class="tw-book-entry-info-title">Status: <span
-              class="tw-book-entry-info-value">{{ book.status }}</span></span>
+              :class="{'text-green-500': book.isAvailable, 'text-red-500': !book.isAvailable}">
+              {{ book.status }}</span></span>
             <!--            <span>Availability</span>-->
             <!--            <span>Due Date</span> -->
           </div>
