@@ -34,17 +34,17 @@ export default {
         library: {
           osm_type: '"amenity"="public_bookcase"',
           display_type: 'Library',
-          color: '#55ad07',
+          color: '#02a1a1',
         },
         public_bookcase: {
           osm_type: '"amenity"="library"',
           display_type: 'Tiny Library',
-          color: '#1881c9',
+          color: '#F4BB44',
         },
         shop_books: {
           osm_type: '"shop"="books"',
           display_type: 'Book Shop',
-          color: "#cc0000",
+          color: '#FF6F61',
         },
         // can be extended here like this
         // drinking_water:{
