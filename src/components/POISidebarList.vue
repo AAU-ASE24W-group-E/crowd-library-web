@@ -1,7 +1,7 @@
 <script>
 import POISidebarItem from '@/components/POISidebarItem.vue'
 import { usePoiMapFeatureStore } from '@/stores/poiMapFeatures'
-import { ref, watch, computed, reactive } from 'vue'
+import { ref, watch, reactive } from 'vue'
 
 export default {
     props: ['poi_info'],

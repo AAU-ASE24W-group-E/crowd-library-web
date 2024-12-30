@@ -1,7 +1,6 @@
 import axios from 'axios'
 const overpassUrl = 'https://overpass-api.de/api/interpreter'
 import { featureCollection, point } from "@turf/helpers";
-import type { FeatureCollection, Feature } from 'geojson'
 
 
 export const getOSMQuery = (bbox:string, poi_info:any) => {
