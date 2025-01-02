@@ -1,5 +1,6 @@
 <template>
-  <div class="bg-gray-200 dark:bg-dark-mode">
+  <main class="tw-page-container">
+    <Navbar/>
     <div class="map-sidebar-container">
       <div class="map-container">
         <POIMapComponent ref="mapComponent" :poi_info="poi_info" />
@@ -9,19 +10,24 @@
         <POISidebarList  :poi_info="poi_info" @item-clicked="itemClicked"/>
       </aside>
     </div>
-  </div>
+  <Footer/>
+</main>
 </template>
 
 <script>
 import POIMapComponent from '@/components/POIMapComponent.vue'
 import POISidebarList from '@/components/POISidebarList.vue'
 import POILegend from '@/components/POILegend.vue'
+import Navbar from "@/components/navbar/Navbar.vue";
+import Footer from "@/components/Footer.vue";
 
 export default {
   components:{
     POIMapComponent,
     POISidebarList,
-    POILegend
+    POILegend,
+    Navbar,
+    Footer
   },
   methods: {
     itemClicked(feature) {
@@ -34,7 +40,7 @@ export default {
         library: {
           osm_type: '"amenity"="public_bookcase"',
           display_type: 'Library',
-          color: '#02a1a1',
+          color: '#6584ad',
         },
         public_bookcase: {
           osm_type: '"amenity"="library"',

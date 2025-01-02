@@ -50,9 +50,9 @@ export default {
 <template>
     <div class="tw-heading-2 mb-5 mt-2">{{ title_pois }} [{{ listCount }}]</div>
   <div
-    class="overflow-y-auto h-[70%] scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100"
+    class="rounded-lg bg-gray-200 overflow-y-auto h-[45vh] max-h-[45vh] max-sm:h-[200px] max-sm:max-h-[200px] scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100"
   > 
-    <POISidebarItem class="mb-4 mr-4" @item-clicked="itemClicked"
+    <POISidebarItem class="mr-4 ml-4 mb-2 mt-2" @item-clicked="itemClicked"
       v-for="feature in featureList.features" :key="feature.properties.id"
       :feature="feature"
       :poi_info="poi_info"

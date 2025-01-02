@@ -290,19 +290,27 @@
     }
 
     #map {
-        @apply h-[90%] mb-20;
+        @apply h-[90%]  mb-20;
     }
 
     .poi-sidebar-container {
-        @apply w-[25%] bg-gray-200 p-4 space-y-4;
+        @apply w-[25%]
+        bg-gray-100
+        p-4 space-y-4
+        max-sm:w-full
+        max-sm:mt-20
     }
 
     .map-sidebar-container {
-        @apply flex h-screen w-[100%];
+        @apply flex h-screen max-h-[76vh]
+        w-[95%]
+        /* max-sm:w-full */
+        mb-5 mt-5
+         flex-row max-sm:flex-col
     }
 
     .map-container {
-        @apply flex-1 w-[75%] bg-gray-100 p-8;
+        @apply flex-1 w-[75%] max-sm:w-full  bg-gray-50 p-8 max-sm:p-0 ;
       }
 }
 
