@@ -15,10 +15,10 @@
       <div class="flex flex-row items-center space-x-6 pr-1">
         <div class="flex flex-row items-center space-x-2">
           <span class="dark:text-title-dark-mode-text">Sort by:</span>
-          <div>
+          <div class="relative">
             <select
               id="version-category"
-              class="h-[40px] tw-select"
+              class="h-[40px] tw-select appearance-none pr-8"
               @change="handleSelection($event)"
             >
               <option value="" disabled selected>Categories</option>
@@ -26,6 +26,10 @@
                 {{ category }}
               </option>
             </select>
+            <!-- Custom arrow -->
+            <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+                <font-awesome-icon :icon="faChevronDown" class="text-xs"></font-awesome-icon>
+            </div>
           </div>
         </div>
 
@@ -98,7 +102,7 @@
 import BookEntry from "@/components/BookEntry.vue";
 import {onMounted, onUnmounted, ref} from "vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import {faArrowDownWideShort, faX} from "@fortawesome/free-solid-svg-icons";
+import {faArrowDownWideShort, faChevronDown, faX} from "@fortawesome/free-solid-svg-icons";
 
 const categories = ref(['Distance', 'Author', 'Title', 'Year'].sort());
 const selectedCategories = ref([]);
