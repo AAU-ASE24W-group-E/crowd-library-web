@@ -123,7 +123,6 @@ describe('osmService', () => {
       mockPoiPoints,
     )
     expect(features.length).toBe(1)
-    console.log(points)
     expect(points[mockOSMElements[0].id]).toBeDefined()
   })
 

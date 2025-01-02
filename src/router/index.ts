@@ -23,8 +23,8 @@ const router = createRouter({
       component: RegisterView,
     },
     {
-      path: '/bookishmap',
-      name: 'bookishmap',
+      path: '/bookish-map',
+      name: 'bookish-map',
       component: POIMapView,
     },
     {
