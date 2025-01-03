@@ -7,7 +7,7 @@
       </div>
       <aside class="poi-sidebar-container" >
         <POILegend :poi_info="poi_info" />
-        <POISidebarList  :poi_info="poi_info" @item-clicked="itemClicked"/>
+        <POISidebarList :poi_info="poi_info" @item-clicked="itemClicked"/>
       </aside>
     </div>
   <Footer/>

@@ -1,6 +1,6 @@
 <template>
-  <div class="tw-heading mb-5 mt-2">Bookish Map</div>
-  <div id="map"></div>
+  <div class="tw-heading mb-5">Bookish Map</div>
+    <div  id="map"></div>
 </template>
 
 <script>
@@ -143,6 +143,7 @@ export default {
         zoom: default_zoom,
         attributionControl: false,
       })
+
 
       const searchBoxControl = new MapLibreSearchControl({
         maxResults: max_search_results,

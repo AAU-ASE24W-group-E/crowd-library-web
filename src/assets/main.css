@@ -18,7 +18,6 @@
     /*Used as main class for components*/
     .tw-component-container {
         @apply w-[95%]
-        max-w-[1400px]
         max-sm:w-full
         h-auto
         relative
@@ -299,6 +298,7 @@
         p-4 space-y-4
         max-sm:w-full
         max-sm:mt-20
+        max-h-[78vh];
     }
 
     .map-sidebar-container {

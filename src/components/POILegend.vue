@@ -16,7 +16,7 @@ export default {
 
 <template>
     
-    <div class="tw-heading-2 mb-5 mt-2">{{ title_legend }}</div>
+    <div class="tw-heading-2 text-[1.5em] mb-5 mt-2">{{ title_legend }}</div>
     <div class="legend-box">
         <POILegendItem
             v-for="(item, key) in poi_info"
