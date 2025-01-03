@@ -1,7 +1,7 @@
 <template>
   <div
     @click="toggleDropdown"
-    class="tw-component-container w-full bg-white dark:bg-dark-mode-inside shadow-md rounded-lg border border-gray-200 dark:border-gray-600 transition duration-500 ease-in-out hover:scale-101 animate-fade-in border-1 relative">
+    class="tw-component-container w-full bg-white dark:bg-dark-mode-inside shadow-md rounded-lg border border-gray-200 dark:border-gray-600 transition duration-500 ease-in-out hover:scale-101 animate-fade-in relative cursor-pointer">
     <div class="flex flex-row w-full">
       <img
         src="../assets/logo_simple.png"
@@ -59,13 +59,18 @@
       </div>
     </div>
     <div
-      v-if="dropdownOpen"
-      class="flex flex-row w-full mt-2 space-x-20 ml-48 max-sm:space-x-8 max-sm:justify-center max-sm:ml-0"
+      v-bind:class="{
+        'max-h-0 overflow-hidden': !dropdownOpen,
+        'max-h-40 overflow-hidden': dropdownOpen,
+      }"
+      class="transition-all duration-300 ease-in-out w-full"
     >
-      <button v-if="!isWishlist" class="btn-primary btn-gray rounded-2xl">
-        Add to wishlist
-      </button>
-      <button class="btn-primary btn-green rounded-2xl">Send request</button>
+      <div class="flex flex-row w-full mt-2 space-x-20 ml-24 max-sm:space-x-8 max-sm:justify-center max-sm:ml-0">
+        <button v-if="!isWishlist" class="btn-primary btn-gray rounded-2xl">
+          Add to wishlist
+        </button>
+        <button class="btn-primary btn-green rounded-2xl">Send request</button>
+      </div>
     </div>
   </div>
 </template>
