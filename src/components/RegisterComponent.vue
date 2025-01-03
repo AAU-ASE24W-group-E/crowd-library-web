@@ -190,6 +190,7 @@ import {library} from '@fortawesome/fontawesome-svg-core'
 import {reactive, ref} from 'vue'
 import config from "@/config.json";
 import {useRouter} from 'vue-router'
+import apiClient from "../../api.js";
 
 library.add(faEye, faEyeSlash)
 
@@ -222,15 +223,15 @@ const validateForm = () => {
   const fields = ["email", "username", "password", "confirmPassword"];
 
   fields.forEach((field) => {
-    errors[field].touched = true;
-    isControlInvalid(field);
+    handleBlur(field);
   });
 
   return fields.every((field) => {
-    const errorState = errors[field];
-    return Object.values(errorState).every((isValid) => !isValid);
+    const { touched, ...errorState } = errors[field]; // Destructure to exclude "touched"
+    return Object.values(errorState).every((isValid) => !isValid); // All error flags must be false
   });
 };
+
 
 // TODO maybe rework with yup in future
 const isControlInvalid = (field) => {
@@ -285,32 +286,31 @@ const register = async () => {
 
   isLoading.value = true;
 
-  // TODO better error handling
   try {
-    const email = (registerForm.email || "").trim().toLowerCase();
-    const emailExists = false; // todo check if email already exists with backend
+    console.log("Trying to register...")
 
-    if (emailExists) {
-      console.error("This email already exists");
-      return;
-    }
+    const payload = {
+      email: (registerForm.email || '').trim().toLowerCase(),
+      username: (registerForm.username || '').trim(),
+      // TODO marked for removal
+      firstName: 'undefined',
+      lastName: 'undefined',
+      password: (registerForm.password || '').trim(),
+    };
 
-    const username = (registerForm.username || "").trim().toLowerCase();
-    const usernameExists = false; // todo check if email already exists with backend
+    const response = await apiClient.post('/user', payload);
+    console.log('User registered successfully:', response.data);
 
-    if (usernameExists) {
-      console.error("This username already exists");
-      return;
-    }
+    // TODO handle login session token
 
-    // TODO register(username, email, password) via backend
+    // Redirect to a success page or login
+    await router.push('/login');
 
   } catch (e) {
-    console.error('Registration error:', e);
+    // todo handle all errors like already existing mail, username, other error and so on
+    console.error('Registration error:', e)
   } finally {
     isLoading.value = false;
   }
-
 }
-
 </script>
