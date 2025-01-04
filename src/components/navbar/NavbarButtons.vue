@@ -27,7 +27,7 @@
       >
         <font-awesome-icon class="tw-icon text-2xl" :icon="faCircleUser"/>
       </button>
-<!--      TODO dynamic width-->
+      <!--      TODO dynamic width-->
       <div v-if="dropdownAccountOpen" class="-right-4 w-44 tw-dropdown-inner-layout">
         <div v-if="loggedIn">
           <a
@@ -75,6 +75,13 @@
           </a>
         </div>
         <div v-if="!loggedIn">
+          <router-link to="/bookish-map" class="tw-dropdown-inner-action-layout">
+            <font-awesome-icon class="tw-navbar-dropdown-icon" :icon="faMap"></font-awesome-icon>
+            Bookish Map
+          </router-link>
+
+          <div class="tw-dropdown-separator"></div>
+
           <router-link to="/login" class="tw-dropdown-inner-action-layout">
             <font-awesome-icon class="tw-navbar-dropdown-icon" :icon="faRightToBracket"></font-awesome-icon>
             Login
@@ -102,7 +109,8 @@ import {
   faHeart,
   faLocationDot,
   faMap,
-  faRightFromBracket, faRightToBracket,
+  faRightFromBracket,
+  faRightToBracket,
   faUser
 } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";

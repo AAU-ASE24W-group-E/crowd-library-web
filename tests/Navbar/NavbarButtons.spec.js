@@ -43,4 +43,10 @@ describe('Navbar', () => {
 
     expect(wrapper.vm.dropdownAccountOpen).toBe(false);
   });
+
+  it("cleans up event listeners on unmount", () => {
+    const removeEventListenerSpy = vi.spyOn(document, "removeEventListener");
+    wrapper.unmount();
+    expect(removeEventListenerSpy).toHaveBeenCalledWith("click", expect.any(Function));
+  });
 });
