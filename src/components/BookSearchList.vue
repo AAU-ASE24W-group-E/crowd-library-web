@@ -52,10 +52,6 @@
                 <span class="w-[50%]">Author:</span>
                 <input class="tw-input px-2 h-4 rounded-md w-[40%]">
               </div>
-              <div class="flex flex-row space-x-2 w-[80%] max-sm:w-full">
-                <span class="w-[50%]">Keywords:</span>
-                <input class="tw-input px-2 h-4 rounded-md w-[40%]">
-              </div>
               <div class="flex flex-row space-x-6 max-sm:flex-col max-sm:space-x-0">
                 <div class="flex items-center">
                   <input class="tw-checkbox" type="checkbox">
