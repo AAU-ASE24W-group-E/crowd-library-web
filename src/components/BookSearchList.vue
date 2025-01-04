@@ -76,7 +76,7 @@
     <div v-if="selectedCategories.length > 0" class="flex flex-row w-full mt-4 space-x-2">
       <div v-for="category in selectedCategories" :key="category">
         <div class="rounded-2xl bg-gray-200 dark:bg-dark-mode-inside py-1 px-2 space-x-2">
-          <font-awesome-icon @click="removeSelectedCategory(category)" :icon="faX" class="text-base w-4 h-4 tw-icon"/>
+          <font-awesome-icon id="remove-category" @click="removeSelectedCategory(category)" :icon="faX" class="text-base w-4 h-4 tw-icon"/>
           <span class="dark:text-title-dark-mode-text">{{ category }}</span>
         </div>
       </div>
