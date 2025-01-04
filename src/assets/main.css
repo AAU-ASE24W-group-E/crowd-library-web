@@ -156,6 +156,73 @@
         dark:hover:bg-blue-800;
     }
 
+    .btn-gray {
+        @apply bg-gray-300
+        text-gray-700
+        hover:bg-gray-400
+        disabled:hover:bg-gray-500
+        dark:text-title-dark-mode-text
+        dark:bg-gray-600
+        dark:hover:bg-gray-700;
+    }
+
+    .btn-transparent {
+        @apply bg-transparent
+            dark:bg-dark-mode-inside
+        hover:bg-gray-100
+        dark:hover:bg-dark-mode-inside-hover
+        text-black
+        dark:text-title-dark-mode-text
+    }
+
+    .btn-green {
+        @apply bg-green-700
+        hover:bg-green-800
+        disabled:hover:bg-gray-500
+        dark:text-title-dark-mode-text
+        dark:bg-green-800
+        dark:hover:bg-green-900;
+    }
+
+    .tw-checkbox {
+        @apply w-4
+        h-4
+        mr-2
+        text-blue-600
+        bg-gray-100
+        text-[40px]
+        dark:bg-gray-100
+        border-gray-300
+        dark:border-gray-600
+        rounded
+        focus:ring-blue-500
+        dark:focus:ring-blue-600
+        focus:ring-2
+        dark:ring-offset-gray-800
+        transition-all duration-200;
+    }
+
+    .tw-select {
+        @apply bg-gray-50
+        border
+        border-gray-300
+        text-gray-900
+        text-sm
+        rounded-lg
+        focus:ring-blue-500
+        focus:border-blue-500
+        block
+        w-full
+        p-2.5
+
+        dark:bg-dark-mode-inside
+        dark:border-gray-600
+        dark:placeholder-gray-400
+        dark:text-dark-mode-text
+        dark:focus:ring-blue-500
+        dark:focus:border-blue-500;
+    }
+
     .tw-loading-animation {
         @apply
         h-4
@@ -206,42 +273,78 @@
         transition-opacity
         duration-300;
     }
+
+    .tw-navbar-dropdown-container {
+        @apply
+        inline-block
+        relative
+        text-left
+        rounded;
+    }
+
+    .navbar-button-container {
+        @apply
+        border-transparent
+        py-1
+        px-1
+        w-full
+        h-full
+        flex
+        justify-center
+        items-center;
+    }
+
+    .tw-dropdown-inner-layout {
+        @apply origin-top-right
+        absolute
+        mt-2
+        rounded-md
+        shadow-lg
+        bg-white
+        dark:bg-dark-mode-dropdown
+        ring-1
+        ring-black
+        ring-opacity-5
+        focus:outline-none
+        z-20
+        cursor-pointer
+        select-none;
+    }
+
+    .tw-dropdown-separator {
+        @apply
+        w-full
+        bg-gray-200
+        dark:bg-dark-mode-inside
+        border-transparent
+        rounded-full
+        p-[0.03rem]
+        m-0;
+    }
+
+    .tw-dropdown-inner-action-layout {
+        @apply text-base
+        text-gray-700
+        dark:text-title-dark-mode-text
+        hover:bg-gray-100
+        dark:hover:bg-dark-mode-dropdown-hover
+        w-auto
+        px-2
+        py-2
+        rounded-md
+        flex
+        items-center;
+    }
+
+    .tw-navbar-dropdown-icon {
+        @apply mr-3 text-base w-5 h-5 flex justify-center items-center;
+    }
+
+    .tw-link-style {
+        @apply text-black dark:text-title-dark-mode-text hover:text-blue-500 text-center transition-all duration-300 decoration-0 font-medium
+    }
+
+    .tw-footer-margin {
+        @apply mb-10;
+    }
 }
-
-
-/*Todo if needed, currently ony outcommented - Marked for removal*/
-/*#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
-}*/
-
-/*a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
-}*/
-
-/*@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}*/
-
-/*
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-}
-*/

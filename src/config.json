@@ -1,0 +1,6 @@
+{
+  "USERNAME_MAX_LENGTH": 5,
+  "USERNAME_CHARACTER_PATTERN": "^[a-zA-Z0-9-]+$",
+  "USERNAME_EMAIL_PATTERN": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+  "PASSWORD_MIN_LENGTH": 8
+}
