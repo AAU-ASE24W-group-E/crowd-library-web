@@ -203,7 +203,6 @@ export default {
         const currentZoom = map.getZoom() // Get the current zoom level
         if (currentZoom <= clear_pois_at_zoom) {
           resetOSMFeatures()
-          console.log('Zoom level is below 10:', currentZoom)
         }
       })
     })
