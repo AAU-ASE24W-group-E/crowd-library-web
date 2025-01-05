@@ -29,6 +29,7 @@ import maplibregl from 'maplibre-gl'
 import { MapLibreSearchControl } from '@stadiamaps/maplibre-search-box'
 import '@stadiamaps/maplibre-search-box/dist/style.css'
 import { featureCollection, point } from '@turf/helpers'
+import { getPopupHTML } from '@/utils/bookPopup'
 
 const default_zoom = 13
 const max_search_results = 5
@@ -56,6 +57,7 @@ const map_style = {
 }
 
 const default_book_color = '#336B81'
+const all_popups = []
 
 export default {
   props: ['books'],
@@ -126,6 +128,17 @@ export default {
       })
     }
 
+    const openPopUp = (feature) => {
+      const coordinates = feature.geometry.coordinates.slice()
+      const popupHTML = getPopupHTML(feature.properties)
+
+      let popup = new maplibregl.Popup({ offset: 5 })
+        .setLngLat(coordinates)
+        .setHTML(popupHTML)
+        .addTo(map)
+      all_popups.push(popup)
+    }
+
     onMounted(() => {
       console.log("Mounted")
       map = new maplibregl.Map({
@@ -152,8 +165,8 @@ export default {
       })
 
       map.on('click', 'book-layer', (e) => {
-        console.log(e.features[0])
-        // go to list and show item
+        openPopUp(e.features[0])
+        // go to list and show item? Is this possible?
       })
 
       map.on('mouseenter', 'book-layer', () => {
