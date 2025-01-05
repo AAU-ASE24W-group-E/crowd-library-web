@@ -3,7 +3,7 @@
     <div class="flex flex-row w-full justify-between items-center">
       <!--      TODO auslagern-->
       <div>
-        <router-link to="/book-map"
+        <router-link to="/book-search-map"
                      class="btn-primary btn-transparent rounded-r-none rounded-l-md w-28 hover:scale-100 hover:-translate-y-0">
           Map
         </router-link>
