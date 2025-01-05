@@ -56,7 +56,8 @@ const map_style = {
   ],
 }
 
-const default_book_color = '#336B81'
+const availableColor = '#03a80c'
+const unavailableColor = '#c90b04'
 const all_popups = []
 
 export default {
@@ -110,10 +111,20 @@ export default {
         minzoom: min_zoom_for_books,
         paint: {
           'circle-radius': 15,
-          'circle-color': default_book_color,
           'circle-opacity': 0.4,
           'circle-stroke-width': 2,
-          'circle-stroke-color': default_book_color,
+          'circle-color': [
+              'case',
+              ['==', ['get', 'status'], 'Available'], availableColor,
+              ['==', ['get', 'status'], 'Unavailable'], unavailableColor, 
+              '#CCCCCC'
+            ],
+          'circle-stroke-color': [
+              'case',
+              ['==', ['get', 'status'], 'Available'], availableColor,
+              ['==', ['get', 'status'], 'Unavailable'], unavailableColor, 
+              '#CCCCCC'
+            ],
           'circle-stroke-opacity': 1,
         },
       })
@@ -196,4 +207,6 @@ export default {
   #book-map{
     @apply w-[140vh] h-[50vh] mt-5
   }
+
+  
 </style>
