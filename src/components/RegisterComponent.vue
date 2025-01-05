@@ -301,21 +301,16 @@ const register = async () => {
     const response = await apiClient.post('/user', payload);
     console.log('User registered successfully:', response.data);
 
-    if (usernameExists) {
-      console.error('This username already exists')
-      return
-    }
+    // TODO handle login session token
 
     // Redirect to a success page or login
     await router.push('/login');
 
   } catch (e) {
     // todo handle all errors like already existing mail, username, other error and so on
-    console.error('Registration error:', e);
+    console.error('Registration error:', e)
   } finally {
     isLoading.value = false;
   }
-
 }
-
 </script>
