@@ -29,21 +29,28 @@ const popUpGetWebsite = (poi_properties: any) => {
 }
 
 export const getPopupHTML = (poi_properties: any, poi_info: any) => {
+  poi_properties.color = poi_info[poi_properties['type']]['color']
   poi_properties = popUpGetName(poi_properties)
   poi_properties = popUpGetType(poi_properties, poi_info)
   poi_properties = popUpGetWebsite(poi_properties)
 
   return `
-        <div style="text-align: center;">
-          <h3><b>${poi_properties.type}</b></h3>
-          <p>${poi_properties['show_name']}</p>
-          <p>
-           ${poi_properties.website ?
-            `<a href="${poi_properties.website}"
-                target="_blank"
-                rel="noopener noreferrer"
-                style="color: blue; text-decoration: underline;"
-                >Visit Website</a>` : ''}
-          </p>
-        </div>`
+  <div class="text-center  font-sans p-2 rounded-lg bg-white">
+    <h3 class="text-lg font-bold text-gray-800" style="color:${poi_properties.color};">${poi_properties.type}</h3>
+    <p class="text-sm mb-2 text-gray-600">${poi_properties['show_name']}</p>
+    ${
+      poi_properties.website 
+        ? `<p >
+             <a href="${poi_properties.website}" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="text-blue-500 underline hover:text-blue-700"
+             >
+               Visit Website
+             </a>
+           </p>` 
+        : ''
+    }
+  </div>`;
+
 }
