@@ -70,17 +70,19 @@
           Add to wishlist
         </button>
         <button class="btn-primary btn-green rounded-2xl">Send request</button>
+        <button @click="handleShowOnMap" class="btn-primary btn-green rounded-2xl">Show on Map</button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {ref, defineEmits, defineProps} from "vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {faChevronRight} from "@fortawesome/free-solid-svg-icons";
 
-defineProps({
+const emit = defineEmits(['showOnMapClicked'])
+const props = defineProps({
   book: {
     type: Object,
     required: true,
@@ -95,6 +97,10 @@ const dropdownOpen = ref(false);
 
 function toggleDropdown() {
   dropdownOpen.value = !dropdownOpen.value;
+}
+
+function handleShowOnMap() {
+  emit('showOnMapClicked', props.book)
 }
 </script>
 

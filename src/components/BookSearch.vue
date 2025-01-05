@@ -21,8 +21,8 @@
         </div>
       </div>
 
-      <BookSearchMap v-show="!showBookList" :books="currentBooks" />
-      <BookSearchList v-show="showBookList" :books="currentBooks"/>
+      <BookSearchMap ref="mapComponent" v-show="!showBookList" :books="currentBooks" />
+      <BookSearchList v-show="showBookList" :books="currentBooks" @showOnMapClicked="showOnMapClicked"/>
     </div>
     <div class="tw-footer-margin"></div>
     <Footer />
@@ -33,9 +33,11 @@ import Footer from '@/components/Footer.vue'
 import Navbar from '@/components/navbar/Navbar.vue'
 import BookSearchList from '@/components/BookSearchList.vue'
 import BookSearchMap from '@/components/BookSearchMap.vue'
-import { ref, computed } from 'vue'
+import { ref, computed, defineComponent } from 'vue'
 
 const showBookList = ref(true)
+const mapComponent = ref(null);
+const listComponent = ref(null);
 
 const currentBooks = ref([
   {
@@ -381,7 +383,6 @@ const currentBooks = ref([
 ]);
 
 
-
 const getListButtonClass = computed(() => ({
   'btn-blue': showBookList.value,
   'btn-transparent': !showBookList.value,
@@ -398,5 +399,10 @@ const mapClicked = () => {
 
 const listClicked = () => {
   showBookList.value = true
+}
+
+const showOnMapClicked = (book) => {
+  showBookList.value = false
+  mapComponent.value.zoomToPoint(book)
 }
 </script>

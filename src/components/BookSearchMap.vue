@@ -58,13 +58,12 @@ const map_style = {
 
 const availableColor = '#03a80c'
 const unavailableColor = '#c90b04'
-const all_popups = []
+let all_popups = []
 
 export default {
   props: ['books'],
   setup(props) {
     let map
-    console.log(props.books)
     let books = props.books
 
     const calculateBoundsOfAllBooks = (geojson) => {
@@ -131,6 +130,8 @@ export default {
     }
 
     const setBoundsToExtentOfAllBook = () => {
+      closeAllPopups()
+
       let bounds = calculateBoundsOfAllBooks(books)
       map.fitBounds(bounds, {
         padding: 50,
@@ -140,6 +141,7 @@ export default {
     }
 
     const openPopUp = (feature) => {
+      closeAllPopups()
       const coordinates = feature.geometry.coordinates.slice()
       const popupHTML = getPopupHTML(feature.properties)
 
@@ -161,13 +163,6 @@ export default {
 
       setBoundsToExtentOfAllBook()
 
-      const searchBoxControl = new MapLibreSearchControl({
-        maxResults: max_search_results,
-        zoom: min_zoom_for_books,
-        mapFocusPointMinZoom: 5,
-      })
-
-      map.addControl(searchBoxControl, map_search_position)
       map.addControl(new maplibregl.NavigationControl(), 'top-right')
       map.addControl(new maplibregl.GeolocateControl(), 'bottom-right')
 
@@ -193,9 +188,35 @@ export default {
       })
     })
 
+    const getBookFeatureByIsbn = (isbn) => {
+      return books.features.find((feature) => feature.properties.ISBN === isbn)
+    }
+
+    const closeAllPopups = () => {
+      if (!map) return
+      all_popups.forEach((popup) => {
+        popup.remove()
+      })
+      all_popups = []
+    }
+
+    const zoomToPoint = (book) => {
+      let feature = getBookFeatureByIsbn(book.ISBN)
+      if(!feature) return
+      map.flyTo({
+        center: [book.long - 0.0025, book.lat], // figure out why this is necessary
+        zoom: 17,
+        speed: 4,
+        curve: 1.5
+      });
+      
+      openPopUp(feature)
+    }
+
     return {
       map,
-      setBoundsToExtentOfAllBook
+      setBoundsToExtentOfAllBook,
+      zoomToPoint
     }
     
   }

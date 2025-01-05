@@ -81,6 +81,7 @@
         :key="index"
         :book="book"
         :isWishlist="isWishlist"
+        @showOnMapClicked="showOnMapClicked"
       />
     </div>
   </div>
@@ -88,7 +89,7 @@
 
 <script setup>
 import BookEntry from "@/components/BookEntry.vue";
-import {onMounted, onUnmounted, ref, defineProps} from "vue";
+import {onMounted, onUnmounted, ref, defineProps, defineEmits} from "vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {faArrowDownWideShort, faChevronDown, faX} from "@fortawesome/free-solid-svg-icons";
 
@@ -96,6 +97,7 @@ const categories = ref(['Distance', 'Author', 'Title', 'Year'].sort());
 const selectedCategories = ref([]);
 
 const props = defineProps(['books'])
+const emits = defineEmits(['showOnMapClicked'])
 
 // Example array of books
 const books = ref(props.books);
@@ -139,6 +141,10 @@ const handleClickOutside = (event) => {
     dropdownSortOpen.value = false;
   }
 };
+
+const showOnMapClicked = (book) => {
+  emits('showOnMapClicked', book)
+}
 
 onMounted(() => {
   document.addEventListener("click", handleClickOutside);
