@@ -1,6 +1,4 @@
 <template>
-
-  <Navbar />
     <div class="tw-component-container" ref="dropdownRef">
       <div class="flex flex-row w-full justify-between items-center max-[480px]:justify-center">
         <div>
@@ -24,8 +22,6 @@
       <BookSearchMap ref="mapComponent" v-show="!showBookList" :books="currentBooks" />
       <BookSearchList v-show="showBookList" :books="currentBooks" @showOnMapClicked="showOnMapClicked"/>
     </div>
-    <div class="tw-footer-margin"></div>
-    <Footer />
 </template>
 
 <script setup>
