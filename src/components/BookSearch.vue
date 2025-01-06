@@ -2,7 +2,7 @@
 
   <Navbar />
     <div class="tw-component-container" ref="dropdownRef">
-      <div class="flex flex-row w-full justify-between items-center">
+      <div class="flex flex-row w-full justify-between items-center max-[480px]:justify-center">
         <div>
           <button
             @click="mapClicked"

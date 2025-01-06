@@ -1,6 +1,6 @@
 <template>
 
-  <div class="tw-component-container" ref="dropdownRef">
+  <div class="tw-component-container px-0 w-full" ref="dropdownRef">
     <div class="flex flex-row w-full justify-between items-center">
       <div>
         <h1 class="tw-subheading text-[30px] text-gray-600">Books on Map</h1>
@@ -115,13 +115,13 @@ export default {
           'circle-color': [
               'case',
               ['==', ['get', 'status'], 'Available'], availableColor,
-              ['==', ['get', 'status'], 'Unavailable'], unavailableColor, 
+              ['==', ['get', 'status'], 'Unavailable'], unavailableColor,
               '#CCCCCC'
             ],
           'circle-stroke-color': [
               'case',
               ['==', ['get', 'status'], 'Available'], availableColor,
-              ['==', ['get', 'status'], 'Unavailable'], unavailableColor, 
+              ['==', ['get', 'status'], 'Unavailable'], unavailableColor,
               '#CCCCCC'
             ],
           'circle-stroke-opacity': 1,
@@ -209,7 +209,7 @@ export default {
         speed: 4,
         curve: 1.5
       });
-      
+
       openPopUp(feature)
     }
 
@@ -218,7 +218,7 @@ export default {
       setBoundsToExtentOfAllBook,
       zoomToPoint
     }
-    
+
   }
 }
 </script>
@@ -229,5 +229,5 @@ export default {
     @apply w-[140vh] h-[50vh] mt-5
   }
 
-  
+
 </style>

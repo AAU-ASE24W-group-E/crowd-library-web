@@ -6,14 +6,14 @@
       <img
         src="../assets/logo_simple.png"
         alt="logo"
-        class="object-contain decoration-0 mr-3"
+        class="object-contain decoration-0 mr-3 max-[480px]:hidden"
       />
       <div class="flex flex-col flex-grow">
         <span
           class="text-xl font-semibold dark:text-title-dark-mode-text">{{ book.title }} ({{
             book.year
           }}) by {{ book.author }}</span>
-        <div class="flex flex-row max-sm:flex-col sm:space-x-8 max-sm:space-y-2">
+        <div class="flex flex-row max-sm:flex-col max-sm:mt-2 sm:space-x-8 max-sm:space-y-2">
           <div class="flex flex-col">
             <span class="tw-book-entry-info-title">Publisher: <span
               class="tw-book-entry-info-value">{{ book.publisher }}</span></span>
@@ -65,7 +65,7 @@
       }"
       class="transition-all duration-300 ease-in-out w-full"
     >
-      <div class="flex flex-row w-full mt-2 space-x-20 ml-24 max-sm:space-x-8 max-sm:justify-center max-sm:ml-0">
+      <div class="flex flex-row w-full mt-2 space-x-16 max-md:space-x-6 ml-24 max-sm:space-x-0 max-sm:flex-col max-sm:space-y-4 max-sm:justify-center max-sm:ml-0">
         <button v-if="!isWishlist" class="btn-primary btn-gray rounded-2xl">
           Add to wishlist
         </button>

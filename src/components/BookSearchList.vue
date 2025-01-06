@@ -1,6 +1,6 @@
 <template>
-  <div class="tw-component-container" ref="dropdownRef">
-    <div class="flex flex-row w-full justify-between items-center">
+  <div class="tw-component-container px-0 w-full" ref="dropdownRef">
+    <div class="flex flex-row w-full justify-between items-center max-[480px]:flex-col">
       <div>
         <h1 class="tw-subheading text-[30px] text-gray-600">Book List</h1>
       </div>
@@ -18,9 +18,8 @@
                 {{ category }}
               </option>
             </select>
-            <!-- Custom arrow -->
             <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center">
-                <font-awesome-icon :icon="faChevronDown" class="text-xs"></font-awesome-icon>
+              <font-awesome-icon :icon="faChevronDown" class="text-xs"></font-awesome-icon>
             </div>
           </div>
         </div>
@@ -68,7 +67,8 @@
     <div v-if="selectedCategories.length > 0" class="flex flex-row w-full mt-4 space-x-2">
       <div v-for="category in selectedCategories" :key="category">
         <div class="rounded-2xl bg-gray-200 dark:bg-dark-mode-inside py-1 px-2 space-x-2">
-          <font-awesome-icon id="remove-category" @click="removeSelectedCategory(category)" :icon="faX" class="text-base w-4 h-4 tw-icon"/>
+          <font-awesome-icon id="remove-category" @click="removeSelectedCategory(category)" :icon="faX"
+                             class="text-base w-4 h-4 tw-icon"/>
           <span class="dark:text-title-dark-mode-text">{{ category }}</span>
         </div>
       </div>
@@ -89,7 +89,7 @@
 
 <script setup>
 import BookEntry from "@/components/BookEntry.vue";
-import {onMounted, onUnmounted, ref, defineProps, defineEmits} from "vue";
+import {defineEmits, defineProps, onMounted, onUnmounted, ref} from "vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {faArrowDownWideShort, faChevronDown, faX} from "@fortawesome/free-solid-svg-icons";
 
