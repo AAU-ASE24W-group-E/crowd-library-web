@@ -6,23 +6,11 @@ class AuthenticationService {
   private subdomain: string = '/user';
 
   async registerUser(payload: RegisterPayload) {
-    try {
-      return await apiClient.post(this.subdomain, payload);
-    } catch (error: any) {
-      throw new Error(
-        error.response?.data?.message || 'An error occurred during registration'
-      );
-    }
+    return await apiClient.post(this.subdomain, payload);
   }
 
   async login(payload: LoginPayload) {
-    try {
-      return await apiClient.post('/login', payload);
-    } catch (error: any) {
-      throw new Error(
-        error.response?.data?.message || 'An error occurred during login'
-      );
-    }
+    return await apiClient.post('/login', payload);
   }
 }
 

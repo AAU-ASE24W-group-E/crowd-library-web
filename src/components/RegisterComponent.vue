@@ -191,6 +191,8 @@ import {reactive, ref} from 'vue'
 import config from "@/config.json";
 import {useRouter} from 'vue-router'
 import {authenticationService} from '../services/AuthenticationService.ts';
+import {Snackbar} from "@/utility/snackbar.ts";
+import {SnackbarType} from "@/enums/snackbar.ts";
 
 library.add(faEye, faEyeSlash)
 
@@ -292,14 +294,16 @@ const register = async () => {
   };
 
   try {
-    console.log("Trying to register...")
+    console.debug("Trying to register...")
 
     const response = await authenticationService.registerUser(payload);
-    console.log('User registered successfully:', response);
+    Snackbar.showSnackbar('Register successful, you can now log in!', SnackbarType.SUCCESS);
+    console.debug('User registered successfully:', response);
 
     await router.push('/login');
   } catch (e) {
     // todo handle all errors like already existing mail, username, other error and so on
+    Snackbar.showSnackbar('An unexpected error occurred, check console', SnackbarType.ERROR);
     console.error('Registration error:', e)
   } finally {
     isLoading.value = false;

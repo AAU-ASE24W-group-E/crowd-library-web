@@ -117,6 +117,8 @@ import {library} from "@fortawesome/fontawesome-svg-core";
 import {reactive, ref} from "vue";
 import {useRouter} from "vue-router";
 import {authenticationService} from "@/services/AuthenticationService.ts";
+import {Snackbar} from "@/utility/snackbar.ts";
+import {SnackbarType} from "@/enums/snackbar.ts";
 
 library.add(faEye, faEyeSlash);
 
@@ -136,7 +138,6 @@ const errors = reactive({
 const hidePassword = ref(true);
 const isLoading = ref(false);
 
-// TODO make utility function?
 const isControlInvalid = (field) => {
   const value = loginForm[field];
   const isEmpty = !value || value.trim() === "";
@@ -182,7 +183,7 @@ const login = async () => {
 
     const response = await authenticationService.login({username: usernameOrEmail, password: loginForm.password});
     const token = response.data.token;
-
+    Snackbar.showSnackbar('Successfully logged in!', SnackbarType.SUCCESS);
     console.log("Login successful: ", token)
 
     //TODO handle unverified email logic
@@ -194,7 +195,9 @@ const login = async () => {
     // Successful log in attempt
     await router.push("/");
   } catch (e) {
-    console.error("Login error:", e); // TODO add snackbars to better handle errors
+    // TODO handle error cases
+    Snackbar.showSnackbar('An unexpected error occurred, check console', SnackbarType.ERROR);
+    console.error("Login error:", e);
   } finally {
     isLoading.value = false;
   }
