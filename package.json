@@ -15,7 +15,8 @@
     "lint": "eslint . --fix",
     "format": "prettier --write src/",
     "test": "vitest",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest --coverage",
+    "test:coverage:cypress": "cypress run --config coverage=true"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.1",
