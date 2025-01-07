@@ -2,7 +2,9 @@ name: Build
 
 on:
   push:
-    branches: [main, '*-*']
+    branches:
+      - main
+      - '*-*'  # All feature branches
   pull_request:
     types: [opened, synchronize, reopened]
 
@@ -29,25 +31,26 @@ jobs:
       - name: Run Vitest Coverage
         run: npm run test:coverage
 
-      - name: Run Cypress Coverage
-        run: npm run test:coverage:cypress
+      - name: Start Dev Server
+        run: npm run dev &
 
-      - name: Merge coverage
-        run: |
-          # If needed, merge coverage from Vitest + Cypress
-          npx nyc merge .nyc_output coverage/combined.json
-          npx nyc report --reporter=lcov --report-dir=coverage \
-                         --temp-dir=.nyc_output \
-                         --reporter=text
+      - name: Wait on Dev Server
+        run: npx wait-on http://localhost:5173
+
+      - name: Run Cypress
+        run: npx cypress run --browser chrome --headless
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
-        with:
-          args: >
-            -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info
+      - name: Set Ref for Docker Build
+        id: set_ref
+        run: echo "ref=${{ github.ref }}" >> $GITHUB_OUTPUT
 
   docker:
     name: Build and Push Docker Image
