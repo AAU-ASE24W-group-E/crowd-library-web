@@ -116,8 +116,9 @@ import {faEnvelope, faEye, faEyeSlash, faLock} from "@fortawesome/free-solid-svg
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {reactive, ref} from "vue";
 import {useRouter} from "vue-router";
+import {authenticationService} from "@/services/AuthenticationService.ts";
 
-library.add(faEye, faEyeSlash); // TODO
+library.add(faEye, faEyeSlash);
 
 
 const router = useRouter();
@@ -179,14 +180,10 @@ const login = async () => {
     let usernameOrEmail = (loginForm.usernameOrEmail || "").trim().toLowerCase();
     console.log(usernameOrEmail);
 
-    // TODO fetch email by username
-    if (!usernameOrEmail.includes('@')) {
-      // usernameOrEmail = await authService.fetchEmailByUsername(usernameOrEmail);
-    }
+    const response = await authenticationService.login({username: usernameOrEmail, password: loginForm.password});
+    const token = response.data.token;
 
-    // TODO handle login
-    // const result = await authService.login(usernameOrEmail,loginForm.password);
-    const result = null;
+    console.log("Login successful: ", token)
 
     //TODO handle unverified email logic
     /*if (!result.emailVerified) {

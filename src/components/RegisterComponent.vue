@@ -297,8 +297,6 @@ const register = async () => {
     const response = await authenticationService.registerUser(payload);
     console.log('User registered successfully:', response);
 
-    // TODO handle login session token
-
     await router.push('/login');
   } catch (e) {
     // todo handle all errors like already existing mail, username, other error and so on
