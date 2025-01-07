@@ -2,9 +2,7 @@ name: Build
 
 on:
   push:
-    branches:
-      - main
-      - '*-*'  # All feature branches created from the project issues, e.g. 1-create-book
+    branches: [main, '*-*']
   pull_request:
     types: [opened, synchronize, reopened]
 
@@ -22,20 +20,34 @@ jobs:
       - name: Setup Node.js Environment
         uses: actions/setup-node@v4
         with:
-          node-version: '20'  # Adjust to match your project's Node.js version
+          node-version: '20'
           cache: 'npm'
 
       - name: Install Dependencies
-        run: npm ci  # Use 'npm ci' for clean installs in CI environments
+        run: npm ci
 
-      - name: Run Vitest with Coverage
+      - name: Run Vitest Coverage
         run: npm run test:coverage
+
+      - name: Run Cypress Coverage
+        run: npm run test:coverage:cypress
+
+      - name: Merge coverage
+        run: |
+          # If needed, merge coverage from Vitest + Cypress
+          npx nyc merge .nyc_output coverage/combined.json
+          npx nyc report --reporter=lcov --report-dir=coverage \
+                         --temp-dir=.nyc_output \
+                         --reporter=text
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
+        with:
+          args: >
+            -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Automatically provided by GitHub
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}     # Define this secret in your repository settings
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   docker:
     name: Build and Push Docker Image
@@ -56,7 +68,7 @@ jobs:
           cache: 'npm'
 
       - name: Install Dependencies
-        run: npm ci  # Use 'npm ci' for clean installs in CI environments
+        run: npm ci
 
       - name: Build application
         run: npm run build-only
