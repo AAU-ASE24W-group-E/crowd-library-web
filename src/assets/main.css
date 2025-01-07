@@ -168,7 +168,7 @@
 
     .btn-transparent {
         @apply bg-transparent
-            dark:bg-dark-mode-inside
+        dark:bg-dark-mode-inside
         hover:bg-gray-100
         dark:hover:bg-dark-mode-inside-hover
         text-black
@@ -347,4 +347,48 @@
     .tw-footer-margin {
         @apply mb-10;
     }
+
+    .snackbar {
+        @apply
+        fixed
+        top-2.5
+        left-1/2
+        -translate-x-1/2
+        text-white
+        rounded-lg
+        px-5
+        py-2.5
+        z-[9999]
+        pointer-events-none
+        opacity-0
+        -translate-y-2
+        transition-all
+        duration-300
+        ease-in-out;
+    }
+
+    .snackbar.show {
+        @apply
+        pointer-events-auto
+        opacity-100
+        translate-y-0;
+    }
+
+
+    .snackbar-success {
+        @apply bg-green-700;
+    }
+
+    .snackbar-warn {
+        @apply bg-orange-700;
+    }
+
+    .snackbar-error {
+        @apply bg-red-500;
+    }
+
+    .snackbar-general {
+        @apply bg-neutral-500;
+    }
 }
+
