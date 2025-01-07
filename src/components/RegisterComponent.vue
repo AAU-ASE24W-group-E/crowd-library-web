@@ -227,13 +227,11 @@ const validateForm = () => {
   });
 
   return fields.every((field) => {
-    const { touched, ...errorState } = errors[field]; // Destructure to exclude "touched"
+    const {touched, ...errorState} = errors[field]; // Destructure to exclude "touched"
     return Object.values(errorState).every((isValid) => !isValid); // All error flags must be false
   });
 };
 
-
-// TODO maybe rework with yup in future
 const isControlInvalid = (field) => {
   const value = registerForm[field];
   const trimmedValue = value?.trim();
@@ -292,10 +290,9 @@ const register = async () => {
     const payload = {
       email: (registerForm.email || '').trim().toLowerCase(),
       username: (registerForm.username || '').trim(),
-      // TODO marked for removal
-      firstName: 'undefined',
-      lastName: 'undefined',
+      address: null,
       password: (registerForm.password || '').trim(),
+      role: 'user',
     };
 
     const response = await apiClient.post('/user', payload);
