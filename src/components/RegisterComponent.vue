@@ -190,7 +190,7 @@ import {library} from '@fortawesome/fontawesome-svg-core'
 import {reactive, ref} from 'vue'
 import config from "@/config.json";
 import {useRouter} from 'vue-router'
-import apiClient from "../../api.js";
+import {authenticationService} from '../services/AuthenticationService.ts';
 
 library.add(faEye, faEyeSlash)
 
@@ -279,30 +279,27 @@ const toggleConfirmPasswordVisibility = () => {
 
 const register = async () => {
   if (isLoading.value) return;
-
   if (!validateForm()) return;
 
   isLoading.value = true;
 
+  const payload = {
+    email: (registerForm.email || '').trim().toLowerCase(),
+    username: (registerForm.username || '').trim(),
+    address: null,
+    password: (registerForm.password || '').trim(),
+    role: 'user',
+  };
+
   try {
     console.log("Trying to register...")
 
-    const payload = {
-      email: (registerForm.email || '').trim().toLowerCase(),
-      username: (registerForm.username || '').trim(),
-      address: null,
-      password: (registerForm.password || '').trim(),
-      role: 'user',
-    };
-
-    const response = await apiClient.post('/user', payload);
-    console.log('User registered successfully:', response.data);
+    const response = await authenticationService.registerUser(payload);
+    console.log('User registered successfully:', response);
 
     // TODO handle login session token
 
-    // Redirect to a success page or login
     await router.push('/login');
-
   } catch (e) {
     // todo handle all errors like already existing mail, username, other error and so on
     console.error('Registration error:', e)
