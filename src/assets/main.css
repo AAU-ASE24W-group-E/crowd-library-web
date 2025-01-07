@@ -168,7 +168,7 @@
 
     .btn-transparent {
         @apply bg-transparent
-            dark:bg-dark-mode-inside
+        dark:bg-dark-mode-inside
         hover:bg-gray-100
         dark:hover:bg-dark-mode-inside-hover
         text-black
@@ -358,20 +358,22 @@
         rounded-lg
         px-5
         py-2.5
-        hidden
         z-[9999]
+        pointer-events-none
         opacity-0
+        -translate-y-2
         transition-all
         duration-300
-        ease-in-out
+        ease-in-out;
     }
 
     .snackbar.show {
         @apply
-        block
+        pointer-events-auto
         opacity-100
-        top-5
+        translate-y-0;
     }
+
 
     .snackbar-success {
         @apply bg-green-700;

@@ -4,7 +4,7 @@ import config from "@/config.json";
 export class Snackbar {
   static snackbarElement: HTMLElement | null = null;
 
-  static showSnackbar(message: string, duration: number = config.SNACKBAR_GENERAL_DURATION, type = SnackbarType.GENERAL) {
+  static showSnackbar(message: string, type = SnackbarType.GENERAL, duration: number = config.SNACKBAR_GENERAL_DURATION,) {
     if (!this.snackbarElement) {
       this.createSnackbar();
     }
