@@ -2,7 +2,7 @@ import {createRouter, createWebHistory} from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from "@/views/LoginView.vue";
 import RegisterView from "@/views/RegisterView.vue";
-import BookSearchListView from "@/views/BookSearchListView.vue";
+import BookSearchView from  "@/views/BookSearchView.vue";
 import POIMapView from "@/views/POIMapView.vue";
 
 const router = createRouter({
@@ -29,9 +29,9 @@ const router = createRouter({
       component: POIMapView,
     },
     {
-      path: '/book-search-list',
-      name: 'book-search-list',
-      component: BookSearchListView,
+      path: '/book-search',
+      name: 'book-search',
+      component: BookSearchView,
     },
     {
       path: '/about',
