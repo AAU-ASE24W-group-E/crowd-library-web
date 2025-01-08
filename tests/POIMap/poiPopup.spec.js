@@ -56,7 +56,7 @@ describe('getPopupHTML', () => {
     const html = getPopupHTML(poi_properties, poi_info)
 
     expect(html).toContain(poi_properties.type)
-    expect(html).toContain('<p></p>')
+    expect(html).toContain('<p class="text-sm mb-2 text-gray-600"></p>')
   })
 
   it('getPopupHTML should use "contact:website" if "website" is not available', () => {
@@ -83,7 +83,7 @@ describe('getPopupHTML', () => {
     expect(html).not.toContain('<a')
   })
 
-  it('should handle unknown "type" gracefully', () => {
+  it('should handle have "type" of "other" if type is undefined', () => {
     const poi_properties = {
       type: 'unknown_type',
       name: 'Unknown Type Place',
@@ -92,6 +92,30 @@ describe('getPopupHTML', () => {
     const html = getPopupHTML(poi_properties, poi_info)
 
     expect(html).toContain('Other')
+    expect(html).toContain(poi_properties.name)
+  })
+
+  it('should include black name if type is undefined', () => {
+    const poi_properties = {
+      type: 'unknown_type',
+      name: 'Unknown Type Place',
+    }
+
+    const html = getPopupHTML(poi_properties, poi_info)
+
+    expect(html).toContain('#000000')
+    expect(html).toContain(poi_properties.name)
+  })
+
+  it('should include correct color name if type is valid', () => {
+    const poi_properties = {
+      type: 'library',
+      name: 'Library 1',
+    }
+    const expectedColor = poi_info[poi_properties["type"]]["color"]
+    const html = getPopupHTML(poi_properties, poi_info)
+
+    expect(html).toContain(expectedColor)
     expect(html).toContain(poi_properties.name)
   })
 })

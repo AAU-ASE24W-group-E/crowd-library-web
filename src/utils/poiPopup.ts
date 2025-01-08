@@ -28,8 +28,16 @@ const popUpGetWebsite = (poi_properties: any) => {
   return poi_properties
 }
 
+const popUpGetColor = (poi_properties: any, poi_info:any) => {
+  if (!Object.keys(poi_properties).includes('type') || !Object.keys(poi_info).includes(poi_properties['type'])) {
+    poi_properties["color"] = '#000000';
+  }
+  else poi_properties["color"] = poi_info[poi_properties['type']]["color"];
+  return poi_properties;
+}
+
 export const getPopupHTML = (poi_properties: any, poi_info: any) => {
-  poi_properties.color = poi_info[poi_properties['type']]['color']
+  poi_properties = popUpGetColor(poi_properties, poi_info)
   poi_properties = popUpGetName(poi_properties)
   poi_properties = popUpGetType(poi_properties, poi_info)
   poi_properties = popUpGetWebsite(poi_properties)
