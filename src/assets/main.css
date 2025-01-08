@@ -81,8 +81,6 @@
         self-center
         text-center
         font-semibold
-        mb-10
-        animate-fadeInLeft
 
         text-black
         dark:text-title-dark-mode-text;

@@ -3,6 +3,8 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from "@/views/LoginView.vue";
 import RegisterView from "@/views/RegisterView.vue";
 import BookSearchListView from "@/views/BookSearchListView.vue";
+import BookSearchMapView from  "@/views/BookSearchMapView.vue";
+import BookSearchView from  "@/views/BookSearchView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +28,16 @@ const router = createRouter({
       path: '/book-search-list',
       name: 'book-search-list',
       component: BookSearchListView,
+    },
+    {
+      path: '/book-search-map',
+      name: 'book-search-map',
+      component: BookSearchMapView,
+    },
+    {
+      path: '/book-search',
+      name: 'book-search',
+      component: BookSearchView,
     },
     {
       path: '/about',
