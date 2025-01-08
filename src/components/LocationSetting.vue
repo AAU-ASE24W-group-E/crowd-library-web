@@ -5,7 +5,7 @@
       <div class="tw-heading mb-0 mt-2">Your Location</div>
       <div class="text-xl text-gray-600 mb-5">Set your location to find books near you</div>
 
-      <div>Hier wird das Map Component kommen</div>
+      <LocationSelectionMap></LocationSelectionMap>
 
       <div class="w-full mb-2 flex flex-row space-x-16 mt-5">
         <button @click="skipLocationSetting"
@@ -14,6 +14,7 @@
         </button>
         <button
           :disabled="isLoading"
+          @click="handleLocationSetting"
           class="w-[50%] btn-primary btn-blue rounded-2xl"
           type="submit"
         >
@@ -32,6 +33,7 @@
 
 import {ref} from "vue";
 import router from "@/router/index.ts";
+import LocationSelectionMap from "@/components/LocationSelectionMap.vue";
 
 let isLoading = ref(false);
 
@@ -39,11 +41,13 @@ const skipLocationSetting = async () => {
   await router.push("/login");
 }
 
-const handleLocationSetting = () => {
+const handleLocationSetting = async () => {
   try {
     isLoading.value = true;
 
     // Handling location setting
+
+    await router.push("/login");
 
   } catch (e) {
 
