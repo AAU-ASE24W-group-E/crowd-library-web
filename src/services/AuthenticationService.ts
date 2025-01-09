@@ -13,6 +13,12 @@ export interface RegisterPayload {
   role: string;
 }
 
+export interface LocationPayload {
+  uid: string;
+  longitude: number;
+  latitude: number;
+}
+
 class AuthenticationService {
   private subdomain: string = '/user';
 
@@ -24,8 +30,8 @@ class AuthenticationService {
     return await apiClient.post('/login', payload);
   }
 
-  async setLocation(payload: LoginPayload) {
-    return await apiClient.post('/login', payload);
+  async setLocation(uid: string, payload: LocationPayload) {
+    return await apiClient.post(`${this.subdomain}/${uid}/address`, payload);
   }
 }
 

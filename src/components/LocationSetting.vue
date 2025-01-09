@@ -24,8 +24,8 @@
           type="submit"
         >
           <div class="flex items-center justify-center">
-            <div v-if="isLoading" class="tw-loading-animation"></div>
-            <div class="ml-2">Create Account</div>
+            <div v-if="isLoading" class="tw-loading-animation mr-2"></div>
+            <div>Create Account</div>
           </div>
         </button>
       </div>
@@ -39,9 +39,10 @@ import router from '@/router/index.ts';
 import LocationSelectionMap from '@/components/LocationSelectionMap.vue';
 import { Snackbar } from '@/utility/snackbar.ts';
 import { SnackbarType } from '@/enums/snackbar.ts';
+import { authenticationService } from '@/services/AuthenticationService.ts';
 
-let isLoading = ref(false);
-let selectedLocation = ref<{ lat: number; lng: number } | null>(null);
+const isLoading = ref(false);
+const selectedLocation = ref<{ lat: number; lng: number } | null>(null);
 
 const skipLocationSetting = async () => {
   await router.push('/login');
@@ -68,7 +69,8 @@ const handleLocationSetting = async () => {
       longitude: selectedLocation.value.lng,
     };
 
-    // Handling TODO
+    // TODO uid has to be set
+    await authenticationService.setLocation('UID_MISSING', payload);
 
     Snackbar.showSnackbar('Location was set successfully', SnackbarType.SUCCESS);
     await router.push('/login');
