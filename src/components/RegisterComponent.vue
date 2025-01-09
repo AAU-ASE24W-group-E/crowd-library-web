@@ -305,6 +305,7 @@ const register = async () => {
 
     // TODO register(username, email, password) via backend
 
+    await router.push('/set-location');
   } catch (e) {
     console.error('Registration error:', e);
   } finally {
