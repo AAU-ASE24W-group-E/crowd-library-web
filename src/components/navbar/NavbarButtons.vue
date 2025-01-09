@@ -1,22 +1,18 @@
 <template>
-  <div class="flex items-center flex-row justify-between space-x-6 max-lg:space-x-5 max-sm:space-x-6"
-       ref="dropdownRef">
+  <div
+    class="flex items-center flex-row justify-between space-x-6 max-lg:space-x-5 max-sm:space-x-6"
+    ref="dropdownRef"
+  >
     <div class="tw-navbar-dropdown-container">
-      <button
-        @click=""
-        class="navbar-button-container btn-primary"
-      >
-        <font-awesome-icon class="tw-icon text-2xl" :icon="faClipboardList"/>
-      </button>
+      <router-link v-if="loggedIn" to="/my-wishlist" class="navbar-button-container btn-primary">
+        <font-awesome-icon class="tw-icon text-3xl max-sm:text-2xl" :icon="faClipboardList" />
+      </router-link>
     </div>
 
     <div class="tw-navbar-dropdown-container">
-      <button
-        @click=""
-        class="navbar-button-container btn-primary"
-      >
-        <font-awesome-icon class="tw-icon text-2xl" :icon="faBook"/>
-      </button>
+      <router-link v-if="loggedIn" to="/my-books" class="navbar-button-container btn-primary">
+        <font-awesome-icon class="tw-icon text-3xl max-sm:text-2xl" :icon="faBook" />
+      </router-link>
     </div>
 
     <div class="tw-navbar-dropdown-container">
@@ -25,7 +21,7 @@
         id="account-button"
         class="navbar-button-container btn-primary"
       >
-        <font-awesome-icon class="tw-icon text-2xl" :icon="faCircleUser"/>
+        <font-awesome-icon class="tw-icon text-3xl max-sm:text-2xl" :icon="faCircleUser" />
       </button>
       <!--      TODO dynamic width-->
       <div v-if="dropdownAccountOpen" class="-right-4 w-44 tw-dropdown-inner-layout">
@@ -33,10 +29,10 @@
           <a
             class="px-2 py-2 text-base text-gray-700 dark:text-title-dark-mode-text flex items-center cursor-default"
           >
-        <span class="flex flex-row">
-          <font-awesome-icon class="tw-navbar-dropdown-icon" :icon="faUser"></font-awesome-icon>
-          <span class="font-medium"> {{ username }}</span>
-        </span>
+            <span class="flex flex-row">
+              <font-awesome-icon class="tw-navbar-dropdown-icon" :icon="faUser"></font-awesome-icon>
+              <span class="font-medium"> {{ username }}</span>
+            </span>
           </a>
 
           <div class="tw-dropdown-separator"></div>
@@ -70,7 +66,10 @@
           <div class="tw-dropdown-separator"></div>
 
           <a @click="logout" class="tw-dropdown-inner-action-layout">
-            <font-awesome-icon class="tw-navbar-dropdown-icon" :icon="faRightFromBracket"></font-awesome-icon>
+            <font-awesome-icon
+              class="tw-navbar-dropdown-icon"
+              :icon="faRightFromBracket"
+            ></font-awesome-icon>
             Logout
           </a>
         </div>
@@ -83,7 +82,10 @@
           <div class="tw-dropdown-separator"></div>
 
           <router-link to="/login" class="tw-dropdown-inner-action-layout">
-            <font-awesome-icon class="tw-navbar-dropdown-icon" :icon="faRightToBracket"></font-awesome-icon>
+            <font-awesome-icon
+              class="tw-navbar-dropdown-icon"
+              :icon="faRightToBracket"
+            ></font-awesome-icon>
             Login
           </router-link>
 
@@ -111,10 +113,10 @@ import {
   faMap,
   faRightFromBracket,
   faRightToBracket,
-  faUser
-} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import {onMounted, onUnmounted, ref} from "vue";
+  faUser,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 let dropdownAccountOpen = ref(false);
 let username = 'undefined';
@@ -123,30 +125,24 @@ const dropdownRef = ref(null);
 
 const handleAccountClick = () => {
   dropdownAccountOpen.value = !dropdownAccountOpen.value;
-}
+};
 
 const logout = () => {
   // TODO
-  console.warn("Not implemented");
-}
+  console.warn('Not implemented');
+};
 
 const handleClickOutside = (event) => {
-  if (
-    dropdownAccountOpen.value &&
-    dropdownRef.value &&
-    !dropdownRef.value.contains(event.target)
-  ) {
+  if (dropdownAccountOpen.value && dropdownRef.value && !dropdownRef.value.contains(event.target)) {
     dropdownAccountOpen.value = false;
   }
 };
 
 onMounted(() => {
-  document.addEventListener("click", handleClickOutside);
+  document.addEventListener('click', handleClickOutside);
 });
 
 onUnmounted(() => {
-  document.removeEventListener("click", handleClickOutside);
+  document.removeEventListener('click', handleClickOutside);
 });
-
-
 </script>
