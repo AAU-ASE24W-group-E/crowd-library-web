@@ -4,7 +4,9 @@ import LoginView from "@/views/LoginView.vue";
 import RegisterView from "@/views/RegisterView.vue";
 import BookSearchView from "@/views/BookSearchView.vue";
 import LocationSettingView from "@/views/LocationSettingView.vue";
+import LocationEditView from '@/views/LocationEditView.vue';
 
+// TODO we have to add restrictions
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -32,6 +34,11 @@ const router = createRouter({
       path: '/set-location',
       name: 'location-setting',
       component: LocationSettingView,
+    },
+    {
+      path: '/edit-location',
+      name: 'location-editing',
+      component: LocationEditView,
     },
     {
       path: '/about',

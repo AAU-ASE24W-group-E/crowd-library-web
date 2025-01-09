@@ -33,6 +33,10 @@ class AuthenticationService {
   async setLocation(uid: string, payload: LocationPayload) {
     return await apiClient.post(`${this.subdomain}/${uid}/address`, payload);
   }
+
+  async updateLocation(uid: string, payload: LocationPayload) {
+    return await apiClient.put(`${this.subdomain}/${uid}/address`, payload);
+  }
 }
 
 export const authenticationService = new AuthenticationService();
