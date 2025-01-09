@@ -36,7 +36,6 @@ import { useRoute } from 'vue-router'
 
 const showBookList = ref(true)
 const mapComponent = ref(null)
-const listComponent = ref(null)
 
 // Used to receive the input string of the search bar
 // Todo books request must be handled

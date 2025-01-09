@@ -7,8 +7,57 @@
   "SNACKBAR_SUCCESS_DURATION": 1500,
   "SNACKBAR_WARNING_DURATION": 2500,
   "SNACKBAR_ERROR_DURATION": 2500,
-  "DEFAULT_SAVED_LOCATION": [
-    46.625,
-    14.306
-  ]
+  "POI_MAP_DEFAULT_CENTER": [
+    14.26492,
+    46.616308
+  ],
+  "POI_OVERPASS_URL": "https://overpass-api.de/api/interpreter",
+  "POI_MAP_DEFAULT_ZOOM": 13,
+  "POI_MAP_MIN_ZOOM_FOR_POIS": 12,
+  "POI_MAP_CLEAR_ZOOM": 9,
+  "POI_MAP_SEARCH_POSITION": "top-left",
+  "POI_MAP_MAX_SEARCH_RESULTS": 5,
+  "POI_AND_BOOK_MAP_STYLE": {
+    "version": 8,
+    "sources": {
+      "raster-tiles": {
+        "type": "raster",
+        "tiles": [
+          "https://tile.openstreetmap.de/{z}/{x}/{y}.png"
+        ],
+        "tileSize": 256,
+        "attribution": "OpenStreetMap"
+      }
+    },
+    "layers": [
+      {
+        "id": "simple-tiles",
+        "type": "raster",
+        "source": "raster-tiles",
+        "minzoom": 0,
+        "maxzoom": 22
+      }
+    ]
+  },
+  "POI_TYPES": {
+    "library": {
+      "osm_type": "\"amenity\"=\"public_bookcase\"",
+      "display_type": "Library",
+      "color": "#6584ad"
+    },
+    "public_bookcase": {
+      "osm_type": "\"amenity\"=\"library\"",
+      "display_type": "Tiny Library",
+      "color": "#F4BB44"
+    },
+    "shop_books": {
+      "osm_type": "\"shop\"=\"books\"",
+      "display_type": "Book Shop",
+      "color": "#FF6F61"
+    }
+  },
+  "BOOK_MAP_DEFAULT_ZOOM": 13,
+  "BOOK_MAP_MIN_ZOOM_FOR_BOOKS": 6,
+  "BOOK_MAP_AVAILABLE_COLOR": "#03a80c",
+  "BOOK_MAP_UNAVAILABLE_COLOR": "#c90b04",
 }
