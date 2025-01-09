@@ -16,38 +16,36 @@
       >
         <div class="relative w-full max-sm:hidden">
           <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-            <font-awesome-icon
-              class="tw-icon text-gray-500 dark:text-gray-300"
-              :icon="faSearch"
-            />
+            <font-awesome-icon class="tw-icon text-gray-500 dark:text-gray-300" :icon="faSearch" />
           </div>
-          <input class="tw-input w-full rounded-3xl h-9"
-                 @keyup.enter="handleSearch($event)"
-                 :placeholder="'Search by title, author, ISBN...'">
+          <input
+            class="tw-input w-full rounded-3xl h-9"
+            @keyup.enter="handleSearch($event)"
+            :placeholder="'Search by title, author, ISBN...'"
+          />
         </div>
       </nav>
 
       <div class="flex justify-end max-lg:justify-end ml-10">
-        <NavbarButtons/>
+        <NavbarButtons />
       </div>
-
     </div>
   </div>
 </template>
 
 <script setup>
-import {faSearch} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import NavbarButtons from "@/components/navbar/NavbarButtons.vue";
-import router from '@/router/index.ts';
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import NavbarButtons from '@/components/navbar/NavbarButtons.vue'
+import router from '@/router/index.ts'
 
 const handleSearch = (event) => {
-  const inputValue = event.target.value;
+  const inputValue = event.target.value
 
-  if(inputValue === null || inputValue === undefined || inputValue === "") {
-    return;
+  if (inputValue === null || inputValue === undefined || inputValue === '') {
+    return
   }
 
-  router.push({ path: '/book-search', query: { q: inputValue } });
+  router.push({ path: '/book-search', query: { q: inputValue } })
 }
 </script>
