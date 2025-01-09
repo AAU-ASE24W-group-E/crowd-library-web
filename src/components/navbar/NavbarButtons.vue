@@ -48,7 +48,7 @@
 
           <div class="tw-dropdown-separator"></div>
 
-          <router-link to="/location" class="tw-dropdown-inner-action-layout">
+          <router-link to="/set-location" class="tw-dropdown-inner-action-layout">
             <font-awesome-icon class="tw-navbar-dropdown-icon" :icon="faLocationDot"></font-awesome-icon>
             My Location
           </router-link>
