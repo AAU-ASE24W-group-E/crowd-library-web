@@ -39,6 +39,7 @@
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import NavbarButtons from "@/components/navbar/NavbarButtons.vue";
+import router from '@/router/index.ts';
 
 const handleSearch = (event) => {
   const inputValue = event.target.value;
@@ -47,7 +48,6 @@ const handleSearch = (event) => {
     return;
   }
 
-
-  // TODO API Call
+  router.push({ path: '/book-search', query: { q: inputValue } });
 }
 </script>
