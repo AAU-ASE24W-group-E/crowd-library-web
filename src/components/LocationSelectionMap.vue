@@ -1,7 +1,7 @@
 <template>
   <div id="map-container" class="w-full h-full rounded-lg relative">
     <div id="map" class="w-full h-[300px] rounded-lg cursor-pointer"></div>
-    <div class="flex flex-row justify-between">
+    <div class="flex flex-row justify-between mt-1">
       <p class="text-gray-400 text-sm">
         Lat: {{ clickedLocation?.lat.toFixed(5) || '-' }}, Lng:
         {{ clickedLocation?.lng.toFixed(5) || '-' }}
@@ -16,8 +16,6 @@
     </div>
   </div>
 </template>
-
-<!--TODO darkmode, mobile-->
 
 <script setup lang="ts">
 import { ref, onMounted, defineEmits } from 'vue';

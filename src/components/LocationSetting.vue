@@ -4,7 +4,7 @@
       class="flex justify-start flex-col items-center relative rounded-lg w-[450px] max-sm:w-11/12 h-auto px-4 bg-white dark:bg-gray-700"
     >
       <div class="tw-heading mb-0 mt-2">Your Location</div>
-      <div class="text-xl text-gray-600 mb-5 text-center">
+      <div class="text-xl text-gray-600 dark:text-gray-400 mb-5 text-center">
         Click on the map to set your location and find books near you
       </div>
 
