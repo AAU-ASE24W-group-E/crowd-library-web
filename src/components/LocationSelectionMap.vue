@@ -1,15 +1,9 @@
 <template>
   <div id="map-container" class="w-full h-full rounded-lg relative">
     <div id="map" class="w-full h-[300px] rounded-lg"></div>
-<!--    <div class="absolute top-2 left-2 z-10 bg-white p-2 rounded shadow">-->
-    <div>
-      <p v-if="clickedLocation">Lat: {{ clickedLocation.lat.toFixed(5) }}, Lng: {{ clickedLocation.lng.toFixed(5) }}</p>
-      <button
-        @click="resetMarker"
-        class="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-      >
-        Reset Marker
-      </button>
+    <div class="flex flex-row justify-between">
+      <p>Lat: {{ clickedLocation?.lat.toFixed(5) || '-' }}, Lng: {{ clickedLocation?.lng.toFixed(5) || '-' }}</p>
+      <font-awesome-icon v-if="clickedLocation" @click="resetMarker" :icon="faTrashCan" :title="'Click to delete your location'" class="tw-icon"></font-awesome-icon>
     </div>
   </div>
 </template>
@@ -18,6 +12,8 @@
 import { ref, onMounted } from "vue";
 import L, { type LeafletMouseEvent, Map, Marker } from "leaflet";
 import "leaflet-control-geocoder";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import {faTrashCan} from "@fortawesome/free-solid-svg-icons";
 
 const clickedLocation = ref<{ lat: number; lng: number } | null>(null);
 
