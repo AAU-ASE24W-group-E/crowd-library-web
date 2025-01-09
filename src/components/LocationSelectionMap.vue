@@ -23,11 +23,18 @@ import L, { type LeafletMouseEvent, Map, Marker } from 'leaflet';
 import 'leaflet-control-geocoder';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import config from '@/config.json';
 
 const emit = defineEmits<{
   (e: 'locationSelected', location: { lat: number; lng: number } | null): void;
 }>();
 const clickedLocation = ref<{ lat: number; lng: number } | null>(null);
+const userLocation = ref<{lat: number, lng: number}  | null>(null);     // TODO fetch user location from backend
+// const userLocation = ref<{ lat: number; lng: number } | null>({
+//   lat: 40.7128,
+//   lng: -74.006,
+// });
+
 let map: Map;
 let marker: Marker | null = null;
 
@@ -54,7 +61,11 @@ const resetMarker = () => {
 };
 
 onMounted(() => {
-  map = L.map('map').setView([46.625, 14.306], 13);
+  const initialCoordinates = userLocation.value
+    ? [userLocation.value.lat, userLocation.value.lng]
+    : config.DEFAULT_SAVED_LOCATION;
+
+  map = L.map('map').setView(initialCoordinates, 13);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution:
@@ -62,13 +73,16 @@ onMounted(() => {
   }).addTo(map);
 
   // Initial marker
-  L.circleMarker([46.62395, 14.30776], {
+  L.circleMarker(initialCoordinates, {
     radius: 2,
     color: 'red',
     fillColor: 'red',
     fillOpacity: 1,
   })
     .addTo(map)
+    .bindPopup(
+      userLocation.value ? `Your saved location` : `Default location (Click to set your location)`
+    )
     .openPopup();
 
   const geocoder = L.Control.geocoder({
