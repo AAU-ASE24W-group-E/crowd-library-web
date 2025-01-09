@@ -150,6 +150,7 @@
         disabled:hover:scale-100
         disabled:cursor-not-allowed
         disabled:bg-gray-500
+        disabled:hover:bg-gray-500
         dark:disabled:bg-gray-500
         dark:disabled:hover:bg-gray-500
     }
