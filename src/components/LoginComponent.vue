@@ -91,8 +91,8 @@
             type="submit"
           >
             <div class="flex items-center justify-center">
-              <div v-if="isLoading" class="tw-loading-animation"></div>
-              <div class="ml-2">Login</div>
+              <div v-if="isLoading" class="tw-loading-animation mr-2"></div>
+              <div>Login</div>
             </div>
           </button>
         </div>

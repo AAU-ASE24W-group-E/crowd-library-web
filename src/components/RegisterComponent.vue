@@ -167,8 +167,8 @@
             class="w-full btn-primary btn-blue"
             type="submit">
             <div class="flex items-center justify-center">
-              <div v-if="isLoading" class="tw-loading-animation"></div>
-              <div class="ml-2">Register</div>
+              <div v-if="isLoading" class="tw-loading-animation mr-2"></div>
+              <div>Register</div>
             </div>
           </button>
         </div>
