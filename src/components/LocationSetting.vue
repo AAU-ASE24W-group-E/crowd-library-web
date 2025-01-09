@@ -56,29 +56,26 @@ const handleLocationSetting = async () => {
     if (!selectedLocation.value) {
       Snackbar.showSnackbar(
         'Please select a location on the map or skip to login',
-        SnackbarType.ERROR,
+        SnackbarType.ERROR
       );
       return;
     }
 
     isLoading.value = true;
 
-    const locationData = {
+    const payload = {
       latitude: selectedLocation.value.lat,
       longitude: selectedLocation.value.lng,
     };
 
-    console.log('Sending location data to the server:', locationData);
+    // Handling TODO
 
     Snackbar.showSnackbar('Location was set successfully', SnackbarType.SUCCESS);
-
-    //TODO handling
-
     await router.push('/login');
   } catch (e) {
     Snackbar.showSnackbar(
       'There was an error setting the location, check out console',
-      SnackbarType.ERROR,
+      SnackbarType.ERROR
     );
     console.error('Error handling location setting:', e);
   } finally {
