@@ -31,13 +31,16 @@
     "leaflet": "^1.9.4",
     "leaflet-control-geocoder": "^3.1.0",
     "maplibre-gl": "^5.0.0",
+    "@vueform/toggle": "^2.1.4",
     "axios": "^1.7.9",
     "pinia": "^2.3.0",
     "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "vue-router": "^4.5.0",
+    "vue-toggles": "^2.1.0"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.0",
+    "@types/geojson": "^7946.0.15",
     "@types/jsdom": "^21.1.7",
     "@types/leaflet": "^1.9.16",
     "@types/node": "^22.10.1",

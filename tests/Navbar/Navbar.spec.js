@@ -1,7 +1,5 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import Footer from "@/components/Footer.vue";
-import LoginComponent from "@/components/LoginComponent.vue";
 import Navbar from "@/components/navbar/Navbar.vue";
 
 const push = vi.fn();
