@@ -31,6 +31,7 @@
     "leaflet": "^1.9.4",
     "leaflet-control-geocoder": "^3.1.0",
     "maplibre-gl": "^5.0.0",
+    "axios": "^1.7.9",
     "pinia": "^2.3.0",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
