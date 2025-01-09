@@ -1,39 +1,47 @@
 <template>
-    <div class="tw-component-container" ref="dropdownRef">
-      <div class="flex flex-row w-full justify-between items-center max-[480px]:justify-center">
-        <div>
-          <button
-            @click="mapClicked"
-            :class="getMapButtonClass"
-            class="btn-primary rounded-r-none rounded-l-md w-28 hover:scale-100 hover:-translate-y-0"
-          >
-            Map
-          </button>
-          <button
-            @click="listClicked"
-            :class="getListButtonClass"
-            class="btn-primary rounded-l-none rounded-r-md w-28 hover:scale-100 hover:-translate-y-0"
-          >
-            Book List
-          </button>
-        </div>
+  <div class="tw-component-container" ref="dropdownRef">
+    <div class="flex flex-row w-full justify-between items-center max-[480px]:justify-center">
+      <div>
+        <button
+          @click="mapClicked"
+          :class="getMapButtonClass"
+          class="btn-primary rounded-r-none rounded-l-md w-28 hover:scale-100 hover:-translate-y-0"
+        >
+          Map
+        </button>
+        <button
+          @click="listClicked"
+          :class="getListButtonClass"
+          class="btn-primary rounded-l-none rounded-r-md w-28 hover:scale-100 hover:-translate-y-0"
+        >
+          Book List
+        </button>
       </div>
-
-      <BookSearchMap ref="mapComponent" v-show="!showBookList" :books="currentBooks" />
-      <BookSearchList v-show="showBookList" :books="currentBooks" @showOnMapClicked="showOnMapClicked"/>
     </div>
+
+    <BookSearchMap ref="mapComponent" v-show="!showBookList" :books="currentBooks" />
+    <BookSearchList
+      v-show="showBookList"
+      :books="currentBooks"
+      @showOnMapClicked="showOnMapClicked"
+    />
+  </div>
 </template>
 
 <script setup>
-import Footer from '@/components/Footer.vue'
-import Navbar from '@/components/navbar/Navbar.vue'
 import BookSearchList from '@/components/BookSearchList.vue'
 import BookSearchMap from '@/components/BookSearchMap.vue'
-import { ref, computed, defineComponent } from 'vue'
+import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
 
 const showBookList = ref(true)
-const mapComponent = ref(null);
-const listComponent = ref(null);
+const mapComponent = ref(null)
+const listComponent = ref(null)
+
+// Used to receive the input string of the search bar
+// Todo books request must be handled
+const route = useRoute()
+const query = route.query.q || null
 
 const currentBooks = ref([
   {
@@ -376,8 +384,7 @@ const currentBooks = ref([
     lat: 46.623205,
     long: 14.268315,
   },
-]);
-
+])
 
 const getListButtonClass = computed(() => ({
   'btn-blue': showBookList.value,

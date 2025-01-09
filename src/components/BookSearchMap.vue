@@ -17,7 +17,7 @@
         </div>
       </div>
     </div>
-    <div id="book-map"></div>
+    <div id="book-map" class="w-full h-[450px] mt-5"></div>
 </div>
 </template>
 
@@ -222,12 +222,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-  #book-map{
-    @apply w-[140vh] h-[50vh] mt-5
-  }
-
-
-</style>
