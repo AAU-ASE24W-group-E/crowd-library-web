@@ -27,7 +27,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 const emit = defineEmits<{
-  (e: 'locationSelected', location: { lat: number; lng: number } | null): void
+  (e: 'locationSelected', location: { lat: number; lng: number } | null): void;
 }>();
 const clickedLocation = ref<{ lat: number; lng: number } | null>(null);
 let map: Map;
@@ -43,10 +43,8 @@ const onMapClick = (e: LeafletMouseEvent) => {
     map.removeLayer(marker);
   }
 
-  marker = L.marker([lat, lng])
-    .addTo(map)
-    .bindPopup(`Your selected location`).openPopup();
-}
+  marker = L.marker([lat, lng]).addTo(map).bindPopup(`Your selected location`).openPopup();
+};
 
 const resetMarker = () => {
   if (marker) {
@@ -55,7 +53,7 @@ const resetMarker = () => {
     clickedLocation.value = null;
     emit('locationSelected', null);
   }
-}
+};
 
 onMounted(() => {
   map = L.map('map').setView([46.625, 14.306], 13);
@@ -86,12 +84,12 @@ onMounted(() => {
       map.removeLayer(marker);
     }
     marker = L.marker(center).addTo(map).bindPopup(name).openPopup();
-    clickedLocation.value = { lat: center.lat, lng: center.lng }
+    clickedLocation.value = { lat: center.lat, lng: center.lng };
     emit('locationSelected', clickedLocation.value);
-  })
+  });
 
   geocoder.addTo(map);
 
   map.on('click', onMapClick);
-})
+});
 </script>
