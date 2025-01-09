@@ -8,7 +8,6 @@
     border: 1px solid red;
 }
 
-
 @layer components {
     .tw-icon {
         @apply
@@ -19,7 +18,6 @@
     /*Used as main class for components*/
     .tw-component-container {
         @apply w-[95%]
-        max-w-[1400px]
         max-sm:w-full
         h-auto
         relative
@@ -94,6 +92,15 @@
         mb-10
         animate-fadeInDown
 
+        text-black
+        dark:text-title-dark-mode-text;
+    }
+
+  .tw-heading-2 {
+    @apply text-[25px]
+        self-center
+        mb-10
+        animate-fadeInDown
         text-black
         dark:text-title-dark-mode-text;
     }
@@ -345,6 +352,31 @@
     .tw-footer-margin {
         @apply mb-10;
     }
+
+    #map {
+        @apply h-[90%]  mb-20;
+    }
+
+    .poi-sidebar-container {
+        @apply w-[25%]
+        bg-gray-100
+        p-4 space-y-4
+        max-sm:w-full
+        max-sm:mt-20
+        max-h-[78vh];
+    }
+
+    .map-sidebar-container {
+        @apply flex h-screen max-h-[76vh]
+        w-[95%]
+        /* max-sm:w-full */
+        mb-5 mt-5
+         flex-row max-sm:flex-col
+    }
+
+    .map-container {
+        @apply flex-1 w-[75%] max-sm:w-full  bg-gray-50 p-8 max-sm:p-0 ;
+      }
 
     .snackbar {
         @apply
