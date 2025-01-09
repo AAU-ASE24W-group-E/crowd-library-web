@@ -5,15 +5,15 @@
       <div class="tw-heading mb-0 mt-2">Your Location</div>
       <div class="text-xl text-gray-600 mb-5 text-center">Click on the map to set your location and find books near you</div>
 
-      <LocationSelectionMap></LocationSelectionMap>
+      <LocationSelectionMap @locationSelected="onLocationSelected" />
 
-      <div class="w-full mb-2 flex flex-row space-x-16 mt-5">
+      <div class="w-full mb-2 flex flex-row space-x-16 mt-5 items-center">
         <button @click="skipLocationSetting"
                 class="btn-primary btn-blue bg-blue-600 hover:bg-blue-700 w-[50%] rounded-2xl">
           Skip
         </button>
         <button
-          :disabled="isLoading"
+          :disabled="isLoading || !selectedLocation"
           @click="handleLocationSetting"
           class="w-[50%] btn-primary btn-blue rounded-2xl"
           type="submit"
@@ -28,32 +28,45 @@
   </div>
 </template>
 
-
-<script setup>
-
-import {ref} from "vue";
+<script setup lang="ts">
+import { ref } from "vue";
 import router from "@/router/index.ts";
 import LocationSelectionMap from "@/components/LocationSelectionMap.vue";
 
 let isLoading = ref(false);
+let selectedLocation = ref<{ lat: number; lng: number } | null>(null);
 
 const skipLocationSetting = async () => {
   await router.push("/login");
-}
+};
+
+const onLocationSelected = (location: { lat: number; lng: number } | null) => {
+  selectedLocation.value = location;
+};
 
 const handleLocationSetting = async () => {
   try {
+    if (!selectedLocation.value) {
+      alert("Please select a location on the map before proceeding.");
+      return;
+    }
+
     isLoading.value = true;
 
-    // Handling location setting
+    const locationData = {
+      latitude: selectedLocation.value.lat,
+      longitude: selectedLocation.value.lng,
+    };
+
+    console.log("Sending location data to the server:", locationData);
+
+    //TODO
 
     await router.push("/login");
-
   } catch (e) {
-
+    console.error("Error handling location setting:", e);
   } finally {
     isLoading.value = false;
   }
-}
-
+};
 </script>

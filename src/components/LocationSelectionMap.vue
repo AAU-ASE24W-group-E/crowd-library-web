@@ -2,23 +2,34 @@
   <div id="map-container" class="w-full h-full rounded-lg relative">
     <div id="map" class="w-full h-[300px] rounded-lg cursor-pointer"></div>
     <div class="flex flex-row justify-between">
-      <p class="text-gray-400 text-sm">Lat: {{ clickedLocation?.lat.toFixed(5) || '-' }}, Lng: {{ clickedLocation?.lng.toFixed(5) || '-' }}</p>
-      <font-awesome-icon v-if="clickedLocation" @click="resetMarker" :icon="faTrashCan" :title="'Click to delete your location'" class="tw-icon"></font-awesome-icon>
+      <p class="text-gray-400 text-sm">
+        Lat: {{ clickedLocation?.lat.toFixed(5) || '-' }}, Lng:
+        {{ clickedLocation?.lng.toFixed(5) || '-' }}
+      </p>
+      <font-awesome-icon
+        v-if="clickedLocation"
+        @click="resetMarker"
+        :icon="faTrashCan"
+        :title="'Click to delete your location'"
+        class="tw-icon"
+      ></font-awesome-icon>
     </div>
   </div>
 </template>
 
-<!--TODO darkmode, data handling & mobile-->
+<!--TODO darkmode, mobile-->
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import L, { type LeafletMouseEvent, Map, Marker } from "leaflet";
-import "leaflet-control-geocoder";
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import {faTrashCan} from "@fortawesome/free-solid-svg-icons";
+import { ref, onMounted, defineEmits } from 'vue';
+import L, { type LeafletMouseEvent, Map, Marker } from 'leaflet';
+import 'leaflet-control-geocoder';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
+const emit = defineEmits<{
+  (e: 'locationSelected', location: { lat: number; lng: number } | null): void
+}>();
 const clickedLocation = ref<{ lat: number; lng: number } | null>(null);
-
 let map: Map;
 let marker: Marker | null = null;
 
@@ -26,6 +37,7 @@ const onMapClick = (e: LeafletMouseEvent) => {
   const { lat, lng } = e.latlng;
 
   clickedLocation.value = { lat, lng };
+  emit('locationSelected', clickedLocation.value);
 
   if (marker) {
     map.removeLayer(marker);
@@ -33,23 +45,22 @@ const onMapClick = (e: LeafletMouseEvent) => {
 
   marker = L.marker([lat, lng])
     .addTo(map)
-    // .bindPopup(`Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}`)
-    .bindPopup(`Your selected location`)
-    .openPopup();
-};
+    .bindPopup(`Your selected location`).openPopup();
+}
 
 const resetMarker = () => {
   if (marker) {
     map.removeLayer(marker);
     marker = null;
     clickedLocation.value = null;
+    emit('locationSelected', null);
   }
-};
+}
 
 onMounted(() => {
-  map = L.map("map").setView([46.625, 14.306], 13);
+  map = L.map('map').setView([46.625, 14.306], 13);
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution:
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   }).addTo(map);
@@ -57,8 +68,8 @@ onMounted(() => {
   // Initial marker
   L.circleMarker([46.62395, 14.30776], {
     radius: 2,
-    color: "red",
-    fillColor: "red",
+    color: 'red',
+    fillColor: 'red',
     fillOpacity: 1,
   })
     .addTo(map)
@@ -68,18 +79,19 @@ onMounted(() => {
     defaultMarkGeocode: false,
   });
 
-  geocoder.on("markgeocode", (e: any) => {
+  geocoder.on('markgeocode', (e: any) => {
     const { center, name } = e.geocode;
     map.setView(center, 13);
     if (marker) {
       map.removeLayer(marker);
     }
     marker = L.marker(center).addTo(map).bindPopup(name).openPopup();
-    clickedLocation.value = { lat: center.lat, lng: center.lng };
-  });
+    clickedLocation.value = { lat: center.lat, lng: center.lng }
+    emit('locationSelected', clickedLocation.value);
+  })
 
   geocoder.addTo(map);
 
-  map.on("click", onMapClick);
-});
+  map.on('click', onMapClick);
+})
 </script>
