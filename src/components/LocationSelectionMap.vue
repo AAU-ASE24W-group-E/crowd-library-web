@@ -1,6 +1,6 @@
 <template>
   <div id="map-container" class="w-full h-full rounded-lg relative">
-    <div id="map" class="w-full h-[300px] rounded-lg"></div>
+    <div id="map" class="w-full h-[300px] rounded-lg cursor-pointer"></div>
     <div class="flex flex-row justify-between">
       <p class="text-gray-400 text-sm">Lat: {{ clickedLocation?.lat.toFixed(5) || '-' }}, Lng: {{ clickedLocation?.lng.toFixed(5) || '-' }}</p>
       <font-awesome-icon v-if="clickedLocation" @click="resetMarker" :icon="faTrashCan" :title="'Click to delete your location'" class="tw-icon"></font-awesome-icon>
@@ -55,14 +55,13 @@ onMounted(() => {
   }).addTo(map);
 
   // Initial marker
-  L.circleMarker([46.625, 14.306], {
-    radius: 3,
+  L.circleMarker([46.62395, 14.30776], {
+    radius: 2,
     color: "red",
     fillColor: "red",
     fillOpacity: 1,
   })
     .addTo(map)
-    .bindPopup("This is your location.")
     .openPopup();
 
   const geocoder = L.Control.geocoder({
