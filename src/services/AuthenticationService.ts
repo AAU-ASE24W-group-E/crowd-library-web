@@ -27,7 +27,7 @@ class AuthenticationService {
   }
 
   async login(payload: LoginPayload) {
-    return await apiClient.post('/login', payload);
+    return await apiClient.post(`${this.subdomain}/login`, payload);
   }
 
   async setLocation(uid: string, payload: LocationPayload) {
