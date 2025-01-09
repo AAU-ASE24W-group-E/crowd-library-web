@@ -2,11 +2,13 @@
   <div id="map-container" class="w-full h-full rounded-lg relative">
     <div id="map" class="w-full h-[300px] rounded-lg"></div>
     <div class="flex flex-row justify-between">
-      <p>Lat: {{ clickedLocation?.lat.toFixed(5) || '-' }}, Lng: {{ clickedLocation?.lng.toFixed(5) || '-' }}</p>
+      <p class="text-gray-400 text-sm">Lat: {{ clickedLocation?.lat.toFixed(5) || '-' }}, Lng: {{ clickedLocation?.lng.toFixed(5) || '-' }}</p>
       <font-awesome-icon v-if="clickedLocation" @click="resetMarker" :icon="faTrashCan" :title="'Click to delete your location'" class="tw-icon"></font-awesome-icon>
     </div>
   </div>
 </template>
+
+<!--TODO darkmode, data handling & mobile-->
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
