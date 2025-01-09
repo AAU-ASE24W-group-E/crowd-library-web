@@ -92,64 +92,64 @@
 </template>
 
 <script setup>
-import BookEntry from '@/components/BookEntry.vue'
-import { defineEmits, defineProps, onMounted, onUnmounted, ref } from 'vue'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faArrowDownWideShort, faChevronDown, faX } from '@fortawesome/free-solid-svg-icons'
-import { useRoute } from 'vue-router'
+import BookEntry from '@/components/BookEntry.vue';
+import { defineEmits, defineProps, onMounted, onUnmounted, ref } from 'vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faArrowDownWideShort, faChevronDown, faX } from '@fortawesome/free-solid-svg-icons';
+import { useRoute } from 'vue-router';
 
-const categories = ref(['Distance', 'Author', 'Title', 'Year'].sort())
-const selectedCategories = ref([])
+const categories = ref(['Distance', 'Author', 'Title', 'Year'].sort());
+const selectedCategories = ref([]);
 
-const props = defineProps(['books'])
-const emits = defineEmits(['showOnMapClicked'])
+const props = defineProps(['books']);
+const emits = defineEmits(['showOnMapClicked']);
 
 // Example array of books
-const books = ref(props.books)
+const books = ref(props.books);
 
-let dropdownSortOpen = ref(false)
-const isWishlist = ref(false) // needed to determine if book entry is shown on book list or wishlist
-const dropdownRef = ref(null)
+let dropdownSortOpen = ref(false);
+const isWishlist = ref(false); // needed to determine if book entry is shown on book list or wishlist
+const dropdownRef = ref(null);
 
 const handleSelection = (event) => {
-  const selectedValue = event.target.value
+  const selectedValue = event.target.value;
   if (selectedValue) {
-    categories.value = categories.value.filter((category) => category !== selectedValue)
+    categories.value = categories.value.filter((category) => category !== selectedValue);
 
-    selectedCategories.value.push(selectedValue)
+    selectedCategories.value.push(selectedValue);
 
-    event.target.value = ''
+    event.target.value = '';
   }
-}
+};
 
 const handleSortClick = () => {
-  dropdownSortOpen.value = !dropdownSortOpen.value
-}
+  dropdownSortOpen.value = !dropdownSortOpen.value;
+};
 
 const removeSelectedCategory = (selectedCategory) => {
-  categories.value.push(selectedCategory)
+  categories.value.push(selectedCategory);
   selectedCategories.value = selectedCategories.value.filter(
-    (category) => category !== selectedCategory,
-  )
+    (category) => category !== selectedCategory
+  );
 
-  categories.value.sort()
-}
+  categories.value.sort();
+};
 
 const handleClickOutside = (event) => {
   if (dropdownSortOpen.value && dropdownRef.value && !dropdownRef.value.contains(event.target)) {
-    dropdownSortOpen.value = false
+    dropdownSortOpen.value = false;
   }
-}
+};
 
 const showOnMapClicked = (book) => {
-  emits('showOnMapClicked', book)
-}
+  emits('showOnMapClicked', book);
+};
 
 onMounted(() => {
-  document.addEventListener('click', handleClickOutside)
-})
+  document.addEventListener('click', handleClickOutside);
+});
 
 onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside)
-})
+  document.removeEventListener('click', handleClickOutside);
+});
 </script>

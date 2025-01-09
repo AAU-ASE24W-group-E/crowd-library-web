@@ -32,7 +32,7 @@
 import BookSearchList from '@/components/BookSearchList.vue'
 import BookSearchMap from '@/components/BookSearchMap.vue'
 import { ref, computed } from 'vue'
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router'
 
 const showBookList = ref(true)
 const mapComponent = ref(null)
@@ -40,8 +40,8 @@ const listComponent = ref(null)
 
 // Used to receive the input string of the search bar
 // Todo books request must be handled
-const route = useRoute();
-const query = route.query.q || null;
+const route = useRoute()
+const query = route.query.q || null
 
 const currentBooks = ref([
   {
