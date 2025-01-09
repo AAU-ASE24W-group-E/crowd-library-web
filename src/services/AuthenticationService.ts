@@ -1,6 +1,17 @@
-import apiClient from "@/api.ts";
-import type {RegisterPayload} from "@/interfaces/RegisterPayload.ts";
-import type {LoginPayload} from "@/interfaces/LoginPayload.ts";
+import apiClient from '@/api.ts';
+
+export interface LoginPayload {
+  username: string;
+  password: string;
+}
+
+export interface RegisterPayload {
+  email: string;
+  username: string;
+  password: string;
+  address?: string | null;
+  role: string;
+}
 
 class AuthenticationService {
   private subdomain: string = '/user';
@@ -10,6 +21,10 @@ class AuthenticationService {
   }
 
   async login(payload: LoginPayload) {
+    return await apiClient.post('/login', payload);
+  }
+
+  async setLocation(payload: LoginPayload) {
     return await apiClient.post('/login', payload);
   }
 }
