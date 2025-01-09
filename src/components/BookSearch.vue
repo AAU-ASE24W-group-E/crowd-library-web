@@ -29,15 +29,19 @@
 </template>
 
 <script setup>
-import Footer from '@/components/Footer.vue'
-import Navbar from '@/components/navbar/Navbar.vue'
 import BookSearchList from '@/components/BookSearchList.vue'
 import BookSearchMap from '@/components/BookSearchMap.vue'
-import { ref, computed, defineComponent } from 'vue'
+import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router';
 
 const showBookList = ref(true)
 const mapComponent = ref(null)
 const listComponent = ref(null)
+
+// Used to receive the input string of the search bar
+// Todo books request must be handled
+const route = useRoute();
+const query = route.query.q || null;
 
 const currentBooks = ref([
   {
