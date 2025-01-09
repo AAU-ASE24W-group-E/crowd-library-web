@@ -1,5 +1,7 @@
 import axios from 'axios'
-const overpassUrl = 'https://overpass-api.de/api/interpreter'
+import config from "@/config.json";
+
+const overpassUrl = config.POI_OVERPASS_URL;
 import { featureCollection, point } from "@turf/helpers";
 
 
@@ -79,7 +81,6 @@ export const getGeoJsonWithAddedPOIs = (elements: any, poi_info: any, poi_points
     })
     return getGeoJsonWithAddedPOIs(response.data.elements, poi_info, poi_points)
   } catch (error) {
-    console.error('Error fetching data from Overpass API:', error)
     return []
   }
 }

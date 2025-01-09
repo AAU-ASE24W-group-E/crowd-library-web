@@ -7,7 +7,6 @@
       </div>
       <div class="flex flex-row items-center space-x-6 pr-1">
         <div class="flex flex-row items-center space-x-2">
-          <!-- <span class="dark:text-title-dark-mode-text">Sort by:</span> -->
           <div class="relative">
             <button
             @click="setBoundsToExtentOfAllBook"
@@ -22,42 +21,19 @@
 </template>
 
 <script>
-import { ref } from 'vue'
 import { onMounted } from 'vue'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import maplibregl from 'maplibre-gl'
-import { MapLibreSearchControl } from '@stadiamaps/maplibre-search-box'
 import '@stadiamaps/maplibre-search-box/dist/style.css'
 import { featureCollection, point } from '@turf/helpers'
 import { getPopupHTML } from '@/utils/bookPopup'
+import config from "@/config.json";
 
-const default_zoom = 13
-const max_search_results = 5
-const map_search_position = 'top-left'
-const min_zoom_for_books = 6
-const map_style = {
-  version: 8,
-  sources: {
-    'raster-tiles': {
-      type: 'raster',
-      tiles: ['https://tile.openstreetmap.de/{z}/{x}/{y}.png'],
-      tileSize: 256,
-      attribution: 'OpenStreetMap',
-    },
-  },
-  layers: [
-    {
-      id: 'simple-tiles',
-      type: 'raster',
-      source: 'raster-tiles',
-      minzoom: 0,
-      maxzoom: 22,
-    },
-  ],
-}
-
-const availableColor = '#03a80c'
-const unavailableColor = '#c90b04'
+const default_zoom = config.BOOK_MAP_DEFAULT_ZOOM;
+const min_zoom_for_books = config.BOOK_MAP_MIN_ZOOM_FOR_BOOKS;
+const map_style = config.POI_AND_BOOK_MAP_STYLE;
+const availableColor = config.BOOK_MAP_AVAILABLE_COLOR;
+const unavailableColor = config.BOOK_MAP_UNAVAILABLE_COLOR;
 let all_popups = []
 
 export default {
@@ -172,7 +148,7 @@ export default {
 
       map.on('click', 'book-layer', (e) => {
         openPopUp(e.features[0])
-        // go to list and show item? Is this possible?
+        // go to list and show item? Is this possible? Yes, but was decided against :)
       })
 
       map.on('mouseenter', 'book-layer', () => {
@@ -204,7 +180,7 @@ export default {
       let feature = getBookFeatureByIsbn(book.ISBN)
       if(!feature) return
       map.flyTo({
-        center: [book.long - 0.0025, book.lat], // figure out why this is necessary
+        center: [book.long - 0.0025, book.lat], 
         zoom: 17,
         speed: 4,
         curve: 1.5

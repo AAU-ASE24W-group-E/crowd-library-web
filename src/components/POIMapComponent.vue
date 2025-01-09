@@ -15,33 +15,15 @@ import fetchOverpassData from '@/utils/osmService'
 import { getPopupHTML } from '@/utils/poiPopup'
 import { useMapLegendStore } from '@/stores/poiMapLegend'
 import { usePoiMapFeatureStore } from '@/stores/poiMapFeatures'
+import config from "@/config.json";
 
-const default_center = [14.26492, 46.616308]
-const default_zoom = 13
-const min_zoom_for_pois = 12
-const clear_pois_at_zoom = 9
-const max_search_results = 5
-const map_search_position = 'top-left'
-const map_style = {
-  version: 8,
-  sources: {
-    'raster-tiles': {
-      type: 'raster',
-      tiles: ['https://tile.openstreetmap.de/{z}/{x}/{y}.png'],
-      tileSize: 256,
-      attribution: 'OpenStreetMap',
-    },
-  },
-  layers: [
-    {
-      id: 'simple-tiles',
-      type: 'raster',
-      source: 'raster-tiles',
-      minzoom: 0,
-      maxzoom: 22,
-    },
-  ],
-}
+const default_center = config.POI_MAP_DEFAULT_CENTER;
+const default_zoom = config.POI_MAP_DEFAULT_ZOOM;
+const min_zoom_for_pois = config.POI_MAP_MIN_ZOOM_FOR_POIS;
+const clear_pois_at_zoom = config.POI_MAP_CLEAR_ZOOM;
+const max_search_results = config.POI_MAP_MAX_SEARCH_RESULTS;
+const map_search_position = config.POI_MAP_SEARCH_POSITION;
+const map_style = config.POI_AND_BOOK_MAP_STYLE;
 
 let poi_geojson = featureCollection([])
 let poi_geojson_filtered = featureCollection([])
