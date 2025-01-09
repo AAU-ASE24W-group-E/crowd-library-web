@@ -352,10 +352,6 @@
         @apply mb-10;
     }
 
-    #map {
-        @apply h-[90%]  mb-20;
-    }
-
     .poi-sidebar-container {
         @apply w-[25%]
         bg-gray-100
