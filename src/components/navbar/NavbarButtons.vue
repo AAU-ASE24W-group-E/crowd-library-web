@@ -2,21 +2,19 @@
   <div class="flex items-center flex-row justify-between space-x-6 max-lg:space-x-5 max-sm:space-x-6"
        ref="dropdownRef">
     <div class="tw-navbar-dropdown-container">
-      <button
-        @click=""
+      <router-link v-if="loggedIn" to="/my-wishlist"
         class="navbar-button-container btn-primary"
       >
-        <font-awesome-icon class="tw-icon text-2xl" :icon="faClipboardList"/>
-      </button>
+        <font-awesome-icon class="tw-icon text-3xl max-sm:text-2xl" :icon="faClipboardList"/>
+      </router-link>
     </div>
 
     <div class="tw-navbar-dropdown-container">
-      <button
-        @click=""
+      <router-link v-if="loggedIn" to="/my-books"
         class="navbar-button-container btn-primary"
       >
-        <font-awesome-icon class="tw-icon text-2xl" :icon="faBook"/>
-      </button>
+        <font-awesome-icon class="tw-icon text-3xl max-sm:text-2xl" :icon="faBook"/>
+      </router-link>
     </div>
 
     <div class="tw-navbar-dropdown-container">
@@ -25,7 +23,7 @@
         id="account-button"
         class="navbar-button-container btn-primary"
       >
-        <font-awesome-icon class="tw-icon text-2xl" :icon="faCircleUser"/>
+        <font-awesome-icon class="tw-icon text-3xl max-sm:text-2xl" :icon="faCircleUser"/>
       </button>
       <!--      TODO dynamic width-->
       <div v-if="dropdownAccountOpen" class="-right-4 w-44 tw-dropdown-inner-layout">
