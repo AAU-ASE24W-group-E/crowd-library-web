@@ -7,7 +7,6 @@
       </div>
       <div class="flex flex-row items-center space-x-6 pr-1">
         <div class="flex flex-row items-center space-x-2">
-          <!-- <span class="dark:text-title-dark-mode-text">Sort by:</span> -->
           <div class="relative">
             <button
             @click="setBoundsToExtentOfAllBook"
@@ -22,18 +21,14 @@
 </template>
 
 <script>
-import { ref } from 'vue'
 import { onMounted } from 'vue'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import maplibregl from 'maplibre-gl'
-import { MapLibreSearchControl } from '@stadiamaps/maplibre-search-box'
 import '@stadiamaps/maplibre-search-box/dist/style.css'
 import { featureCollection, point } from '@turf/helpers'
 import { getPopupHTML } from '@/utils/bookPopup'
 
 const default_zoom = 13
-const max_search_results = 5
-const map_search_position = 'top-left'
 const min_zoom_for_books = 6
 const map_style = {
   version: 8,
