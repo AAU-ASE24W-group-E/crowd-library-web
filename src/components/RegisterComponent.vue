@@ -190,6 +190,9 @@ import {library} from '@fortawesome/fontawesome-svg-core'
 import {reactive, ref} from 'vue'
 import config from "@/config.json";
 import {useRouter} from 'vue-router'
+import {authenticationService} from '../services/AuthenticationService.ts';
+import {Snackbar} from "@/utility/snackbar.ts";
+import {SnackbarType} from "@/enums/snackbar.ts";
 
 library.add(faEye, faEyeSlash)
 
@@ -222,17 +225,15 @@ const validateForm = () => {
   const fields = ["email", "username", "password", "confirmPassword"];
 
   fields.forEach((field) => {
-    errors[field].touched = true;
-    isControlInvalid(field);
+    handleBlur(field);
   });
 
   return fields.every((field) => {
-    const errorState = errors[field];
-    return Object.values(errorState).every((isValid) => !isValid);
+    const {touched, ...errorState} = errors[field]; // Destructure to exclude "touched"
+    return Object.values(errorState).every((isValid) => !isValid); // All error flags must be false
   });
 };
 
-// TODO maybe rework with yup in future
 const isControlInvalid = (field) => {
   const value = registerForm[field];
   const trimmedValue = value?.trim();
@@ -280,37 +281,32 @@ const toggleConfirmPasswordVisibility = () => {
 
 const register = async () => {
   if (isLoading.value) return;
-
   if (!validateForm()) return;
 
   isLoading.value = true;
 
-  // TODO better error handling
+  const payload = {
+    email: (registerForm.email || '').trim().toLowerCase(),
+    username: (registerForm.username || '').trim(),
+    address: null,
+    password: (registerForm.password || '').trim(),
+    role: 'user',
+  };
+
   try {
-    const email = (registerForm.email || "").trim().toLowerCase();
-    const emailExists = false; // todo check if email already exists with backend
+    console.debug("Trying to register...")
 
-    if (emailExists) {
-      console.error("This email already exists");
-      return;
-    }
+    const response = await authenticationService.registerUser(payload);
+    Snackbar.showSnackbar('Register successful, you can now log in!', SnackbarType.SUCCESS);
+    console.debug('User registered successfully:', response);
 
-    const username = (registerForm.username || "").trim().toLowerCase();
-    const usernameExists = false; // todo check if email already exists with backend
-
-    if (usernameExists) {
-      console.error("This username already exists");
-      return;
-    }
-
-    // TODO register(username, email, password) via backend
-
+    await router.push('/login');
   } catch (e) {
-    console.error('Registration error:', e);
+    // todo handle all errors like already existing mail, username, other error and so on
+    Snackbar.showSnackbar('An unexpected error occurred, check console', SnackbarType.ERROR);
+    console.error('Registration error:', e)
   } finally {
     isLoading.value = false;
   }
-
 }
-
 </script>
