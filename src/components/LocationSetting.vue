@@ -13,6 +13,7 @@
       <div class="w-full mb-2 flex flex-row space-x-16 mt-5 items-center">
         <button
           @click="skipLocationSetting"
+          id="skip-button"
           class="btn-primary btn-blue bg-blue-600 hover:bg-blue-700 w-[50%] rounded-2xl"
         >
           Skip
@@ -21,6 +22,7 @@
           :disabled="isLoading || !selectedLocation"
           @click="handleLocationSetting"
           class="w-[50%] btn-primary btn-blue rounded-2xl"
+          id="finish-button"
           type="submit"
         >
           <div class="flex items-center justify-center">
