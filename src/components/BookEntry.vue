@@ -65,7 +65,8 @@
       }"
       class="transition-all duration-300 ease-in-out w-full"
     >
-      <div class="flex flex-row w-full mt-2 space-x-16 max-md:space-x-6 ml-24 max-sm:space-x-0 max-sm:flex-col max-sm:space-y-4 max-sm:justify-center max-sm:ml-0">
+      <div
+        class="flex flex-row w-full mt-2 space-x-16 max-md:space-x-6 ml-24 max-sm:space-x-0 max-sm:flex-col max-sm:space-y-4 max-sm:justify-center max-sm:ml-0">
         <button v-if="!isWishlist" class="btn-primary btn-gray rounded-2xl">
           Add to wishlist
         </button>
@@ -77,11 +78,11 @@
 </template>
 
 <script setup>
-import {ref, defineEmits, defineProps} from "vue";
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import {faChevronRight} from "@fortawesome/free-solid-svg-icons";
+import { defineEmits, defineProps, ref } from 'vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
-const emit = defineEmits(['showOnMapClicked'])
+const emit = defineEmits(['showOnMapClicked']);
 const props = defineProps({
   book: {
     type: Object,
@@ -100,7 +101,7 @@ function toggleDropdown() {
 }
 
 function handleShowOnMap() {
-  emit('showOnMapClicked', props.book)
+  emit('showOnMapClicked', props.book);
 }
 </script>
 

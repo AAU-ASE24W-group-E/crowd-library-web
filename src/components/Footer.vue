@@ -6,7 +6,7 @@
       <img
         src="../assets/logo_simple.png"
         class="h-12 object-cover max-sm:mb-4"
-        alt=""/>
+        alt="" />
     </router-link>
 
     <div class="flex max-lg:self-center flex-col items-center">
@@ -62,8 +62,8 @@
 
 
 <script setup>
-import {faGithub, faInstagram, faYoutube} from "@fortawesome/free-brands-svg-icons";
-import {ref} from "vue";
+import { faGithub, faInstagram, faYoutube } from '@fortawesome/free-brands-svg-icons';
+import { ref } from 'vue';
 
 const currentYear = ref(new Date().getFullYear());
 </script>

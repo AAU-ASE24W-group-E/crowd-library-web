@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, defineEmits } from 'vue';
+import { defineEmits, onMounted, ref } from 'vue';
 import L, { type LeafletMouseEvent, Map, Marker } from 'leaflet';
 import 'leaflet-control-geocoder';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -29,7 +29,7 @@ const emit = defineEmits<{
   (e: 'locationSelected', location: { lat: number; lng: number } | null): void;
 }>();
 const clickedLocation = ref<{ lat: number; lng: number } | null>(null);
-const userLocation = ref<{lat: number, lng: number}  | null>(null);     // TODO fetch user location from backend
+const userLocation = ref<{ lat: number, lng: number } | null>(null);     // TODO fetch user location from backend
 // const userLocation = ref<{ lat: number; lng: number } | null>({
 //   lat: 40.7128,
 //   lng: -74.006,
@@ -81,7 +81,7 @@ onMounted(() => {
   })
     .addTo(map)
     .bindPopup(
-      userLocation.value ? `Your saved location` : `Default location (Click to set your location)`
+      userLocation.value ? `Your saved location` : `Default location (Click to set your location)`,
     )
     .openPopup();
 

@@ -5,7 +5,8 @@
     >
       <div class="tw-heading mb-0 mt-2">Edit Location</div>
       <div class="text-xl text-gray-600 dark:text-gray-400 mb-5 text-center">
-        The pin displays your current location. If you wish to change it, drag it to the desired position and click “Apply”. If you do not wish to change it, click “Cancel”.
+        The pin displays your current location. If you wish to change it, drag it to the desired position and click
+        “Apply”. If you do not wish to change it, click “Cancel”.
       </div>
 
       <LocationSelectionMap @locationSelected="onLocationSelected" />
@@ -39,7 +40,6 @@ import router from '@/router/index.ts';
 import LocationSelectionMap from '@/components/LocationSelectionMap.vue';
 import { Snackbar } from '@/utils/snackbar.ts';
 import { SnackbarType } from '@/enums/snackbar.ts';
-import { authenticationService } from '@/services/AuthenticationService.ts';
 import { userService } from '@/services/UserService.ts';
 
 const isLoading = ref(false);
@@ -58,7 +58,7 @@ const handleLocationEdit = async () => {
     if (!selectedLocation.value) {
       Snackbar.showSnackbar(
         'Please select a location on the map or cancel location editing',
-        SnackbarType.ERROR
+        SnackbarType.ERROR,
       );
       return;
     }
@@ -78,7 +78,7 @@ const handleLocationEdit = async () => {
   } catch (e) {
     Snackbar.showSnackbar(
       'There was an error setting the location, check out console',
-      SnackbarType.ERROR
+      SnackbarType.ERROR,
     );
     console.error('Error handling location setting:', e);
   } finally {

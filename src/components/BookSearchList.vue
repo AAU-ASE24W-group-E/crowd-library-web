@@ -96,7 +96,6 @@ import BookEntry from '@/components/BookEntry.vue';
 import { defineEmits, defineProps, onMounted, onUnmounted, ref } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faArrowDownWideShort, faChevronDown, faX } from '@fortawesome/free-solid-svg-icons';
-import { useRoute } from 'vue-router';
 
 const categories = ref(['Distance', 'Author', 'Title', 'Year'].sort());
 const selectedCategories = ref([]);
@@ -129,7 +128,7 @@ const handleSortClick = () => {
 const removeSelectedCategory = (selectedCategory) => {
   categories.value.push(selectedCategory);
   selectedCategories.value = selectedCategories.value.filter(
-    (category) => category !== selectedCategory
+    (category) => category !== selectedCategory,
   );
 
   categories.value.sort();
