@@ -14,6 +14,7 @@
       <div class="w-full mb-2 flex flex-row space-x-16 mt-5 items-center">
         <button
           @click="cancelLocationSetting"
+          id="cancel-button"
           class="btn-primary btn-blue bg-blue-600 hover:bg-blue-700 w-[50%] rounded-2xl"
         >
           Cancel
@@ -21,6 +22,7 @@
         <button
           :disabled="isLoading || !selectedLocation"
           @click="handleLocationEdit"
+          id="apply-button"
           class="w-[50%] btn-primary btn-blue rounded-2xl"
           type="submit"
         >
