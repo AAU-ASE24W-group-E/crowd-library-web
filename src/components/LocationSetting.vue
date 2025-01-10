@@ -40,6 +40,7 @@ import LocationSelectionMap from '@/components/LocationSelectionMap.vue';
 import { Snackbar } from '@/utils/snackbar.ts';
 import { SnackbarType } from '@/enums/snackbar.ts';
 import { authenticationService } from '@/services/AuthenticationService.ts';
+import { userService } from '@/services/UserService.ts';
 
 const isLoading = ref(false);
 const selectedLocation = ref<{ lat: number; lng: number } | null>(null);
@@ -71,7 +72,7 @@ const handleLocationSetting = async () => {
     };
 
     // TODO uid has to be set
-    await authenticationService.setLocation('UID', payload);
+    await userService.setLocation('UID', payload);
     await authenticationService.setInitialLogin('UID');
     await router.push('/');
 
