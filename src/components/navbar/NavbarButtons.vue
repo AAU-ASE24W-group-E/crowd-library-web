@@ -3,15 +3,21 @@
     class="flex items-center flex-row justify-between space-x-6 max-lg:space-x-5 max-sm:space-x-6"
     ref="dropdownRef"
   >
-    <div class="tw-navbar-dropdown-container">
+    <!--<div class="tw-navbar-dropdown-container">
       <router-link v-if="loggedIn" to="/my-wishlist" class="navbar-button-container btn-primary">
         <font-awesome-icon class="tw-icon text-3xl max-sm:text-2xl" :icon="faClipboardList" />
       </router-link>
-    </div>
+    </div>-->
 
     <div class="tw-navbar-dropdown-container">
       <router-link v-if="loggedIn" to="/my-books" class="navbar-button-container btn-primary">
         <font-awesome-icon class="tw-icon text-3xl max-sm:text-2xl" :icon="faBook" />
+      </router-link>
+    </div>
+
+    <div class="tw-navbar-dropdown-container">
+      <router-link v-if="loggedIn" to="/my-requests" class="navbar-button-container btn-primary">
+        <font-awesome-icon class="tw-icon text-3xl max-sm:text-2xl" :icon="faMessage" />
       </router-link>
     </div>
 
@@ -111,6 +117,7 @@ import {
   faHeart,
   faLocationDot,
   faMap,
+  faMessage,
   faRightFromBracket,
   faRightToBracket,
   faUser,
@@ -120,7 +127,7 @@ import { onMounted, onUnmounted, ref } from 'vue';
 
 let dropdownAccountOpen = ref(false);
 let username = 'undefined';
-let loggedIn = ref(false);
+let loggedIn = ref(true);
 const dropdownRef = ref(null);
 
 const handleAccountClick = () => {
