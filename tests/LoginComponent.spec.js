@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import LoginComponent from '@/components/LoginComponent.vue';
+import { createPinia, setActivePinia } from 'pinia';
 import apiClient from '@/api';
 import { authenticationService } from '@/services/AuthenticationService';
 
@@ -11,30 +12,37 @@ vi.mock('vue-router', () => ({
   }),
 }));
 
+
 const mockUserStore = { setUser: vi.fn() };
 vi.mock('@/stores/user', () => ({
-  useUserStore: vi.fn(() => mockUserStore),
+  useUserStore: () => mockUserStore,
 }));
 
 const mockAuthStore = { setToken: vi.fn() };
+
 vi.mock('@/stores/auth', () => ({
   useAuthStore: vi.fn(() => mockAuthStore),
 }));
 
 vi.mock('@/api', () => ({
   default: {
-    post: vi.fn(),
+    post: vi.fn(), // Mock für die Methode `post`
   },
 }));
 
 describe('LoginComponent', () => {
   let wrapper;
+  let pinia;
 
   beforeEach(() => {
     vi.clearAllMocks();
 
+    pinia = createPinia();
+    setActivePinia(pinia);
+
     wrapper = mount(LoginComponent, {
       global: {
+        plugins: [pinia],
         stubs: ['router-link', 'font-awesome-icon'],
       },
     });
@@ -89,6 +97,7 @@ describe('LoginComponent', () => {
           id: '123',
           email: 'test@example.com',
           username: 'testuser',
+          password: 'password123',
           address: null,
           role: 'user',
         },
@@ -97,14 +106,17 @@ describe('LoginComponent', () => {
 
     apiClient.post.mockResolvedValue(mockResponse);
 
+    console.log(mockAuthStore);
+
     const result = await authenticationService.login(mockPayload);
 
-    expect(apiClient.post).toHaveBeenCalledWith('/user/login', mockPayload);
+    expect(apiClient.post).toHaveBeenCalledWith(`${authenticationService.subdomain}/login`, mockPayload);
 
     expect(mockUserStore.setUser).toHaveBeenCalledWith(mockResponse.data.user);
     expect(mockAuthStore.setToken).toHaveBeenCalledWith(mockResponse.data.token);
 
     expect(result).toEqual(mockResponse);
   });
+
 
 });
