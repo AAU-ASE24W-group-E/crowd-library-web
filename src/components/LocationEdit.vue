@@ -43,7 +43,7 @@ import LocationSelectionMap from '@/components/LocationSelectionMap.vue';
 import { Snackbar } from '@/utils/snackbar.ts';
 import { SnackbarType } from '@/enums/snackbar.ts';
 import { userService } from '@/services/UserService.ts';
-import { useUserStore } from '@/stores/userStorage.ts'
+import { useUserStore } from '@/stores/user.ts'
 
 const isLoading = ref(false);
 const selectedLocation = ref<{ lat: number; lng: number } | null>(null);

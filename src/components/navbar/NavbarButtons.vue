@@ -45,7 +45,10 @@
           <div class="tw-dropdown-separator"></div>
 
           <router-link to="/edit-location" class="tw-dropdown-inner-action-layout">
-            <font-awesome-icon class="tw-navbar-dropdown-icon" :icon="faLocationDot"></font-awesome-icon>
+            <font-awesome-icon
+              class="tw-navbar-dropdown-icon"
+              :icon="faLocationDot"
+            ></font-awesome-icon>
             My Location
           </router-link>
 
@@ -116,11 +119,16 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { onMounted, onUnmounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { useAuthStore } from '@/stores/auth';
+import { useUserStore } from '@/stores/user.ts'
+
+const userStore = useUserStore();
 
 let dropdownAccountOpen = ref(false);
-let username = 'undefined';
-let loggedIn = ref(false);
+let username = computed(() => userStore.user?.username || 'username');
+const authStore = useAuthStore();
+const loggedIn = computed(() => authStore.isLoggedIn);
 const dropdownRef = ref(null);
 
 const handleAccountClick = () => {
@@ -129,7 +137,8 @@ const handleAccountClick = () => {
 
 const logout = () => {
   // TODO
-  console.warn('Not implemented');
+  authStore.clearToken();
+  console.log('User logged out');
 };
 
 const handleClickOutside = (event) => {

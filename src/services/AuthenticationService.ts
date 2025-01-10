@@ -1,6 +1,6 @@
 import apiClient from '@/api.ts';
 import type { User } from '@/interfaces/user.ts';
-import { useUserStore } from '@/stores/userStorage.ts'
+import { useUserStore } from '@/stores/user.ts'
 import { useAuthStore } from '@/stores/auth.ts'
 
 export interface LoginPayload {
