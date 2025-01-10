@@ -167,8 +167,8 @@
             class="w-full btn-primary btn-blue"
             type="submit">
             <div class="flex items-center justify-center">
-              <div v-if="isLoading" class="tw-loading-animation"></div>
-              <div class="ml-2">Register</div>
+              <div v-if="isLoading" class="tw-loading-animation mr-2"></div>
+              <div>Register</div>
             </div>
           </button>
         </div>
@@ -191,7 +191,7 @@ import {reactive, ref} from 'vue'
 import config from "@/config.json";
 import {useRouter} from 'vue-router'
 import {authenticationService} from '../services/AuthenticationService.ts';
-import {Snackbar} from "@/utility/snackbar.ts";
+import {Snackbar} from "@/utils/snackbar.ts";
 import {SnackbarType} from "@/enums/snackbar.ts";
 
 library.add(faEye, faEyeSlash)

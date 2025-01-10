@@ -1,6 +1,6 @@
 import {beforeEach, describe, expect, it, vi} from 'vitest';
 import config from '@/config.json';
-import {Snackbar} from "@/utility/snackbar.ts";
+import {Snackbar} from "@/utils/snackbar.ts";
 import {SnackbarType} from "@/enums/snackbar.ts";
 
 describe('Snackbar', () => {

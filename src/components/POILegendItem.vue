@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { VueToggles } from "vue-toggles";
+import  VueToggles  from "vue-toggles";
 import { useMapLegendStore } from '@/stores/poiMapLegend'
 
 export default {

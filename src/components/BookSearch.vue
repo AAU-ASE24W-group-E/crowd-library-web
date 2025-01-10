@@ -29,18 +29,18 @@
 </template>
 
 <script setup>
-import BookSearchList from '@/components/BookSearchList.vue'
-import BookSearchMap from '@/components/BookSearchMap.vue'
-import { ref, computed } from 'vue'
-import { useRoute } from 'vue-router'
+import BookSearchList from '@/components/BookSearchList.vue';
+import BookSearchMap from '@/components/BookSearchMap.vue';
+import { computed, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
-const showBookList = ref(true)
-const mapComponent = ref(null)
+const showBookList = ref(true);
+const mapComponent = ref(null);
 
 // Used to receive the input string of the search bar
 // Todo books request must be handled
-const route = useRoute()
-const query = route.query.q || null
+const route = useRoute();
+const query = route.query.q || null;
 
 const currentBooks = ref([
   {
@@ -383,28 +383,28 @@ const currentBooks = ref([
     lat: 46.623205,
     long: 14.268315,
   },
-])
+]);
 
 const getListButtonClass = computed(() => ({
   'btn-blue': showBookList.value,
   'btn-transparent': !showBookList.value,
-}))
+}));
 
 const getMapButtonClass = computed(() => ({
   'btn-blue': !showBookList.value,
   'btn-transparent': showBookList.value,
-}))
+}));
 
 const mapClicked = () => {
-  showBookList.value = false
-}
+  showBookList.value = false;
+};
 
 const listClicked = () => {
-  showBookList.value = true
-}
+  showBookList.value = true;
+};
 
 const showOnMapClicked = (book) => {
-  showBookList.value = false
-  mapComponent.value.zoomToPoint(book)
-}
+  showBookList.value = false;
+  mapComponent.value.zoomToPoint(book);
+};
 </script>

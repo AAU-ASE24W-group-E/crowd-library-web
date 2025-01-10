@@ -1,6 +1,6 @@
 <template>
   <div class="tw-heading mb-5">Bookish Map</div>
-    <div  id="map"></div>
+    <div  id="map" class="h-[90%] mb-20"></div>
 </template>
 
 <script>
@@ -137,7 +137,7 @@ export default {
 
           // if the search result is outside of the current map extent the features are reset
           if (!mapBounds.contains(resultLngLat)) {
-            resetOSMFeatures(); 
+            resetOSMFeatures();
           }
         },
       })

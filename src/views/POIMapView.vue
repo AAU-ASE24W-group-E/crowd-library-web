@@ -10,6 +10,7 @@
         <POISidebarList :poi_info="poi_info" @item-clicked="itemClicked" />
       </aside>
     </div>
+    <div class="tw-footer-margin"></div>
     <Footer />
   </main>
 </template>

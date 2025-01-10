@@ -149,23 +149,24 @@
         disabled:hover:translate-y-0
         disabled:hover:scale-100
         disabled:cursor-not-allowed
-        disabled:bg-gray-500;
+        disabled:bg-gray-500
+        disabled:hover:bg-gray-500
+        dark:disabled:bg-gray-500
+        dark:disabled:hover:bg-gray-500
     }
 
     .btn-blue {
         @apply bg-blue-500
         hover:bg-blue-600
-        disabled:hover:bg-gray-500
         dark:text-title-dark-mode-text
         dark:bg-blue-700
-        dark:hover:bg-blue-800;
+        dark:hover:bg-blue-800
     }
 
     .btn-gray {
         @apply bg-gray-300
         text-gray-700
         hover:bg-gray-400
-        disabled:hover:bg-gray-500
         dark:text-title-dark-mode-text
         dark:bg-gray-600
         dark:hover:bg-gray-700;
@@ -183,7 +184,6 @@
     .btn-green {
         @apply bg-green-700
         hover:bg-green-800
-        disabled:hover:bg-gray-500
         dark:text-title-dark-mode-text
         dark:bg-green-800
         dark:hover:bg-green-900;
@@ -351,10 +351,6 @@
 
     .tw-footer-margin {
         @apply mb-10;
-    }
-
-    #map {
-        @apply h-[90%]  mb-20;
     }
 
     .poi-sidebar-container {
