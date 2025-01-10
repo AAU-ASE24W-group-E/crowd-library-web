@@ -167,7 +167,6 @@ const validateForm = () => {
 
 const login = async () => {
   if (isLoading.value) return;
-
   if (!validateForm()) return;
 
   isLoading.value = true;
@@ -183,16 +182,15 @@ const login = async () => {
 
     const response = await authenticationService.login({username: usernameOrEmail, password: loginForm.password});
     const token = response.data.token;
+
     Snackbar.showSnackbar('Successfully logged in!', SnackbarType.SUCCESS);
-    console.log("Login successful: ", token)
 
-    //TODO handle unverified email logic
-    /*if (!result.emailVerified) {
-        // handling...
-        return;
-        }*/
+    // Handling first login to set location
+    if(response.data.user.initialLoginPending) {
+      await router.push("/set-location");
+      return;
+    }
 
-    // Successful log in attempt
     await router.push("/");
   } catch (e) {
     // TODO handle error cases

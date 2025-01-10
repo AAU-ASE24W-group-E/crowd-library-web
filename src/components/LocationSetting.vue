@@ -25,7 +25,7 @@
         >
           <div class="flex items-center justify-center">
             <div v-if="isLoading" class="tw-loading-animation mr-2"></div>
-            <div>Create Account</div>
+            <div>Finish</div>
           </div>
         </button>
       </div>
@@ -45,7 +45,8 @@ const isLoading = ref(false);
 const selectedLocation = ref<{ lat: number; lng: number } | null>(null);
 
 const skipLocationSetting = async () => {
-  await router.push('/login');
+  await authenticationService.setInitialLogin('UID_MISSING');
+  await router.push('/');
 };
 
 const onLocationSelected = (location: { lat: number; lng: number } | null) => {
@@ -57,7 +58,7 @@ const handleLocationSetting = async () => {
     if (!selectedLocation.value) {
       Snackbar.showSnackbar(
         'Please select a location on the map or skip to login',
-        SnackbarType.ERROR
+        SnackbarType.ERROR,
       );
       return;
     }
@@ -70,14 +71,15 @@ const handleLocationSetting = async () => {
     };
 
     // TODO uid has to be set
-    await authenticationService.setLocation('UID_MISSING', payload);
+    await authenticationService.setLocation('UID', payload);
+    await authenticationService.setInitialLogin('UID');
+    await router.push('/');
 
     Snackbar.showSnackbar('Location was set successfully', SnackbarType.SUCCESS);
-    await router.push('/login');
   } catch (e) {
     Snackbar.showSnackbar(
       'There was an error setting the location, check out console',
-      SnackbarType.ERROR
+      SnackbarType.ERROR,
     );
     console.error('Error handling location setting:', e);
   } finally {

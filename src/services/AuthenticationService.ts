@@ -14,9 +14,12 @@ export interface RegisterPayload {
 }
 
 export interface LocationPayload {
-  uid: string;
   longitude: number;
   latitude: number;
+}
+
+export interface LoginStatePayload {
+  initialLoginPending: boolean;
 }
 
 class AuthenticationService {
@@ -36,6 +39,10 @@ class AuthenticationService {
 
   async updateLocation(uid: string, payload: LocationPayload) {
     return await apiClient.put(`${this.subdomain}/${uid}/address`, payload);
+  }
+
+  async setInitialLogin(uid: string) {
+    return await apiClient.put(`${this.subdomain}/${uid}/set-initial-login`);
   }
 }
 
