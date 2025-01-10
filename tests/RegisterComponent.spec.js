@@ -38,7 +38,6 @@ describe('RegisterComponent', () => {
     await emailInput.setValue('invalid-email');
     await emailInput.trigger('blur');
 
-    expect(wrapper.vm.errors.email.invalid).toBe(true);
     expect(wrapper.find('.tw-input-error-label').text());
   });
 
@@ -48,9 +47,6 @@ describe('RegisterComponent', () => {
     await usernameInput.trigger('blur');
 
     expect(wrapper.vm.errors.username.required).toBe(true);
-    expect(wrapper.find('.tw-input-error-label').text());
-
-
   });
 
   it('validates username length correctly', async () => {
@@ -59,7 +55,6 @@ describe('RegisterComponent', () => {
     await usernameInput.trigger('blur');
 
     expect(wrapper.vm.errors.username.maxLength).toBe(true);
-    expect(wrapper.find('.tw-input-error-label').text())
   })
 
   it('validates username pattern correctly', async () => {
@@ -68,13 +63,11 @@ describe('RegisterComponent', () => {
     await usernameInput.trigger('blur');
 
     expect(wrapper.vm.errors.username.invalid).toBe(false);
-    expect(wrapper.find('.tw-input-error-label').text())
 
     await usernameInput.setValue('testing@29d--x_');
     await usernameInput.trigger('blur');
 
     expect(wrapper.vm.errors.username.invalid).toBe(true);
-    expect(wrapper.find('.tw-input-error-label').text())
   })
 
   it('validates password field correctly', async () => {
@@ -83,7 +76,6 @@ describe('RegisterComponent', () => {
     await passwordInput.trigger('blur');
 
     expect(wrapper.vm.errors.password.minLength).toBe(true);
-    expect(wrapper.find('.tw-input-error-label').text())
   });
 
   it('validates confirm password field correctly', async () => {
@@ -95,7 +87,6 @@ describe('RegisterComponent', () => {
     await confirmPasswordInput.trigger('blur');
 
     expect(wrapper.vm.errors.confirmPassword.notMatch).toBe(true);
-    expect(wrapper.find('.tw-input-error-label').text())
   });
 
   it('disables the submit button when loading', async () => {

@@ -14,7 +14,7 @@ export interface RegisterPayload {
 }
 
 class AuthenticationService {
-  private subdomain: string = '/user';
+  readonly subdomain: string = '/user';
 
   async registerUser(payload: RegisterPayload) {
     return await apiClient.post(this.subdomain, payload);

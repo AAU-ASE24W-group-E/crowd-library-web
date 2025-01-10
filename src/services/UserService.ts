@@ -6,7 +6,7 @@ export interface LocationPayload {
 }
 
 class UserService {
-  private subdomain: string = '/user';
+  readonly subdomain: string = '/user';
 
   async setLocation(uid: string, payload: LocationPayload) {
     return await apiClient.post(`${this.subdomain}/${uid}/address`, payload);
