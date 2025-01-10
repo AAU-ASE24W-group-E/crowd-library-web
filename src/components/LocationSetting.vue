@@ -37,7 +37,7 @@
 import { ref } from 'vue';
 import router from '@/router/index.ts';
 import LocationSelectionMap from '@/components/LocationSelectionMap.vue';
-import { Snackbar } from '@/utility/snackbar.ts';
+import { Snackbar } from '@/utils/snackbar.ts';
 import { SnackbarType } from '@/enums/snackbar.ts';
 import { authenticationService } from '@/services/AuthenticationService.ts';
 

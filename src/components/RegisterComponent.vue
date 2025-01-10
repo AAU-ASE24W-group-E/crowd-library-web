@@ -191,7 +191,7 @@ import {reactive, ref} from 'vue'
 import config from "@/config.json";
 import {useRouter} from 'vue-router'
 import {authenticationService} from '../services/AuthenticationService.ts';
-import {Snackbar} from "@/utility/snackbar.ts";
+import {Snackbar} from "@/utils/snackbar.ts";
 import {SnackbarType} from "@/enums/snackbar.ts";
 
 library.add(faEye, faEyeSlash)
