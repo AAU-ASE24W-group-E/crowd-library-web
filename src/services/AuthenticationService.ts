@@ -1,6 +1,7 @@
 import apiClient from '@/api.ts';
 import type { User } from '@/interfaces/user.ts';
 import { useUserStore } from '@/stores/userStorage.ts'
+import { useAuthStore } from '@/stores/auth.ts'
 
 export interface LoginPayload {
   username: string;
@@ -29,6 +30,7 @@ class AuthenticationService {
 
   async login(payload: LoginPayload) {
     const userStore = useUserStore();
+    const authStore = useAuthStore();
 
     const response = await apiClient.post<{ data: LoginResponse }>(
       `${this.subdomain}/login`,
@@ -38,6 +40,7 @@ class AuthenticationService {
     const user : User = loginResponse.user;
 
     userStore.setUser(user);
+    authStore.setToken(loginResponse.token);
 
     return response;
   }
