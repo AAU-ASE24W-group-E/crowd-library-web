@@ -13,7 +13,7 @@
           </label>
           <div class="relative">
             <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-              <font-awesome-icon class="tw-icon text-gray-500 dark:text-gray-300" :icon="faEnvelope"/>
+              <font-awesome-icon class="tw-icon text-gray-500 dark:text-gray-300" :icon="faEnvelope" />
             </div>
             <input
               class="tw-input"
@@ -44,7 +44,7 @@
           </label>
           <div class="relative">
             <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-              <font-awesome-icon class="tw-icon text-gray-500 dark:text-gray-300" :icon="faLock"/>
+              <font-awesome-icon class="tw-icon text-gray-500 dark:text-gray-300" :icon="faLock" />
             </div>
             <input
               class="tw-input"
@@ -63,7 +63,7 @@
               class="absolute inset-y-0 end-0 flex items-center pe-3 text-gray-500 dark:text-gray-400"
             >
               <font-awesome-icon class="tw-icon text-gray-500 dark:text-gray-300"
-                                 :icon="hidePassword ? 'eye-slash' : 'eye'" :title="'Toggle password visibility'"/>
+                                 :icon="hidePassword ? 'eye-slash' : 'eye'" :title="'Toggle password visibility'" />
             </button>
             <div class="relative">
               <div :class="{
@@ -111,14 +111,14 @@
 
 <script setup>
 
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import {faEnvelope, faEye, faEyeSlash, faLock} from "@fortawesome/free-solid-svg-icons";
-import {library} from "@fortawesome/fontawesome-svg-core";
-import {reactive, ref} from "vue";
-import {useRouter} from "vue-router";
-import {authenticationService} from "@/services/AuthenticationService.ts";
-import {Snackbar} from "@/utility/snackbar.ts";
-import {SnackbarType} from "@/enums/snackbar.ts";
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faEnvelope, faEye, faEyeSlash, faLock } from '@fortawesome/free-solid-svg-icons';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { authenticationService } from '@/services/AuthenticationService.ts';
+import { Snackbar } from '@/utility/snackbar.ts';
+import { SnackbarType } from '@/enums/snackbar.ts';
 
 library.add(faEye, faEyeSlash);
 
@@ -126,13 +126,13 @@ library.add(faEye, faEyeSlash);
 const router = useRouter();
 
 const loginForm = reactive({
-  usernameOrEmail: "",
-  password: "",
-})
+  usernameOrEmail: '',
+  password: '',
+});
 
 const errors = reactive({
-  usernameOrEmail: {required: false, touched: false},
-  password: {required: false, touched: false},
+  usernameOrEmail: { required: false, touched: false },
+  password: { required: false, touched: false },
 });
 
 const hidePassword = ref(true);
@@ -140,7 +140,7 @@ const isLoading = ref(false);
 
 const isControlInvalid = (field) => {
   const value = loginForm[field];
-  const isEmpty = !value || value.trim() === "";
+  const isEmpty = !value || value.trim() === '';
   errors[field].required = isEmpty;
   return isEmpty && errors[field].touched;
 };
@@ -155,7 +155,7 @@ const togglePasswordVisibility = () => {
 };
 
 const validateForm = () => {
-  const fields = ["usernameOrEmail", "password"];
+  const fields = ['usernameOrEmail', 'password'];
 
   fields.forEach((field) => {
     errors[field].touched = true;
@@ -174,30 +174,30 @@ const login = async () => {
   try {
     // Simulation of delay to prevent bruteforce attempts
     await new Promise((resolve) =>
-      setTimeout(resolve, 1000)
+      setTimeout(resolve, 1000),
     );
 
-    let usernameOrEmail = (loginForm.usernameOrEmail || "").trim().toLowerCase();
+    let usernameOrEmail = (loginForm.usernameOrEmail || '').trim().toLowerCase();
     console.log(usernameOrEmail);
 
-    const response = await authenticationService.login({username: usernameOrEmail, password: loginForm.password});
+    const response = await authenticationService.login({ username: usernameOrEmail, password: loginForm.password });
     const token = response.data.token;
 
     Snackbar.showSnackbar('Successfully logged in!', SnackbarType.SUCCESS);
 
     // Handling first login to set location
-    if(response.data.user.initialLoginPending) {
-      await router.push("/set-location");
+    if (response.data.user.initialLoginPending) {
+      await router.push('/set-location');
       return;
     }
 
-    await router.push("/");
+    await router.push('/');
   } catch (e) {
     // TODO handle error cases
     Snackbar.showSnackbar('An unexpected error occurred, check console', SnackbarType.ERROR);
-    console.error("Login error:", e);
+    console.error('Login error:', e);
   } finally {
     isLoading.value = false;
   }
-}
+};
 </script>
