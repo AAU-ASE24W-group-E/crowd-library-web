@@ -17,6 +17,14 @@ describe('Navbar', () => {
   beforeEach(() => {
     pinia = createPinia();
     setActivePinia(pinia);
+    window.matchMedia = vi.fn().mockImplementation((query) => ({
+      matches: query === '(prefers-color-scheme: dark)',
+      media: query,
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }));
     wrapper = mount(Navbar, {
       global: {
         plugins: [pinia],

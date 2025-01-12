@@ -1,7 +1,7 @@
+import { createPinia, setActivePinia } from 'pinia'
 import { mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import NavbarButtons from '@/components/navbar/NavbarButtons.vue';
-import { createPinia, setActivePinia } from 'pinia'
 
 const push = vi.fn();
 vi.mock('vue-router', () => ({
@@ -17,6 +17,14 @@ describe('Navbar', () => {
   beforeEach(() => {
     pinia = createPinia();
     setActivePinia(pinia);
+    window.matchMedia = vi.fn().mockImplementation((query) => ({
+      matches: query === '(prefers-color-scheme: dark)',
+      media: query,
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }));
     wrapper = mount(NavbarButtons, {
       global: {
         plugins: [pinia],
@@ -33,12 +41,30 @@ describe('Navbar', () => {
     const accountButton = wrapper.find('#account-button');
     await accountButton.trigger('click');
 
-    expect(wrapper.vm.dropdownAccountOpen).toBe(true);
+    expect(wrapper.vm.accountDropdownOpen).toBe(true);
 
+    await accountButton.trigger('click');
+    expect(wrapper.vm.accountDropdownOpen).toBe(false);
+  });
+  it('toggles account dropdown on button click', async () => {
+    const accountButton = wrapper.find('#account-button');
+    await accountButton.trigger('click');
+
+  it('toggles theme dropdown on button click', async () => {
+    const themeButton = wrapper.find('#theme-button');
+    await themeButton.trigger('click');
+
+    expect(wrapper.vm.themeDropdownOpen).toBe(true);
+
+    await themeButton.trigger('click');
+    expect(wrapper.vm.themeDropdownOpen).toBe(false);
     await accountButton.trigger('click');
     expect(wrapper.vm.dropdownAccountOpen).toBe(false);
   });
 
+  it('closes dropdowns when clicking outside', async () => {
+    wrapper.vm.accountDropdownOpen = true;
+    wrapper.vm.themeDropdownOpen = true;
   it('closes dropdown when clicking outside', async () => {
     wrapper.vm.dropdownAccountOpen = true;
     await wrapper.vm.$nextTick();
@@ -46,7 +72,28 @@ describe('Navbar', () => {
     const clickEvent = new MouseEvent('click', { bubbles: true });
     document.dispatchEvent(clickEvent);
 
-    expect(wrapper.vm.dropdownAccountOpen).toBe(false);
+    expect(wrapper.vm.accountDropdownOpen).toBe(false);
+    expect(wrapper.vm.themeDropdownOpen).toBe(false);
+  });
+
+  it('applies selected theme when a theme option is clicked', async () => {
+    const themeButton = wrapper.find('#theme-button');
+    await themeButton.trigger('click');
+
+    const lightThemeOption = wrapper.find('#light-option');
+    await lightThemeOption.trigger('click');
+
+    expect(wrapper.vm.selectedTheme).toBe('light');
+    expect(window.localStorage.getItem('SELECTED_THEME')).toBe('light');
+    expect(document.body.classList.contains('dark')).toBe(false);
+
+    await themeButton.trigger('click');
+    const darkThemeOption = wrapper.find('#dark-option');
+    await darkThemeOption.trigger('click');
+
+    expect(wrapper.vm.selectedTheme).toBe('dark');
+    expect(window.localStorage.getItem('SELECTED_THEME')).toBe('dark');
+    expect(document.body.classList.contains('dark')).toBe(true);
   });
 
   it('cleans up event listeners on unmount', () => {
