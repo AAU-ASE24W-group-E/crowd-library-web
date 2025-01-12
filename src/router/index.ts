@@ -6,6 +6,7 @@ import BookSearchView from  "@/views/BookSearchView.vue";
 import POIMapView from "@/views/POIMapView.vue";
 import LocationSettingView from "@/views/LocationSettingView.vue";
 import LocationEditView from '@/views/LocationEditView.vue';
+import UserLibraryView from '@/views/UserLibraryView.vue';
 
 // TODO we have to add restrictions
 const router = createRouter({
@@ -45,6 +46,11 @@ const router = createRouter({
       path: '/edit-location',
       name: 'location-editing',
       component: LocationEditView,
+    },
+    {
+      path: '/my-books',
+      name: 'my-books',
+      component: UserLibraryView,
     },
     {
       path: '/about',
