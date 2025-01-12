@@ -5,6 +5,7 @@ import { SnackbarType } from '@/enums/snackbar.ts';
 import { userService } from '@/services/UserService.ts';
 import router from '@/router/index.ts';
 import LocationEdit from '@/components/LocationEdit.vue';
+import { createPinia, setActivePinia } from 'pinia'
 
 vi.mock('@/services/UserService.ts', () => ({
   userService: {
@@ -26,10 +27,12 @@ vi.mock('@/utils/snackbar.ts', () => ({
 
 describe('LocationEdit.vue', () => {
   let wrapper;
+  let pinia;
 
   const createComponent = () => {
     wrapper = mount(LocationEdit, {
       global: {
+        plugins: [pinia],
         stubs: {
           LocationSelectionMap: {
             template: '<div class="test-map" />',
@@ -40,6 +43,8 @@ describe('LocationEdit.vue', () => {
   };
 
   beforeEach(() => {
+    pinia = createPinia();
+    setActivePinia(pinia);
     createComponent();
   });
 

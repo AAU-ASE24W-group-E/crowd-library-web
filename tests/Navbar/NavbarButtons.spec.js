@@ -1,3 +1,4 @@
+import { createPinia, setActivePinia } from 'pinia';
 import { mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import NavbarButtons from '@/components/navbar/NavbarButtons.vue';
@@ -11,8 +12,11 @@ vi.mock('vue-router', () => ({
 
 describe('Navbar', () => {
   let wrapper;
+  let pinia;
 
   beforeEach(() => {
+    pinia = createPinia();
+    setActivePinia(pinia);
     window.matchMedia = vi.fn().mockImplementation((query) => ({
       matches: query === '(prefers-color-scheme: dark)',
       media: query,
@@ -23,6 +27,7 @@ describe('Navbar', () => {
     }));
     wrapper = mount(NavbarButtons, {
       global: {
+        plugins: [pinia],
         stubs: ['router-link', 'font-awesome-icon'],
       },
     });

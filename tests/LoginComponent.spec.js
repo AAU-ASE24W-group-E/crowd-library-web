@@ -1,32 +1,55 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import LoginComponent from '@/components/LoginComponent.vue'
+import LoginComponent from '@/components/LoginComponent.vue';
+import { createPinia, setActivePinia } from 'pinia';
+import apiClient from '@/api';
+import { authenticationService } from '@/services/AuthenticationService';
 
-const push = vi.fn();
+// Mock Vue Router
 vi.mock('vue-router', () => ({
   useRouter: () => ({
-    push,
+    push: vi.fn(),
   }),
+}));
+
+
+const mockUserStore = { setUser: vi.fn() };
+vi.mock('@/stores/user', () => ({
+  useUserStore: () => mockUserStore,
+}));
+
+const mockAuthStore = { setToken: vi.fn() };
+
+vi.mock('@/stores/auth', () => ({
+  useAuthStore: vi.fn(() => mockAuthStore),
+}));
+
+vi.mock('@/api', () => ({
+  default: {
+    post: vi.fn(), // Mock für die Methode `post`
+  },
 }));
 
 describe('LoginComponent', () => {
   let wrapper;
+  let pinia;
 
   beforeEach(() => {
-    // Using fake timers to control setTimeout in async functions
-    vi.useFakeTimers();
+    vi.clearAllMocks();
+
+    pinia = createPinia();
+    setActivePinia(pinia);
 
     wrapper = mount(LoginComponent, {
       global: {
+        plugins: [pinia],
         stubs: ['router-link', 'font-awesome-icon'],
       },
     });
   });
 
   afterEach(() => {
-    vi.clearAllTimers();
-    vi.useRealTimers();
-    vi.resetAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('renders the component properly', () => {
@@ -41,7 +64,7 @@ describe('LoginComponent', () => {
     await usernameInput.trigger('blur');
     await passwordInput.trigger('blur');
 
-    expect(wrapper.find('.tw-input-error-label').text());
+    expect(wrapper.find('.tw-input-error-label').exists()).toBe(true);
   });
 
   it('validates form submission without filling inputs', async () => {
@@ -52,7 +75,7 @@ describe('LoginComponent', () => {
     expect(errors.length).toBe(2);
   });
 
-  it('testing password visibility toggle button', async () => {
+  it('tests password visibility toggle button', async () => {
     const passwordInput = wrapper.find('input#password');
     const toggleButton = wrapper.find('#toggle-password-visibility');
 
@@ -64,4 +87,36 @@ describe('LoginComponent', () => {
     await toggleButton.trigger('click');
     expect(passwordInput.attributes('type')).toBe('password');
   });
+
+  it('calls the API and stores user and token on success', async () => {
+    const mockPayload = { username: 'testuser', password: 'password123' };
+    const mockResponse = {
+      data: {
+        token: 'mock-token',
+        user: {
+          id: '123',
+          email: 'test@example.com',
+          username: 'testuser',
+          password: 'password123',
+          address: null,
+          role: 'user',
+        },
+      },
+    };
+
+    apiClient.post.mockResolvedValue(mockResponse);
+
+    console.log(mockAuthStore);
+
+    const result = await authenticationService.login(mockPayload);
+
+    expect(apiClient.post).toHaveBeenCalledWith(`${authenticationService.subdomain}/login`, mockPayload);
+
+    expect(mockUserStore.setUser).toHaveBeenCalledWith(mockResponse.data.user);
+    expect(mockAuthStore.setToken).toHaveBeenCalledWith(mockResponse.data.token);
+
+    expect(result).toEqual(mockResponse);
+  });
+
+
 });
