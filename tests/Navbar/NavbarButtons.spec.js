@@ -1,4 +1,4 @@
-import { createPinia, setActivePinia } from 'pinia'
+import { createPinia, setActivePinia } from 'pinia';
 import { mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import NavbarButtons from '@/components/navbar/NavbarButtons.vue';
@@ -46,9 +46,6 @@ describe('Navbar', () => {
     await accountButton.trigger('click');
     expect(wrapper.vm.accountDropdownOpen).toBe(false);
   });
-  it('toggles account dropdown on button click', async () => {
-    const accountButton = wrapper.find('#account-button');
-    await accountButton.trigger('click');
 
   it('toggles theme dropdown on button click', async () => {
     const themeButton = wrapper.find('#theme-button');
@@ -58,15 +55,11 @@ describe('Navbar', () => {
 
     await themeButton.trigger('click');
     expect(wrapper.vm.themeDropdownOpen).toBe(false);
-    await accountButton.trigger('click');
-    expect(wrapper.vm.dropdownAccountOpen).toBe(false);
   });
 
   it('closes dropdowns when clicking outside', async () => {
     wrapper.vm.accountDropdownOpen = true;
     wrapper.vm.themeDropdownOpen = true;
-  it('closes dropdown when clicking outside', async () => {
-    wrapper.vm.dropdownAccountOpen = true;
     await wrapper.vm.$nextTick();
 
     const clickEvent = new MouseEvent('click', { bubbles: true });
