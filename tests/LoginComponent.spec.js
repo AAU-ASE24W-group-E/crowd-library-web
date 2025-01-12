@@ -49,7 +49,7 @@ describe('LoginComponent', () => {
   });
 
   afterEach(() => {
-    vi.resetAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('renders the component properly', () => {
