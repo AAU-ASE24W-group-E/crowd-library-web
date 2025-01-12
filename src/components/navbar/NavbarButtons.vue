@@ -34,10 +34,10 @@
                            :icon="faDesktop"></font-awesome-icon>
       </button>
 
-<!--      TODO -->
+      <!--      TODO -->
       <div v-if="themeDropdownOpen"
            class="right-0 w-28 tw-dropdown-inner-layout">
-        <a @click="selectTheme(Theme.Light)" class="tw-dropdown-inner-action-layout">
+        <a @click="selectTheme(Theme.Light)" class="tw-dropdown-inner-action-layout" id="light-option">
           <svg
             class="fill-gray-700 dark:fill-gray-300 tw-navbar-dropdown-icon h-7"
             xmlns="http://www.w3.org/2000/svg"
@@ -75,19 +75,19 @@
                 <path
                   d="m289.7,270.3c-36.9,21.6-65.3,2.2-66.9,1.1-9-6.6-21.7-4.7-28.4,4.3-6.7,9-4.9,21.8 4.1,28.5 1.4,1 23.5,17.1 56.2,17.1 16.3,0 35.2-4 55.5-15.9 9.7-5.7 13-18.2 7.3-27.9-5.6-9.6-18.1-12.9-27.8-7.2z"
                 />
-                <circle cx="212" cy="211.1" r="20.5"/>
-                <circle cx="300" cy="211.1" r="20.5"/>
+                <circle cx="212" cy="211.1" r="20.5" />
+                <circle cx="300" cy="211.1" r="20.5" />
               </g>
             </g>
           </svg>
           Light
         </a>
-        <a @click="selectTheme(Theme.Dark)" class="tw-dropdown-inner-action-layout">
+        <a @click="selectTheme(Theme.Dark)" class="tw-dropdown-inner-action-layout" id="dark-option">
           <font-awesome-icon :icon="faMoon" class="tw-navbar-dropdown-icon" />
           Dark
         </a>
 
-        <a @click="selectTheme(Theme.System)" class="tw-dropdown-inner-action-layout">
+        <a @click="selectTheme(Theme.System)" class="tw-dropdown-inner-action-layout" id="system-option">
           <font-awesome-icon :icon="faDesktop" class="tw-navbar-dropdown-icon" />
           System
         </a>
