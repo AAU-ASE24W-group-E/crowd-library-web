@@ -342,7 +342,7 @@
     }
 
     .tw-navbar-dropdown-icon {
-        @apply mr-3 text-base w-5 h-5 flex justify-center items-center;
+        @apply mr-3 text-base w-7 h-5 flex justify-center items-center;
     }
 
     .tw-link-style {
