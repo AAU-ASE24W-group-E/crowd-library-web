@@ -103,7 +103,7 @@
         <font-awesome-icon class="tw-icon text-3xl max-sm:text-2xl" :icon="faCircleUser" />
       </button>
       <!--      TODO dynamic width-->
-      <div v-if="dropdownAccountOpen" class="-right-4 w-44 tw-dropdown-inner-layout">
+      <div v-if="accountDropdownOpen" class="-right-4 w-44 tw-dropdown-inner-layout">
         <div v-if="loggedIn">
           <a
             class="px-2 py-2 text-base text-gray-700 dark:text-title-dark-mode-text flex items-center cursor-default"
@@ -200,7 +200,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { onMounted, onUnmounted, ref } from 'vue';
 import { Theme } from '@/enums/theme.ts';
 
-let dropdownAccountOpen = ref(false);
+let accountDropdownOpen = ref(false);
 let themeDropdownOpen = ref(false);
 let username = 'undefined';
 let loggedIn = ref(false);
@@ -209,11 +209,12 @@ const themeDropdownRef = ref<HTMLDivElement | null>(null);
 let selectedTheme = ref<Theme>(Theme.Light);
 
 const handleAccountClick = () => {
-  dropdownAccountOpen.value = !dropdownAccountOpen.value;
+  accountDropdownOpen.value = !accountDropdownOpen.value;
 };
 
 const handleThemeDropdownClick = () => {
   themeDropdownOpen.value = !themeDropdownOpen.value;
+  accountDropdownOpen.value &&= false;
 };
 
 const logout = () => {
@@ -223,12 +224,12 @@ const logout = () => {
 
 const handleClickOutside = (event: MouseEvent) => {
   if (
-    dropdownAccountOpen.value &&
+    accountDropdownOpen.value &&
     dropdownRef.value &&
     event.target instanceof Node &&
     !dropdownRef.value.contains(event.target)
   ) {
-    dropdownAccountOpen.value = false;
+    accountDropdownOpen.value = false;
   }
 
   if (

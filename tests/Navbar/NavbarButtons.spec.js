@@ -28,20 +28,20 @@ describe('Navbar', () => {
     const accountButton = wrapper.find("#account-button");
     await accountButton.trigger("click");
 
-    expect(wrapper.vm.dropdownAccountOpen).toBe(true);
+    expect(wrapper.vm.accountDropdownOpen).toBe(true);
 
     await accountButton.trigger("click");
-    expect(wrapper.vm.dropdownAccountOpen).toBe(false);
+    expect(wrapper.vm.accountDropdownOpen).toBe(false);
   });
 
   it("closes dropdown when clicking outside", async () => {
-    wrapper.vm.dropdownAccountOpen = true;
+    wrapper.vm.accountDropdownOpen = true;
     await wrapper.vm.$nextTick();
 
     const clickEvent = new MouseEvent("click", { bubbles: true });
     document.dispatchEvent(clickEvent);
 
-    expect(wrapper.vm.dropdownAccountOpen).toBe(false);
+    expect(wrapper.vm.accountDropdownOpen).toBe(false);
   });
 
   it("cleans up event listeners on unmount", () => {
