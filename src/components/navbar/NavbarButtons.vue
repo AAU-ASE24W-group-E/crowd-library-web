@@ -15,7 +15,7 @@
       </router-link>
     </div>
 
-    <div class="tw-navbar-dropdown-container max-md:w-[40px] max-sm:w-[35px] p-0" ref="themeDropdownRef">
+    <div class="tw-navbar-dropdown-container w-[40px] max-md:w-[40px] max-sm:w-[35px] p-0" ref="themeDropdownRef">
       <button
         @click="handleThemeDropdownClick"
         id="theme-button"
@@ -203,7 +203,7 @@ import { Theme } from '@/enums/theme.ts';
 let accountDropdownOpen = ref(false);
 let themeDropdownOpen = ref(false);
 let username = 'undefined';
-let loggedIn = ref(false);
+let loggedIn = ref(true);
 const dropdownRef = ref<HTMLDivElement | null>(null);
 const themeDropdownRef = ref<HTMLDivElement | null>(null);
 let selectedTheme = ref<Theme>(Theme.Light);
