@@ -10,22 +10,25 @@
         />
         <div class="flex flex-col flex-grow">
           <span
-            class="text-xl font-semibold dark:text-title-dark-mode-text">{{ book.title }} ({{
-              book.year
-            }}) by {{ book.author }}</span>
+            class="text-xl font-semibold dark:text-title-dark-mode-text">Request for {{ request.for }} (by {{
+              request.from
+            }})</span>
           <div class="flex flex-row max-sm:flex-col max-sm:mt-2 sm:space-x-8 max-sm:space-y-2">
             <div class="flex flex-col">
               <span class="tw-book-entry-info-title">Publisher: <span
-                class="tw-book-entry-info-value">{{ book.publisher }}</span></span>
+                class="tw-book-entry-info-value">{{ request.book.publisher }}</span></span>
               <span class="tw-book-entry-info-title">Format: <span
-                class="tw-book-entry-info-value">{{ book.format }}</span></span>
+                class="tw-book-entry-info-value">{{ request.book.format }}</span></span>
               <span class="tw-book-entry-info-title">Language: <span
-                class="tw-book-entry-info-value">{{ book.language }}</span></span>
+                class="tw-book-entry-info-value">{{ request.book.language }}</span></span>
             </div>
             <div class="flex flex-col">
               <span class="tw-book-entry-info-title">ISBN: <span
-                class="tw-book-entry-info-value">{{ book.ISBN }}</span></span>
-              <span class="tw-book-entry-info-title">Owner: <span class="tw-book-entry-info-value">{{ book.owner }}</span></span>
+                class="tw-book-entry-info-value">{{ request.book.ISBN }}</span></span>
+              <span class="tw-book-entry-info-title">Date: <span
+                class="tw-book-entry-info-value">{{ request.date }}</span></span>
+                <span class="tw-book-entry-info-title">Place: <span
+                  class="tw-book-entry-info-value">{{ request.place }}</span></span>
             </div>
           </div>
         </div>
@@ -57,7 +60,7 @@
   
   const emit = defineEmits(['showOnMapClicked']);
   const props = defineProps({
-    book: {
+    request: {
       type: Object,
       required: true,
     },

@@ -1,7 +1,7 @@
 <template>
     <div class="tw-component-container px-0 w-full" ref="dropdownRef">
         <div class="space-y-6 w-full mt-4">
-            <RequestEntry v-for="(book, index) in requests" :key="index" :book="book"/>
+            <RequestEntry v-for="(request, index) in requests" :key="index" :request="request"/>
         </div>
     </div>
 </template>
