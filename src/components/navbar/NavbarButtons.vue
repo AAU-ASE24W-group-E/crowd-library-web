@@ -21,7 +21,7 @@
       </router-link>
     </div>
 
-    <div class="tw-navbar-dropdown-container max-md:w-[40px] max-sm:w-[35px] p-0" ref="themeDropdownRef">
+    <div class="tw-navbar-dropdown-container w-[40px] max-md:w-[40px] max-sm:w-[35px] p-0" ref="themeDropdownRef">
       <button
         @click="handleThemeDropdownClick"
         id="theme-button"
