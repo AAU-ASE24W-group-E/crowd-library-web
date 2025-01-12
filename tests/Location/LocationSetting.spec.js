@@ -3,6 +3,7 @@ import { mount } from '@vue/test-utils';
 import { userService } from '@/services/UserService.ts';
 import router from '@/router/index.ts';
 import LocationSetting from '@/components/LocationSetting.vue';
+import { createPinia, setActivePinia } from 'pinia'
 
 vi.mock('@/services/AuthenticationService.ts', () => ({
   authenticationService: {
@@ -30,10 +31,12 @@ vi.mock('@/utils/snackbar.ts', () => ({
 
 describe('LocationSetting.vue', () => {
   let wrapper;
+  let pinia;
 
   const createComponent = () => {
     wrapper = mount(LocationSetting, {
       global: {
+        plugins: [pinia],
         stubs: {
           LocationSelectionMap: {
             template: '<div class="test-map" />',
@@ -44,7 +47,10 @@ describe('LocationSetting.vue', () => {
   };
 
   beforeEach(() => {
+    pinia = createPinia();
+    setActivePinia(pinia);
     createComponent();
+
   });
 
   afterEach(() => {

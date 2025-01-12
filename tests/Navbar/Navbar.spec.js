@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import Navbar from "@/components/navbar/Navbar.vue";
+import { createPinia, setActivePinia } from 'pinia'
 
 const push = vi.fn();
 vi.mock('vue-router', () => ({
@@ -11,10 +12,14 @@ vi.mock('vue-router', () => ({
 
 describe('Navbar', () => {
   let wrapper;
+  let pinia;
 
   beforeEach(() => {
+    pinia = createPinia();
+    setActivePinia(pinia);
     wrapper = mount(Navbar, {
       global: {
+        plugins: [pinia],
         stubs: ['router-link', 'font-awesome-icon'],
       },
     });
