@@ -3,15 +3,21 @@
     class="flex items-center flex-row justify-between space-x-6 max-lg:space-x-5 max-sm:space-x-6"
     ref="dropdownRef"
   >
-    <div v-if="loggedIn" class="tw-navbar-dropdown-container">
+    <!--<div v-if="loggedIn" class="tw-navbar-dropdown-container">
       <router-link v-if="loggedIn" to="/my-wishlist" class="navbar-button-container btn-primary">
         <font-awesome-icon class="tw-icon text-3xl max-sm:text-2xl" :icon="faClipboardList" />
       </router-link>
-    </div>
+    </div>-->
 
     <div v-if="loggedIn" class="tw-navbar-dropdown-container">
       <router-link to="/my-books" class="navbar-button-container btn-primary">
         <font-awesome-icon class="tw-icon text-3xl max-sm:text-2xl" :icon="faBook" />
+      </router-link>
+    </div>
+
+    <div v-if="loggedIn" class="tw-navbar-dropdown-container">
+      <router-link to="/my-requests" class="navbar-button-container btn-primary">
+        <font-awesome-icon class="tw-icon text-3xl max-sm:text-2xl" :icon="faMessage" />
       </router-link>
     </div>
 
@@ -185,13 +191,13 @@
 import {
   faBook,
   faCircleUser,
-  faClipboardList,
   faDesktop,
   faGear,
   faHeart,
   faLocationDot,
   faMap,
   faMoon,
+  faMessage,
   faRightFromBracket,
   faRightToBracket,
   faUser,
