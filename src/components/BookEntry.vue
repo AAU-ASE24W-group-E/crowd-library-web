@@ -105,7 +105,7 @@ function handleShowOnMap() {
 }
 </script>
 
-<style>
+<!--<style>
 .tw-book-entry-info-title {
   @apply text-sm dark:text-title-dark-mode-text;
 }
@@ -113,4 +113,4 @@ function handleShowOnMap() {
 .tw-book-entry-info-value {
   @apply text-gray-600 dark:text-gray-400;
 }
-</style>
+</style>-->

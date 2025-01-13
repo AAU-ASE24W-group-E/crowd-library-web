@@ -80,14 +80,3 @@
     emit('showOnMapClicked', props.book);
   }
   </script>
-  
-  <style>
-  .tw-book-entry-info-title {
-    @apply text-sm dark:text-title-dark-mode-text;
-  }
-  
-  .tw-book-entry-info-value {
-    @apply text-gray-600 dark:text-gray-400;
-  }
-  </style>
-  
