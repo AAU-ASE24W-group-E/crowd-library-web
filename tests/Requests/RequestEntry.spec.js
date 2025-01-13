@@ -48,10 +48,14 @@ describe('RequestEntry', () => {
     vi.resetAllMocks();
   });
 
-  it('renders wishlist button when isWishlist is false', async () => {
-    expect(wrapper.find('button.btn-primary.btn-gray').exists()).toBe(true);
-
-    await wrapper.setProps({ isWishlist: true });
-    expect(wrapper.find('button.btn-primary.btn-gray').exists()).toBe(false);
+  // Check that all necessary info is rendered
+  it('renders the request details correctly', () => {
+    expect(wrapper.text()).toContain('Request for Lending (by User3)');
+    expect(wrapper.text()).toContain('Publisher: Ocean Breeze Press');
+    expect(wrapper.text()).toContain('Format: Hardcover');
+    expect(wrapper.text()).toContain('Language: EN');
+    expect(wrapper.text()).toContain('ISBN: 2233445566');
+    expect(wrapper.text()).toContain('Date: -');
+    expect(wrapper.text()).toContain('Place: -');
   });
 });
