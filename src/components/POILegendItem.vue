@@ -7,7 +7,7 @@
       checkedText="On"
       uncheckedText="Off"
       :checkedBg= "color"
-      uncheckedBg="lightgrey"
+      uncheckedBg="grey"
       @click="handleToggle"
     />
     <h3 class="poi-legend-label" :style="{ color: color }">{{ title }}</h3>
@@ -57,10 +57,12 @@ export default {
 <style scoped>
 
 .poi-legend-item {
-  @apply p-1 pl-2 hover:bg-gray-100 cursor-pointer flex items-center;
+  @apply p-1 pl-2 hover:bg-gray-100 cursor-pointer flex items-center
+  dark:text-title-dark-mode-text bg-gray-800 hover:bg-gray-700 ; 
 }
 
 .poi-legend-label {
-  @apply text-lg font-semibold text-gray-800 pl-2;
+  @apply text-lg font-semibold text-gray-800 pl-2
+  dark:text-title-dark-mode-text; 
 }
 </style>
