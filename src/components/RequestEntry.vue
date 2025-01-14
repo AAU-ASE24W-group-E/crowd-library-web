@@ -54,11 +54,10 @@
   </template>
   
   <script setup>
-  import { defineEmits, defineProps, ref } from 'vue';
+  import { defineProps, ref } from 'vue';
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
   import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
   
-  const emit = defineEmits(['showOnMapClicked']);
   const props = defineProps({
     request: {
       type: Object,
@@ -75,8 +74,5 @@
   function toggleDropdown() {
     dropdownOpen.value = !dropdownOpen.value;
   }
-  
-  function handleShowOnMap() {
-    emit('showOnMapClicked', props.book);
-  }
+
   </script>
