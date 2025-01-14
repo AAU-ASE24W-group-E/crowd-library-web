@@ -73,13 +73,15 @@ describe('RequestEntry', () => {
     expect(wrapper.find('.max-h-0').exists()).toBe(true);
   });
 
-  // Check that buttons are not rendered when dropdown is closed
-  /*it('does not render the buttons when dropdown is closed', async() => {
-    expect(wrapper.find('#declineBtn').exists()).toBe(false);
-    expect(wrapper.find('#suggestMeetingBtn').exists()).toBe(false);
-  });*/
+  // Check that buttons are not visible when dropdown is closed
+  it('does not render the buttons when dropdown is closed', async() => {
+    const declineBtn = wrapper.find('#declineBtn');
+    const suggestMeetingBtn = wrapper.find('#suggestMeetingBtn');
+    expect(declineBtn.isVisible()).toBe(false);
+    expect(suggestMeetingBtn.isVisible()).toBe(false);
+  });
 
-  // Check that buttons are rendered on click of dropdown
+  // Check that buttons are visible on click of dropdown
   it('renders the buttons when dropdown is open', async() => {
     // Trigger click action
     await wrapper.find('.tw-component-container').trigger('click');
@@ -89,5 +91,7 @@ describe('RequestEntry', () => {
     expect(declineBtn.text()).toBe("Decline");
     expect(suggestMeetingBtn.exists()).toBe(true);
     expect(suggestMeetingBtn.text()).toBe("Suggest Meeting");
+    expect(declineBtn.isVisible()).toBe(true);
+    expect(suggestMeetingBtn.isVisible()).toBe(true);
   });
 });
