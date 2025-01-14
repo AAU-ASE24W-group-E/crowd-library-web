@@ -28,6 +28,10 @@ export default {
             title: this.title,
             name: this.name
         });
+        if(this.index == 0){
+            this.$parent.activateTab(this.index);
+        }
+        console.log("Registered " + this.title);
     }
 };
 </script>

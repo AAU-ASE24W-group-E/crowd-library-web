@@ -27,12 +27,13 @@ export default {
         // Activate the tab based on its index
         activateTab(index) {
             this.activeTab = index;
+            console.log("Active: " + index);
         },
 
         // Register a tab component (called by Tab.vue)
         registerTab(tab) {
             this.tabs.push(tab);
-        }
+        },
     }
 };
 </script>
