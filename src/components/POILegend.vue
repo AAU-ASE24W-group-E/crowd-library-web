@@ -30,7 +30,7 @@ export default {
 <style>
 .legend-box {
     @apply bg-gray-100 rounded-lg mr-10
-    dark:text-title-dark-mode-text bg-gray-800; 
+    dark:bg-gray-800; 
 }
 
 </style>

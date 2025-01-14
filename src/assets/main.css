@@ -360,7 +360,7 @@
         max-sm:w-full
         max-sm:mt-20
         max-h-[78vh]
-        dark:text-title-dark-mode-text bg-dark-mode;
+        dark:text-title-dark-mode-text dark:bg-dark-mode;
     }
 
     .map-sidebar-container {
@@ -369,12 +369,12 @@
         /* max-sm:w-full */
         mb-5 mt-5
         flex-row max-sm:flex-col
-        dark:text-title-dark-mode-text bg-dark-mode;
+        dark:text-title-dark-mode-text dark:bg-dark-mode;
     }
 
     .map-container {
         @apply flex-1 w-[75%] max-sm:w-full  bg-gray-50 p-8 max-sm:p-0
-        dark:text-title-dark-mode-text bg-dark-mode;
+        dark:text-title-dark-mode-text dark:bg-dark-mode;
       }
 
     .snackbar {

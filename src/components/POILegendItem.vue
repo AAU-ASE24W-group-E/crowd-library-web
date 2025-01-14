@@ -58,7 +58,7 @@ export default {
 
 .poi-legend-item {
   @apply p-1 pl-2 hover:bg-gray-100 cursor-pointer flex items-center
-  dark:text-title-dark-mode-text bg-gray-800 hover:bg-gray-700 ; 
+  dark:bg-gray-800 dark:hover:bg-gray-700 ; 
 }
 
 .poi-legend-label {

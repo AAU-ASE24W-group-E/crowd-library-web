@@ -43,7 +43,7 @@ export default {
 <style scoped>
 .poi-sidebar-item {
   @apply p-4 bg-white rounded-lg shadow-md hover:bg-gray-100 cursor-pointer
-  dark:text-title-dark-mode-text bg-gray-800 hover:bg-gray-700;
+  dark:text-title-dark-mode-text dark:bg-gray-800 dark:hover:bg-gray-700;
 }
 
 .poi-sidebar-title {
