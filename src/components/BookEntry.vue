@@ -25,7 +25,7 @@
           <div class="flex flex-col">
             <span class="tw-book-entry-info-title">ISBN: <span
               class="tw-book-entry-info-value">{{ book.ISBN }}</span></span>
-            <span class="tw-book-entry-info-title">Owner: <span class="tw-book-entry-info-value">{{ book.owner }}</span></span>
+            <span v-if="!isMyBook"  class="tw-book-entry-info-title">Owner: <span class="tw-book-entry-info-value">{{ book.owner }}</span></span>
             <span class="tw-book-entry-info-title">Status: <span
               :class="{'text-green-500': book.isAvailable, 'text-red-500': !book.isAvailable}">
               {{ book.status }}</span></span>
@@ -67,11 +67,13 @@
     >
       <div
         class="flex flex-row w-full mt-2 space-x-16 max-md:space-x-6 ml-24 max-sm:space-x-0 max-sm:flex-col max-sm:space-y-4 max-sm:justify-center max-sm:ml-0">
-        <button v-if="!isWishlist" class="btn-primary btn-gray rounded-2xl">
+        <button v-if="!isWishlist && !isMyBook" class="btn-primary btn-gray rounded-2xl">
           Add to wishlist
         </button>
-        <button class="btn-primary btn-green rounded-2xl">Send request</button>
-        <button @click="handleShowOnMap" class="btn-primary btn-green rounded-2xl">Show on Map</button>
+        <button v-if="!isMyBook" class="btn-primary btn-green rounded-2xl">Send request</button>
+        <button v-if="!isMyBook" @click="handleShowOnMap" class="btn-primary btn-green rounded-2xl">Show on Map</button>
+        <button v-if="isMyBook" @click="handleEditState" class="btn-primary btn-green rounded-2xl">Edit State</button>
+        <button v-if="isMyBook" @click="handleDelete" class="btn-primary btn-gray rounded-2xl">Delete</button>
       </div>
     </div>
   </div>
@@ -92,6 +94,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  isMyBook: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const dropdownOpen = ref(false);
@@ -102,6 +108,14 @@ function toggleDropdown() {
 
 function handleShowOnMap() {
   emit('showOnMapClicked', props.book);
+}
+
+function handleEditState() {
+  console.log("edit")
+}
+
+function handleDelete() {
+  console.log("delete")
 }
 </script>
 
