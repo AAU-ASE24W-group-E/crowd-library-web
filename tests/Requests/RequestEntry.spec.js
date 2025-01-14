@@ -58,4 +58,36 @@ describe('RequestEntry', () => {
     expect(wrapper.text()).toContain('Date: -');
     expect(wrapper.text()).toContain('Place: -');
   });
+
+  /* max-h-0: when dropdown is closed
+     max-h-40: when dropdown is opened */
+  it('toggles the dropdown visibility when clicked', async () => {
+    // Closed dropdown at first
+    expect(wrapper.find('.max-h-0').exists()).toBe(true);
+    // Trigger click action
+    await wrapper.find('.tw-component-container').trigger('click');
+    // Opened dropdown
+    expect(wrapper.find('.max-h-40').exists()).toBe(true);
+    // Closed after cicking again
+    await wrapper.find('.tw-component-container').trigger('click');
+    expect(wrapper.find('.max-h-0').exists()).toBe(true);
+  });
+
+  // Check that buttons are not rendered when dropdown is closed
+  /*it('does not render the buttons when dropdown is closed', async() => {
+    expect(wrapper.find('#declineBtn').exists()).toBe(false);
+    expect(wrapper.find('#suggestMeetingBtn').exists()).toBe(false);
+  });*/
+
+  // Check that buttons are rendered on click of dropdown
+  it('renders the buttons when dropdown is open', async() => {
+    // Trigger click action
+    await wrapper.find('.tw-component-container').trigger('click');
+    const declineBtn = wrapper.find('#declineBtn');
+    const suggestMeetingBtn = wrapper.find('#suggestMeetingBtn');
+    expect(declineBtn.exists()).toBe(true);
+    expect(declineBtn.text()).toBe("Decline");
+    expect(suggestMeetingBtn.exists()).toBe(true);
+    expect(suggestMeetingBtn.text()).toBe("Suggest Meeting");
+  });
 });
