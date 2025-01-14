@@ -12,11 +12,32 @@ vi.mock('vue-router', () => ({
 describe('Tabs', () => {
   let wrapper;
 
-  beforeEach(() => {
-    wrapper = mount(Tabs);
+  wrapper = mount(Tabs, {
+    data() {
+      return {
+        tabs: [
+          { name: 'mockTab1', title: 'Mock Tab 1' },
+          { name: 'mockTab2', title: 'Mock Tab 2' },
+        ],
+      };
+    },
   });
 
   afterEach(() => {
     vi.resetAllMocks();
+  });
+
+  /* Ensure the number of rendered elements is correct; only 2 tabs */
+  it('create exactly 2 tabs', async () => {
+    /* Use for print debugging */
+    //await wrapper.vm.$nextTick();
+    console.log(wrapper.html());
+    expect(wrapper.find('.tabs').exists()).toBe(true);
+    expect(wrapper.findAll('.tabs').length).toBe(1);
+    expect(wrapper.find('.tab-titles').exists()).toBe(true);
+    expect(wrapper.findAll('.tab-titles').length).toBe(1);
+    expect(wrapper.find('.tab-content').exists()).toBe(true);
+    expect(wrapper.findAll('.tab-content').length).toBe(1);
+    expect(wrapper.findAll('.tab-title').length).toBe(2);
   });
 });
