@@ -46,8 +46,8 @@
       >
         <div
           class="flex flex-row w-full mt-2 space-x-16 max-md:space-x-6 ml-24 max-sm:space-x-0 max-sm:flex-col max-sm:space-y-4 max-sm:justify-center max-sm:ml-0">
-          <button id="declineBtn" class="btn-primary btn-gray rounded-2xl">Decline</button>
-          <button id="suggestMeetingBtn" class="btn-primary btn-green rounded-2xl">Suggest Meeting</button>
+          <button v-show="dropdownOpen" id="declineBtn" class="btn-primary btn-gray rounded-2xl">Decline</button>
+          <button v-show="dropdownOpen" id="suggestMeetingBtn" class="btn-primary btn-green rounded-2xl">Suggest Meeting</button>
         </div>
       </div>
     </div>
