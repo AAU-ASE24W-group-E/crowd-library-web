@@ -2,7 +2,7 @@
   <div class="tw-component-container px-0 w-full" ref="dropdownRef">
     <div class="flex flex-row w-full justify-between items-center max-[480px]:flex-col">
       <div>
-        <h1 class="tw-subheading text-[30px] text-gray-600">Book List</h1>
+        <h1 class="tw-subheading text-[30px]">Book List</h1>
       </div>
       <div class="flex flex-row items-center space-x-6 pr-1">
         <div class="flex flex-row items-center space-x-2">
