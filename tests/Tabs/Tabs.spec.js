@@ -14,19 +14,21 @@ describe('Tabs', () => {
   let mockActivateTab = vi.fn();
   let mockRegisterTab = vi.fn();
 
-  wrapper = mount(Tabs, {
-    methods: {
-      activateTab: mockActivateTab,
-      registerTab: mockRegisterTab,
-    },
-    data() {
-      return {
-        tabs: [
-          { name: 'mockTab1', title: 'Mock Tab 1' },
-          { name: 'mockTab2', title: 'Mock Tab 2' },
-        ],
-      };
-    },
+  beforeEach(() => {
+    wrapper = mount(Tabs, {
+      methods: {
+        activateTab: mockActivateTab,
+        registerTab: mockRegisterTab,
+      },
+      data() {
+        return {
+          tabs: [
+            { name: 'mockTab1', title: 'Mock Tab 1' },
+            { name: 'mockTab2', title: 'Mock Tab 2' },
+          ],
+        };
+      },
+    });
   });
 
   afterEach(() => {
@@ -49,7 +51,7 @@ describe('Tabs', () => {
 
   it('create correct headers for tabs', async () => {
     const tabTitles = wrapper.findAll('.tab-title');
-    expect(tabTitles.at(0).text()).toBe("Mock Tab 1");
-    expect(tabTitles.at(1).text()).toBe("Mock Tab 2");
-  })
+    expect(tabTitles.at(0).text()).toBe('Mock Tab 1');
+    expect(tabTitles.at(1).text()).toBe('Mock Tab 2');
+  });
 });
