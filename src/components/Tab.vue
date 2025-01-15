@@ -5,7 +5,9 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from 'vue';
+
+export default defineComponent({
     props: {
         name: {
             type: String,
@@ -38,5 +40,5 @@ export default {
             console.warn('Parent (=Tabs) component not available yet');
         }
     }
-};
+});
 </script>

@@ -16,7 +16,13 @@
 </template>
 
 <script>
+import { ref } from 'vue';
+
 export default {
+    setup() {
+        const activeTab = ref(0); // Index of the active tab
+        const tabs = ref([]);     // Array to store the tabs
+    },
     data() {
         return {
             activeTab: 0,  // Index of the active tab
@@ -35,6 +41,9 @@ export default {
             this.tabs.push(tab);
             console.log("Registered " + tab.title);
         },
+    },
+    setup() {
+
     }
 };
 </script>
