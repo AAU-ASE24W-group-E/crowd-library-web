@@ -173,9 +173,9 @@ const login = async () => {
 
   try {
     // Simulation of delay to prevent bruteforce attempts
-    await new Promise((resolve) =>
-      setTimeout(resolve, 1000),
-    );
+    // await new Promise((resolve) =>
+    //   setTimeout(resolve, 1000),
+    // );
 
     let usernameOrEmail = (loginForm.usernameOrEmail || '').trim().toLowerCase();
     console.log(usernameOrEmail);
@@ -193,9 +193,20 @@ const login = async () => {
 
     await router.push('/');
   } catch (e) {
-    // TODO handle error cases
-    Snackbar.showSnackbar('An unexpected error occurred, check console', SnackbarType.ERROR);
     console.error('Login error:', e);
+
+    const type = e.response?.data?.type;
+    switch (type) {
+      case 'UserNotFoundException':
+        Snackbar.showSnackbar('This user could not be found', SnackbarType.ERROR);
+        break;
+      case 'InvalidPasswordException':
+        Snackbar.showSnackbar('Wrong password, try again', SnackbarType.ERROR);
+        break;
+      default:
+        console.debug("Unexpected Error, no exception defined")
+        Snackbar.showSnackbar('An unexpected error occurred, check console', SnackbarType.ERROR);
+    }
   } finally {
     isLoading.value = false;
   }
