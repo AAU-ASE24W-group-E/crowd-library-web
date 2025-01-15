@@ -86,6 +86,7 @@ const setActiveTab = (tab) => {
 .tabs-wrapper {
   @apply w-[90%]
   mt-5
+  p-2
   max-sm:w-full;
 }
 .tabs-header button {

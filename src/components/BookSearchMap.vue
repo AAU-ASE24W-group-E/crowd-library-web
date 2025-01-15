@@ -129,7 +129,6 @@ export default {
     }
 
     onMounted(() => {
-      console.log("Mounted")
       map = new maplibregl.Map({
         container: 'book-map',
         style: map_style,

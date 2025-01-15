@@ -85,6 +85,7 @@
         :key="index"
         :book="book"
         :isWishlist="isWishlist"
+        :isSearchBook="true"
         @showOnMapClicked="showOnMapClicked"
       />
     </div>
@@ -93,7 +94,7 @@
 
 <script setup>
 import BookEntry from '@/components/BookEntry.vue';
-import { defineEmits, defineProps, onMounted, onUnmounted, ref } from 'vue';
+import { defineProps, onMounted, onUnmounted, ref } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faArrowDownWideShort, faChevronDown, faX } from '@fortawesome/free-solid-svg-icons';
 

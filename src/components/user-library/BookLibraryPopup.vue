@@ -49,8 +49,8 @@
       </div>
 
       <div class="modal-footer">
-        <button @click="closeModal" class="btn-primary btn-gray rounded-2xl">Cancel</button>
-        <button @click="okButtonClicked" class="btn-primary btn-green rounded-2xl ok-button">
+        <button @click="closeModal" class="cancel-popup-btn btn-primary btn-gray rounded-2xl">Cancel</button>
+        <button @click="okButtonClicked" class="ok-popup-btn btn-primary btn-green rounded-2xl ok-button">
           {{ popupType }}
         </button>
       </div>
@@ -77,7 +77,6 @@ export default {
     },
   },
   setup(props) {
-    console.log(props.popupBook.isAvailable)
     const editable = ref({
       isAvailable: {
         value: props.popupBook.isAvailable,

@@ -354,7 +354,7 @@
     }
 
     .tw-link-style {
-        @apply text-black dark:text-title-dark-mode-text hover:text-blue-500 text-center transition-all duration-300 decoration-0 font-medium
+        @apply text-blue-800 dark:text-title-dark-mode-text hover:text-blue-500 text-center transition-all duration-300 decoration-0 font-medium
     }
 
     .tw-footer-margin {

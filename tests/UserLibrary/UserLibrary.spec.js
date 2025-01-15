@@ -74,8 +74,8 @@ describe('UserLibrary', () => {
     expect(myBooksTabContent.exists()).toBe(true);
   });
 
-  it('does not render UserLibraryMyBooks component when "BorrowedBooks" tab is active', async () => {
-    const borrowedBooksTab = wrapper.findAll('.tabs-header button').at(1); // "BorrowedBooks"
+  it('does not render UserLibraryMyBooks component when "Borrowed Books" tab is active', async () => {
+    const borrowedBooksTab = wrapper.findAll('.tabs-header button').at(1); // "Borrowed Books"
     await borrowedBooksTab.trigger('click');
 
     const myBooksTabContent = wrapper.findComponent(UserLibraryMyBooks);
