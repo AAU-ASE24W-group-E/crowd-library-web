@@ -1,4 +1,6 @@
 import { mount } from '@vue/test-utils';
+import { Snackbar } from '@/utils/snackbar.ts';
+import { SnackbarType } from '@/enums/snackbar.ts';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import LoginComponent from '@/components/LoginComponent.vue';
 import { createPinia, setActivePinia } from 'pinia';
@@ -75,7 +77,7 @@ describe('LoginComponent', () => {
     expect(errors.length).toBe(2);
   });
 
-  it('tests password visibility toggle button', async () => {
+  it('testing password visibility toggle button', async () => {
     const passwordInput = wrapper.find('input#password');
     const toggleButton = wrapper.find('#toggle-password-visibility');
 
@@ -119,4 +121,68 @@ describe('LoginComponent', () => {
   });
 
 
+
+  it('shows "This user could not be found" if UserNotFoundException is thrown', async () => {
+    vi.spyOn(authenticationService, 'login').mockRejectedValueOnce({
+      response: {
+        data: { type: 'UserNotFoundException' },
+      },
+    });
+
+    const snackbarSpy = vi.spyOn(Snackbar, 'showSnackbar');
+    await fillAndSubmitLoginForm()
+
+    expect(snackbarSpy).toHaveBeenCalledWith(
+      'This user could not be found',
+      SnackbarType.ERROR,
+    );
+
+    // expect(push).not.toHaveBeenCalled();
+    expect(wrapper.vm.isLoading).toBe(false);
+  });
+
+  it('shows "Invalid Password" if InvalidPasswordException is thrown', async () => {
+    vi.spyOn(authenticationService, 'login').mockRejectedValueOnce({
+      response: {
+        data: { type: 'InvalidPasswordException' },
+      },
+    });
+
+    const snackbarSpy = vi.spyOn(Snackbar, 'showSnackbar');
+    await fillAndSubmitLoginForm()
+
+    expect(snackbarSpy).toHaveBeenCalledWith(
+      'Wrong password, try again',
+      SnackbarType.ERROR,
+    );
+
+    // expect(push).not.toHaveBeenCalled();
+    expect(wrapper.vm.isLoading).toBe(false);
+  });
+
+  it('shows "Unexpected Error" if other exception is thrown', async () => {
+    vi.spyOn(authenticationService, 'login').mockRejectedValueOnce({
+      response: {
+        data: { type: 'OtherException' },
+      },
+    });
+
+    const snackbarSpy = vi.spyOn(Snackbar, 'showSnackbar');
+    await fillAndSubmitLoginForm()
+
+    expect(snackbarSpy).toHaveBeenCalledWith(
+      'An unexpected error occurred, check console',
+      SnackbarType.ERROR,
+    );
+
+    // expect(push).not.toHaveBeenCalled();
+    expect(wrapper.vm.isLoading).toBe(false);
+  });
+
+  async function fillAndSubmitLoginForm(usernameOrEmail = 'someuser', password = 'somepassword') {
+    await wrapper.find('#username-email').setValue(usernameOrEmail)
+    await wrapper.find('#password').setValue(password)
+
+    await wrapper.find('form').trigger('submit.prevent')
+  }
 });
