@@ -193,11 +193,9 @@ const login = async () => {
 
     await router.push('/');
   } catch (e) {
-    const type = e.response?.data?.type;
-
     console.error('Login error:', e);
-    console.error('Type:', type);
 
+    const type = e.response?.data?.type;
     switch (type) {
       case 'UserNotFoundException':
         Snackbar.showSnackbar('This user could not be found', SnackbarType.ERROR);
@@ -206,6 +204,7 @@ const login = async () => {
         Snackbar.showSnackbar('Wrong password, try again', SnackbarType.ERROR);
         break;
       default:
+        console.debug("Unexpected Error, no exception defined")
         Snackbar.showSnackbar('An unexpected error occurred, check console', SnackbarType.ERROR);
     }
   } finally {
