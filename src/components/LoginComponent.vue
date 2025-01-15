@@ -173,9 +173,9 @@ const login = async () => {
 
   try {
     // Simulation of delay to prevent bruteforce attempts
-    await new Promise((resolve) =>
-      setTimeout(resolve, 1000),
-    );
+    // await new Promise((resolve) =>
+    //   setTimeout(resolve, 1000),
+    // );
 
     let usernameOrEmail = (loginForm.usernameOrEmail || '').trim().toLowerCase();
     console.log(usernameOrEmail);

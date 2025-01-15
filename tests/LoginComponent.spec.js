@@ -1,6 +1,9 @@
 import { mount } from '@vue/test-utils';
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import LoginComponent from '@/components/LoginComponent.vue'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import LoginComponent from '@/components/LoginComponent.vue';
+import { Snackbar } from '@/utils/snackbar.ts';
+import { authenticationService } from '@/services/AuthenticationService.ts';
+import { SnackbarType } from '@/enums/snackbar.ts';
 
 const push = vi.fn();
 vi.mock('vue-router', () => ({
@@ -64,4 +67,68 @@ describe('LoginComponent', () => {
     await toggleButton.trigger('click');
     expect(passwordInput.attributes('type')).toBe('password');
   });
+
+  it('shows "This user could not be found" if UserNotFoundException is thrown', async () => {
+    vi.spyOn(authenticationService, 'login').mockRejectedValueOnce({
+      response: {
+        data: { type: 'UserNotFoundException' },
+      },
+    });
+
+    const snackbarSpy = vi.spyOn(Snackbar, 'showSnackbar');
+    await fillAndSubmitLoginForm()
+
+    expect(snackbarSpy).toHaveBeenCalledWith(
+      'This user could not be found',
+      SnackbarType.ERROR,
+    );
+
+    expect(push).not.toHaveBeenCalled();
+    expect(wrapper.vm.isLoading).toBe(false);
+  });
+
+  it('shows "Invalid Password" if InvalidPasswordException is thrown', async () => {
+    vi.spyOn(authenticationService, 'login').mockRejectedValueOnce({
+      response: {
+        data: { type: 'InvalidPasswordException' },
+      },
+    });
+
+    const snackbarSpy = vi.spyOn(Snackbar, 'showSnackbar');
+    await fillAndSubmitLoginForm()
+
+    expect(snackbarSpy).toHaveBeenCalledWith(
+      'Wrong password, try again',
+      SnackbarType.ERROR,
+    );
+
+    expect(push).not.toHaveBeenCalled();
+    expect(wrapper.vm.isLoading).toBe(false);
+  });
+
+  it('shows "Unexpected Error" if other exception is thrown', async () => {
+    vi.spyOn(authenticationService, 'login').mockRejectedValueOnce({
+      response: {
+        data: { type: 'OtherException' },
+      },
+    });
+
+    const snackbarSpy = vi.spyOn(Snackbar, 'showSnackbar');
+    await fillAndSubmitLoginForm()
+
+    expect(snackbarSpy).toHaveBeenCalledWith(
+      'An unexpected error occurred, check console',
+      SnackbarType.ERROR,
+    );
+
+    expect(push).not.toHaveBeenCalled();
+    expect(wrapper.vm.isLoading).toBe(false);
+  });
+
+  async function fillAndSubmitLoginForm(usernameOrEmail = 'someuser', password = 'somepassword') {
+    await wrapper.find('#username-email').setValue(usernameOrEmail)
+    await wrapper.find('#password').setValue(password)
+
+    await wrapper.find('form').trigger('submit.prevent')
+  }
 });
