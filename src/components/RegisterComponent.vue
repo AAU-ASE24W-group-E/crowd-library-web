@@ -84,7 +84,7 @@
           </label>
           <div class="relative">
             <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-              <font-awesome-icon class="tw-icon text-gray-500 dark:text-gray-300" :icon="faLock"/>
+              <font-awesome-icon class="tw-icon text-gray-500 dark:text-gray-300" :icon="faLock" />
             </div>
             <input
               class="tw-input"
@@ -103,7 +103,7 @@
               class="absolute inset-y-0 end-0 flex items-center pe-3 text-gray-500 dark:text-gray-400"
             >
               <font-awesome-icon class="tw-icon text-gray-500 dark:text-gray-300"
-                                 :icon="hidePassword ? 'eye-slash' : 'eye'" :title="'Toggle password visibility'"/>
+                                 :icon="hidePassword ? 'eye-slash' : 'eye'" :title="'Toggle password visibility'" />
             </button>
             <div class="relative">
               <div :class="{
@@ -126,7 +126,7 @@
           </label>
           <div class="relative">
             <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-              <font-awesome-icon class="tw-icon text-gray-500 dark:text-gray-300" :icon="faLock"/>
+              <font-awesome-icon class="tw-icon text-gray-500 dark:text-gray-300" :icon="faLock" />
             </div>
             <input
               class="tw-input"
@@ -146,7 +146,7 @@
             >
               <font-awesome-icon class="tw-icon text-gray-500 dark:text-gray-300"
                                  :icon="hideConfirmPassword ? 'eye-slash' : 'eye'"
-                                 :title="'Toggle password visibility'"/>
+                                 :title="'Toggle password visibility'" />
             </button>
             <div class="relative">
               <div :class="{
@@ -184,36 +184,36 @@
 </template>
 
 <script setup>
-import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
-import {faEnvelope, faEye, faEyeSlash, faLock, faUser} from '@fortawesome/free-solid-svg-icons'
-import {library} from '@fortawesome/fontawesome-svg-core'
-import {reactive, ref} from 'vue'
-import config from "@/config.json";
-import {useRouter} from 'vue-router'
-import {authenticationService} from '../services/AuthenticationService.ts';
-import {Snackbar} from "@/utils/snackbar.ts";
-import {SnackbarType} from "@/enums/snackbar.ts";
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faEnvelope, faEye, faEyeSlash, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { reactive, ref } from 'vue';
+import config from '@/config.json';
+import { useRouter } from 'vue-router';
+import { authenticationService } from '../services/AuthenticationService.ts';
+import { Snackbar } from '@/utils/snackbar.ts';
+import { SnackbarType } from '@/enums/snackbar.ts';
 
-library.add(faEye, faEyeSlash)
+library.add(faEye, faEyeSlash);
 
-const router = useRouter()
-const hidePassword = ref(true)
-const hideConfirmPassword = ref(true)
-const isLoading = ref(false)
+const router = useRouter();
+const hidePassword = ref(true);
+const hideConfirmPassword = ref(true);
+const isLoading = ref(false);
 
 
 const registerForm = reactive({
   email: '',
   username: '',
   password: '',
-  confirmPassword: ''
-})
+  confirmPassword: '',
+});
 
 const errors = reactive({
-  email: {required: false, invalid: false, touched: false},
-  username: {required: false, maxLength: false, invalid: false, touched: false},
-  password: {required: false, minLength: false, touched: false},
-  confirmPassword: {required: false, notMatch: false, touched: false},
+  email: { required: false, invalid: false, touched: false },
+  username: { required: false, maxLength: false, invalid: false, touched: false },
+  password: { required: false, minLength: false, touched: false },
+  confirmPassword: { required: false, notMatch: false, touched: false },
 });
 
 const handleBlur = (field) => {
@@ -222,14 +222,14 @@ const handleBlur = (field) => {
 };
 
 const validateForm = () => {
-  const fields = ["email", "username", "password", "confirmPassword"];
+  const fields = ['email', 'username', 'password', 'confirmPassword'];
 
   fields.forEach((field) => {
     handleBlur(field);
   });
 
   return fields.every((field) => {
-    const {touched, ...errorState} = errors[field]; // Destructure to exclude "touched"
+    const { touched, ...errorState } = errors[field]; // Destructure to exclude "touched"
     return Object.values(errorState).every((isValid) => !isValid); // All error flags must be false
   });
 };
@@ -240,26 +240,26 @@ const isControlInvalid = (field) => {
   let invalid = false;
 
   switch (field) {
-    case "email":
+    case 'email':
       errors.email.required = !trimmedValue;
       errors.email.invalid = !(new RegExp(config.USERNAME_EMAIL_PATTERN)).test(trimmedValue);
       invalid = errors.email.required || errors.email.invalid;
       break;
 
-    case "username":
+    case 'username':
       errors.username.required = !trimmedValue;
       errors.username.invalid = !new RegExp(config.USERNAME_CHARACTER_PATTERN).test(trimmedValue);
       errors.username.maxLength = trimmedValue?.length > config.USERNAME_MAX_LENGTH;
       invalid = errors.username.required || errors.username.invalid || errors.username.maxLength;
       break;
 
-    case "password":
+    case 'password':
       errors.password.required = !trimmedValue;
       errors.password.minLength = trimmedValue?.length < config.PASSWORD_MIN_LENGTH;
       invalid = errors.password.required || errors.password.minLength;
       break;
 
-    case "confirmPassword":
+    case 'confirmPassword':
       errors.confirmPassword.required = !trimmedValue;
       errors.confirmPassword.notMatch = trimmedValue !== registerForm.password;
       invalid = errors.confirmPassword.required || errors.confirmPassword.notMatch;
@@ -273,11 +273,11 @@ const isControlInvalid = (field) => {
 };
 const togglePasswordVisibility = () => {
   hidePassword.value = !hidePassword.value;
-}
+};
 
 const toggleConfirmPasswordVisibility = () => {
   hideConfirmPassword.value = !hideConfirmPassword.value;
-}
+};
 
 const register = async () => {
   if (isLoading.value) return;
@@ -294,7 +294,7 @@ const register = async () => {
   };
 
   try {
-    console.debug("Trying to register...")
+    console.debug('Trying to register...');
 
     const response = await authenticationService.registerUser(payload);
     Snackbar.showSnackbar('Register successful, you can now log in!', SnackbarType.SUCCESS);
@@ -302,11 +302,21 @@ const register = async () => {
 
     await router.push('/login');
   } catch (e) {
-    // todo handle all errors like already existing mail, username, other error and so on
-    Snackbar.showSnackbar('An unexpected error occurred, check console', SnackbarType.ERROR);
-    console.error('Registration error:', e)
+    const type = e.response?.data?.type;
+    console.error('Registration error:', e);
+    console.error("Type: ", type);
+    switch (type) {
+      case 'EmailAlreadyExistsException':
+        Snackbar.showSnackbar('This email already exists', SnackbarType.ERROR);
+        break;
+      case 'UsernameAlreadyExistsException':
+        Snackbar.showSnackbar('This username already exists', SnackbarType.ERROR);
+        break;
+      default:
+        Snackbar.showSnackbar('An unexpected error occurred, check console', SnackbarType.ERROR);
+    }
   } finally {
     isLoading.value = false;
   }
-}
+};
 </script>
