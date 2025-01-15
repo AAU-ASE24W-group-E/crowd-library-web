@@ -193,9 +193,21 @@ const login = async () => {
 
     await router.push('/');
   } catch (e) {
-    // TODO handle error cases
-    Snackbar.showSnackbar('An unexpected error occurred, check console', SnackbarType.ERROR);
+    const type = e.response?.data?.type;
+
     console.error('Login error:', e);
+    console.error('Type:', type);
+
+    switch (type) {
+      case 'UserNotFoundException':
+        Snackbar.showSnackbar('This user could not be found', SnackbarType.ERROR);
+        break;
+      case 'InvalidPasswordException':
+        Snackbar.showSnackbar('Wrong password, try again', SnackbarType.ERROR);
+        break;
+      default:
+        Snackbar.showSnackbar('An unexpected error occurred, check console', SnackbarType.ERROR);
+    }
   } finally {
     isLoading.value = false;
   }
