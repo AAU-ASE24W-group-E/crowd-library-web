@@ -33,6 +33,7 @@ export default {
         // Register a tab component (called by Tab.vue)
         registerTab(tab) {
             this.tabs.push(tab);
+            console.log("Registered " + tab.title);
         },
     }
 };
