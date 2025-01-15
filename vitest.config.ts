@@ -22,8 +22,6 @@ export default mergeConfig(
           '**/*.test.{js,ts,jsx,tsx}',
           '**/*.spec.{js,ts,jsx,tsx}',
           '**/*.d.ts',
-          '**/stores/auth.ts',
-          '**/stores/user.ts',
         ],
       },
     },
