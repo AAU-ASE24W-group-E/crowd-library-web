@@ -6,6 +6,7 @@ import BookSearchView from  "@/views/BookSearchView.vue";
 import POIMapView from "@/views/POIMapView.vue";
 import LocationSettingView from "@/views/LocationSettingView.vue";
 import LocationEditView from '@/views/LocationEditView.vue';
+import AccountView from '@/views/AccountView.vue'
 
 // TODO we have to add restrictions
 const router = createRouter({
@@ -25,6 +26,11 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: RegisterView,
+    },
+    {
+      path: '/account-settings',
+      name: 'account-settings',
+      component: AccountView,
     },
     {
       path: '/bookish-map',
