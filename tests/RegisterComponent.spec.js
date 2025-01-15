@@ -1,6 +1,9 @@
 import {mount} from '@vue/test-utils';
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import RegisterComponent from "@/components/RegisterComponent.vue";
+import { SnackbarType } from '@/enums/snackbar.ts';
+import { authenticationService } from '@/services/AuthenticationService.ts';
+import { Snackbar } from '@/utils/snackbar.ts';
 
 const push = vi.fn();
 vi.mock('vue-router', () => ({
@@ -139,6 +142,108 @@ describe('RegisterComponent', () => {
 
     await toggleButton.trigger('click');
     expect(confirmPasswordInput.attributes('type')).toBe('password');
+  })
+
+  it('shows "This username already exists" error when UsernameAlreadyExistsException is thrown', async () => {
+    vi.spyOn(authenticationService, 'registerUser').mockRejectedValueOnce({
+      response: {
+        data: { type: 'UsernameAlreadyExistsException' },
+      },
+    })
+    const snackbarSpy = vi.spyOn(Snackbar, 'showSnackbar')
+
+    await wrapper.find('#email').setValue('test@example.com')
+    await wrapper.find('#username').setValue('testuser')
+    await wrapper.find('#password').setValue('password123')
+    await wrapper.find('#confirm-password').setValue('password123')
+
+    await wrapper.find('form').trigger('submit.prevent')
+
+    expect(snackbarSpy).toHaveBeenCalledWith(
+      'This username already exists',
+      SnackbarType.ERROR
+    )
+    expect(push).not.toHaveBeenCalled()
+    expect(wrapper.vm.isLoading).toBe(false)
+  })
+
+  it('shows "This username already exists" error when UsernameAlreadyExistsException is thrown', async () => {
+    vi.spyOn(authenticationService, 'registerUser').mockRejectedValueOnce({
+      response: {
+        data: { type: 'UsernameAlreadyExistsException' },
+      },
+    })
+    const snackbarSpy = vi.spyOn(Snackbar, 'showSnackbar')
+
+    await wrapper.find('#email').setValue('test@example.com')
+    await wrapper.find('#username').setValue('testuser')
+    await wrapper.find('#password').setValue('password123')
+    await wrapper.find('#confirm-password').setValue('password123')
+
+    await wrapper.find('form').trigger('submit.prevent')
+
+    expect(snackbarSpy).toHaveBeenCalledWith(
+      'This username already exists',
+      SnackbarType.ERROR
+    )
+    expect(push).not.toHaveBeenCalled()
+    expect(wrapper.vm.isLoading).toBe(false)
+  })
+
+  it('shows "This email already exists" error when EmailAlreadyExistsException is thrown', async () => {
+    const mockRegister = vi.spyOn(authenticationService, 'registerUser')
+    mockRegister.mockRejectedValueOnce({
+      response: {
+        data: {
+          type: 'EmailAlreadyExistsException',
+        },
+      },
+    })
+
+    const snackbarSpy = vi.spyOn(Snackbar, 'showSnackbar')
+
+    await wrapper.find('#email').setValue('test@test.com')
+    await wrapper.find('#username').setValue('testuser')
+    await wrapper.find('#password').setValue('password123')
+    await wrapper.find('#confirm-password').setValue('password123')
+
+    await wrapper.find('form').trigger('submit.prevent')
+
+    expect(mockRegister).toHaveBeenCalledTimes(1)
+    expect(snackbarSpy).toHaveBeenCalledWith(
+      'This email already exists',
+      SnackbarType.ERROR
+    )
+
+    expect(push).not.toHaveBeenCalled()
+    expect(wrapper.vm.isLoading).toBe(false)
+  })
+
+  it('shows "Unexpected Error', async () => {
+    const snackbarSpy = vi.spyOn(Snackbar, 'showSnackbar');
+    const mockRegister = vi.spyOn(authenticationService, 'registerUser')
+    mockRegister.mockRejectedValueOnce({
+      response: {
+        data: {
+          type: 'SomethingElse',
+        },
+      },
+    })
+
+    await wrapper.find('#password').setValue('password123')
+    await wrapper.find('#email').setValue('test@test.com')
+    await wrapper.find('#confirm-password').setValue('password123')
+    await wrapper.find('#username').setValue('testuser')
+    await wrapper.find('form').trigger('submit.prevent')
+
+    expect(mockRegister).toHaveBeenCalledTimes(1)
+    expect(snackbarSpy).toHaveBeenCalledWith(
+      'An unexpected error occurred, check console',
+      SnackbarType.ERROR
+    )
+
+    expect(push).not.toHaveBeenCalled()
+    expect(wrapper.vm.isLoading).toBe(false)
   })
 
 });
