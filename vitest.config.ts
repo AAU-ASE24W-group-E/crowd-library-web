@@ -22,7 +22,8 @@ export default mergeConfig(
           '**/*.test.{js,ts,jsx,tsx}',
           '**/*.spec.{js,ts,jsx,tsx}',
           '**/*.d.ts',
-          '**/interfaces/**'
+          '**/interfaces/address.ts',
+          '**/interfaces/user.ts',
         ],
       },
     },
