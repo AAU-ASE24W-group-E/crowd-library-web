@@ -124,7 +124,10 @@
           <div class="tw-dropdown-separator"></div>
 
           <router-link to="/edit-location" class="tw-dropdown-inner-action-layout">
-            <font-awesome-icon class="tw-navbar-dropdown-icon" :icon="faLocationDot"></font-awesome-icon>
+            <font-awesome-icon
+              class="tw-navbar-dropdown-icon"
+              :icon="faLocationDot"
+            ></font-awesome-icon>
             My Location
           </router-link>
 
@@ -197,16 +200,22 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { onMounted, onUnmounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { useAuthStore } from '@/stores/auth';
+import { useUserStore } from '@/stores/user.ts';
 import { Theme } from '@/enums/theme.ts';
+
+const userStore = useUserStore();
 
 let accountDropdownOpen = ref(false);
 let themeDropdownOpen = ref(false);
-let username = 'undefined';
-let loggedIn = ref(true);
 const dropdownRef = ref<HTMLDivElement | null>(null);
 const themeDropdownRef = ref<HTMLDivElement | null>(null);
 let selectedTheme = ref<Theme>(Theme.Light);
+
+let username = computed(() => userStore.user?.username || 'username');
+const authStore = useAuthStore();
+const loggedIn = computed(() => authStore.isLoggedIn);
 
 const handleAccountClick = () => {
   accountDropdownOpen.value = !accountDropdownOpen.value;
@@ -218,8 +227,8 @@ const handleThemeDropdownClick = () => {
 };
 
 const logout = () => {
-  // TODO
-  console.warn('Not implemented');
+  authStore.clearToken();
+  console.log('User logged out');
 };
 
 const handleClickOutside = (event: MouseEvent) => {

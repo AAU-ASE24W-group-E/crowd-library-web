@@ -13,7 +13,7 @@ export default mergeConfig(
         provider: 'istanbul', // Use 'istanbul' for detailed coverage options
         reporter: ['text', 'lcov'],
         reportsDirectory: './coverage',
-        all: true, // Include all files, even if not tested
+        all: true,
         exclude: [
           'node_modules/',
           'test/',
