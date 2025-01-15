@@ -22,28 +22,25 @@ export default {
     setup() {
         const activeTab = ref(0); // Index of the active tab
         const tabs = ref([]);     // Array to store the tabs
-    },
-    data() {
-        return {
-            activeTab: 0,  // Index of the active tab
-            tabs: []        // Array to store the tabs
-        };
-    },
-    methods: {
+
         // Activate the tab based on its index
-        activateTab(index) {
-            this.activeTab = index;
+        const activateTab = (index) => {
+            activeTab.value = index;
             console.log("Active: " + index);
-        },
+        };
 
         // Register a tab component (called by Tab.vue)
-        registerTab(tab) {
-            this.tabs.push(tab);
+        const registerTab = (tab) => {
+            tabs.value.push(tab);
             console.log("Registered " + tab.title);
-        },
-    },
-    setup() {
+        };
 
-    }
+        return {
+            activeTab,
+            tabs,
+            activateTab,
+            registerTab,
+        };
+    },
 };
 </script>
