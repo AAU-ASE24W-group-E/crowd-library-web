@@ -84,7 +84,7 @@ import { defineEmits, defineProps, ref } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
-const emit = defineEmits(['showOnMapClicked']);
+const emit = defineEmits(['showOnMapClicked', 'handleAction']);
 const props = defineProps({
   book: {
     type: Object,
@@ -111,11 +111,11 @@ function handleShowOnMap() {
 }
 
 function handleEditState() {
-  console.log("edit")
+  emit('handleAction', props.book, "EDIT");
 }
 
 function handleDelete() {
-  console.log("delete")
+  emit('handleAction', props.book, "DELETE");
 }
 </script>
 

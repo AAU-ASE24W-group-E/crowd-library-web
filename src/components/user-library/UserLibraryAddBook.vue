@@ -1,5 +1,5 @@
 <template>
-   AddBooks
+   <div>AddBooks</div>
 </template>
 
 <script>
