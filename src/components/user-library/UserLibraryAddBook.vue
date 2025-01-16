@@ -2,7 +2,7 @@
   <div class="w-full">
     <div class="relative w-full max-sm:hidden mt-10">
       <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-        <font-awesome-icon class="tw-icon text-gray-500 dark:text-gray-300  ml-5" :icon="faSearch" />
+        <font-awesome-icon class="tw-icon text-gray-500 dark:text-gray-300 ml-5" :icon="faSearch" />
       </div>
       <input
         class="tw-input w-full rounded-3xl h-9 ml-5"
@@ -20,7 +20,11 @@
       />
       <hr class="divide-line" />
       <div class="add-book-by-isbn">
-        <a class="tw-link-style mr-5" href="https://www.youtube.com/watch?v=kE03lYoVpFg&autoplay=1" target="_blank">
+        <a
+          class="tw-link-style mr-5"
+          href="https://www.youtube.com/watch?v=kE03lYoVpFg&autoplay=1"
+          target="_blank"
+        >
           These are not the <em>books</em> that you are looking for? Do you want to add a new
           edition via ISBN?</a
         >
@@ -31,9 +35,7 @@
           type="text"
           :placeholder="'Enter ISBN of the book you want to import'"
         />
-        <button class="btn-primary btn-green" @click="handleImport">
-            Try importing
-        </button>
+        <button class="btn-primary btn-green" @click="handleImport">Try importing</button>
       </div>
       <!-- v-bind:class="{ 'tw-input-error': isControlInvalid('usernameOrEmail') }" -->
       <!-- @blur="handleBlur('usernameOrEmail')" -->
@@ -48,23 +50,33 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import BookEntry from '@/components/BookEntry.vue';
 import { SnackbarType } from '@/enums/snackbar.ts';
 import { Snackbar } from '@/utils/snackbar.ts';
+import { bookService } from '@/services/BookService';
+
 const emit = defineEmits(['handleImport']);
 
 const isbnInput = ref('');
-const foundBooks = ref([
-  
-]);
+const foundBooks = ref([]);
 
 const handleAdd = (book) => {
   // TODO handle add book
   //Snackbar.showSnackbar('Book was added to your library.', SnackbarType.SUCCESS);
 };
 
-const handleImport = () => {
-   //Snackbar.showSnackbar('We are trying to import the book.', SnackbarType.GENERAL);
-   // TODO import book
-}
+const handleImport = async () => {
+  try {
+  if (isbnInput.value.trim() === '') {
+    Snackbar.showSnackbar('Please enter an ISBN.', SnackbarType.WARN);
+    return;
+  }
 
+  Snackbar.showSnackbar('We are trying to import the book.', SnackbarType.GENERAL);
+    let importedBook = await bookService.importBookByIsbn(isbnInput.value);
+    Snackbar.showSnackbar('Successfully imported ' + importedBook.title, SnackbarType.SUCCESS);
+  } catch (error) {
+    console.log(error.message)
+    Snackbar.showSnackbar('Something went wrong.', SnackbarType.ERROR);
+  }
+};
 </script>
 <style setup>
 .divide-line {

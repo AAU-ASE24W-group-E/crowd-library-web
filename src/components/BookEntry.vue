@@ -4,50 +4,50 @@
     class="tw-component-container w-full bg-white dark:bg-dark-mode-inside shadow-md rounded-lg border border-gray-200 dark:border-gray-600 transition duration-500 ease-in-out hover:scale-101 animate-fade-in relative cursor-pointer">
     <div class="flex flex-row w-full">
       <img
-        src="../assets/logo_simple.png"
-        alt="logo"
-        class="object-contain decoration-0 mr-3 max-[480px]:hidden"
+        :src="`${config.OPENLIBRARY_COVER_URL}${book.book.coverId}.jpg`"
+        alt="COVER"
+        class="object-contain decoration-0 mr-3 w-[80px] max-[48px]:hidden"
       />
       <div class="flex flex-col flex-grow">
         <span
-          class="text-xl font-semibold dark:text-title-dark-mode-text">{{ book.title }} ({{
-            book.year
-          }}) by {{ book.author }}</span>
+          class="text-xl font-semibold dark:text-title-dark-mode-text">{{ book.book.title }} ({{
+            book.book.publishYear
+          }}) by {{ book.book.authors[0] }}</span>
         <div class="flex flex-row max-sm:flex-col max-sm:mt-2 sm:space-x-8 max-sm:space-y-2">
           <div class="flex flex-col">
             <span class="tw-book-entry-info-title">Publisher: <span
-              class="tw-book-entry-info-value">{{ book.publisher }}</span></span>
+              class="tw-book-entry-info-value">{{ book.book.publisher }}</span></span>
             <span class="tw-book-entry-info-title">Format: <span
-              class="tw-book-entry-info-value">{{ book.format }}</span></span>
+              class="tw-book-entry-info-value">{{ book.book.format }}</span></span>
             <span class="tw-book-entry-info-title">Language: <span
-              class="tw-book-entry-info-value">{{ book.language }}</span></span>
+              class="tw-book-entry-info-value">{{ book.book.languages[0] }}</span></span>
           </div>
           <div class="flex flex-col">
             <span class="tw-book-entry-info-title">ISBN: <span
-              class="tw-book-entry-info-value">{{ book.ISBN }}</span></span>
-            <span v-if="isSearchBook"  class="tw-book-entry-info-title">Owner: <span class="tw-book-entry-info-value">{{ book.owner }}</span></span>
+              class="tw-book-entry-info-value">{{ book.book.isbn }}</span></span>
+            <span v-if="isSearchBook"  class="tw-book-entry-info-title">Owner: <span class="tw-book-entry-info-value">{{ book.owner.name }}</span></span>
             <span v-if="!isNewBook" class="tw-book-entry-info-title">Status: <span
-              :class="{'text-green-500': book.isAvailable, 'text-red-500': !book.isAvailable}">
+              :class="{'text-green-500': book.status, 'text-red-500': !book.status}">
               {{ book.status }}</span></span>
           </div>
-          <div v-if="book.isAvailable && !isNewBook" class="flex flex-col">
+          <div v-if="book.status && !isNewBook" class="flex flex-col">
              <span class="tw-book-entry-info-title">Lendable:
-               <span :class="{'text-green-500': book.isLendable, 'text-red-500': !book.isLendable}">
-                 {{ book.isLendable ? 'Yes' : 'No' }}
+               <span :class="{'text-green-500': book.lendable, 'text-red-500': !book.lendable}">
+                 {{ book.lendable ? 'Yes' : 'No' }}
                </span>
               </span>
 
             <span class="tw-book-entry-info-title">
               Exchangeable:
-              <span :class="{'text-green-500': book.isExchangeable, 'text-red-500': !book.isExchangeable}">
-                {{ book.isExchangeable ? 'Yes' : 'No' }}
+              <span :class="{'text-green-500': book.exchangeable, 'text-red-500': !book.exchangeable}">
+                {{ book.exchangeable ? 'Yes' : 'No' }}
               </span>
             </span>
 
             <span class="tw-book-entry-info-title">
               Giftable:
-              <span :class="{'text-green-500': book.isGiftable, 'text-red-500': !book.isGiftable}">
-                {{ book.isGiftable ? 'Yes' : 'No' }}
+              <span :class="{'text-green-500': book.giftable, 'text-red-500': !book.giftable}">
+                {{ book.giftable ? 'Yes' : 'No' }}
               </span>
             </span>
           </div>
@@ -84,6 +84,8 @@
 import {  defineProps, ref } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import config from '@/config.json';
+
 
 const emit = defineEmits(['showOnMapClicked', 'handleAction', 'handleAdd']);
 const props = defineProps({
