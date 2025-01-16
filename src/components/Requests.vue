@@ -20,7 +20,7 @@ const showRequestList = ref(true);
 
 const route = useRoute();
 const query = route.query.q || null;
-
+const username = ref("User1")
 const bookRequests = ref([
     {
         from: "User1",
@@ -28,6 +28,7 @@ const bookRequests = ref([
         for: "Lending",
         place: "-",
         date: '-',
+        due_date: '1.1.2001',
         book: {
             title: 'The Forgotten Forest',
             year: '2015',
@@ -42,11 +43,12 @@ const bookRequests = ref([
         }
     },
     {
-        from: "User3",
+        from: "User1",
         to: "User2",
         for: "Lending",
         place: "-",
         date: '-',
+        due_date: '1.1.2001',
         book: {
             title: 'Whispers of the Sea',
             year: '2020',
@@ -61,11 +63,12 @@ const bookRequests = ref([
         }
     },
     {
-        from: "User1",
-        to: "User2",
+        from: "User2",
+        to: "User1",
         for: "Lending",
         place: "-",
         date: '-',
+        due_date: '1.1.2001',
         book: {
             title: 'A Dance in the Rain',
             year: '2019',
