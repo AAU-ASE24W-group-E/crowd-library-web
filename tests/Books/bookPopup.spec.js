@@ -11,23 +11,27 @@ const push = vi.fn();
 
 describe('bookPopup', () => {
   let valid_book = 
-    {
-      title: 'Book1',
-      year: '2020',
-      author: 'Author1',
-      publisher: 'Publisher1',
-      format: 'Paperback',
-      language: 'EN',
-      ISBN: '1234567890',
-      owner: 'Owner1',
-      isAvailable: true,
-      isLendable: true,
-      isExchangeable: false,
-      isGiftable: true,
-      status: 'Available',
-      lat: 46.622305,
-      long: 14.272915,
-    }
+  {
+    book: {
+        title: "Sample Book",
+        year: 2021,
+        authors: ["John Doe"],
+        publisher: "Sample Publisher",
+        format: "Hardcover",
+        languages: ["English"],
+        ISBN: "123-4567890123",
+    },
+    owner: {
+      name: "Library",
+      latitude: 46.617415,
+      longitude: 14.263625,
+      id: 'Owner1'
+    },
+    status: true,
+    lendable: true,
+    exchangeable: false,
+    giftable: true
+  };
 
   it('returns popup with title for valid book', () => {
     const html = getPopupHTML(valid_book)
@@ -41,7 +45,8 @@ describe('bookPopup', () => {
 
    it('returns popup with status for valid book', () => {
     const html = getPopupHTML(valid_book)
-    expect(html).toContain(valid_book.status)
+    const expectedValue = valid_book.status ? "Available" : "Unavailable";
+    expect(html).toContain(expectedValue)
    });
 
    it('returns popup with status correct color for valid book', () => {
@@ -56,7 +61,7 @@ describe('bookPopup', () => {
 
    it('returns popup with owner for valid book', () => {
     const html = getPopupHTML(valid_book)
-    expect(html).toContain(valid_book.status)
+    expect(html).toContain(valid_book.owner.name)
    });
 
    it('returns popup with format for valid book', () => {
