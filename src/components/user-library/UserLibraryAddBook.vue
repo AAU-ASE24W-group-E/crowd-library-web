@@ -35,7 +35,9 @@
           type="text"
           :placeholder="'Enter ISBN of the book you want to import'"
         />
-        <button class="btn-primary btn-green" @click="handleImport">Try importing</button>
+        <button class="import-btn btn-primary btn-green" @click="handleImport">
+          Try importing
+        </button>
       </div>
       <!-- v-bind:class="{ 'tw-input-error': isControlInvalid('usernameOrEmail') }" -->
       <!-- @blur="handleBlur('usernameOrEmail')" -->
@@ -56,49 +58,49 @@ const emit = defineEmits(['handleImport']);
 
 const isbnInput = ref('');
 const foundBooks = ref([
-          {
-            book: {
-              id: '1',
-              title: 'The Forgotten Forest',
-              isbn: '1122334455',
-              publisher: 'Whispering Pines',
-              publishYear: 2015,
-              coverId: '14625765-L',
-              edition: 'First Edition',
-              format: 'Paperback',
-              authors: ['Alice Morningstar'],
-              languages: ['EN'],
-            }
-          },
-          {
-            book: {
-              id: '2',
-              title: 'Whispers of the Sea',
-              isbn: '2233445566',
-              publisher: 'Ocean Breeze Press',
-              publishYear: 2020,
-              coverId: '14625766-L',
-              edition: 'First Edition',
-              format: 'Hardcover',
-              authors: ['John Saltsworth'],
-              languages: ['EN'],
-            },
-          },
-          {
-            book: {
-              id: '3',
-              title: 'A Dance in the Rain',
-              isbn: '3344556677',
-              publisher: 'Rainfall Publishing',
-              publishYear: 2019,
-              coverId: '14625767-L',
-              edition: 'Second Edition',
-              format: 'Paperback',
-              authors: ['Elena Storm'],
-              languages: ['ES'],
-            },
-          }
-        ]);
+  {
+    book: {
+      id: '1',
+      title: 'The Forgotten Forest',
+      isbn: '1122334455',
+      publisher: 'Whispering Pines',
+      publishYear: 2015,
+      coverId: '14625765-L',
+      edition: 'First Edition',
+      format: 'Paperback',
+      authors: ['Alice Morningstar'],
+      languages: ['EN'],
+    },
+  },
+  {
+    book: {
+      id: '2',
+      title: 'Whispers of the Sea',
+      isbn: '2233445566',
+      publisher: 'Ocean Breeze Press',
+      publishYear: 2020,
+      coverId: '14625766-L',
+      edition: 'First Edition',
+      format: 'Hardcover',
+      authors: ['John Saltsworth'],
+      languages: ['EN'],
+    },
+  },
+  {
+    book: {
+      id: '3',
+      title: 'A Dance in the Rain',
+      isbn: '3344556677',
+      publisher: 'Rainfall Publishing',
+      publishYear: 2019,
+      coverId: '14625767-L',
+      edition: 'Second Edition',
+      format: 'Paperback',
+      authors: ['Elena Storm'],
+      languages: ['ES'],
+    },
+  },
+]);
 
 const handleAdd = (book) => {
   // TODO handle add book
@@ -107,16 +109,15 @@ const handleAdd = (book) => {
 
 const handleImport = async () => {
   try {
-  if (isbnInput.value.trim() === '') {
-    Snackbar.showSnackbar('Please enter an ISBN.', SnackbarType.WARN);
-    return;
-  }
-
-  Snackbar.showSnackbar('We are trying to import the book.', SnackbarType.GENERAL);
+    if (isbnInput.value.trim() === '') {
+      Snackbar.showSnackbar('Please enter an ISBN.', SnackbarType.WARN);
+      return;
+    }
+    Snackbar.showSnackbar('We are trying to import the book.', SnackbarType.GENERAL);
     let importedBook = await bookService.importBookByIsbn(isbnInput.value);
     Snackbar.showSnackbar('Successfully imported ' + importedBook.title, SnackbarType.SUCCESS);
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
     Snackbar.showSnackbar('Something went wrong.', SnackbarType.ERROR);
   }
 };

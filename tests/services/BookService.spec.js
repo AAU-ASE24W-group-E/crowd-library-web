@@ -16,14 +16,29 @@ describe('BookService', () => {
   });
 
   const mockBook = {
-    title: 'Test Book',
-    author: 'Test Author',
-    isbn: '1234567890',
-    publishYear: 2023,
-    coverId: '1',
-    edition: '1st',
-    authors: ['Test Author'],
-    languages: ['English'],
+    book: {
+      id: '1',
+      title: 'The Forgotten Forest',
+      isbn: '1122334455',
+      publisher: 'Whispering Pines',
+      publishYear: 2015,
+      coverId: '14625765-L',
+      edition: 'First Edition',
+      format: 'Paperback',
+      authors: ['Alice Morningstar'],
+      languages: ['EN'],
+    },
+    lendable: true,
+    giftable: true,
+    exchangeable: false,
+    status: true, // Available
+    distance: 0,
+    owner: {
+      id: 'Owner1',
+      name: 'Owner1',
+      latitude: 46.617415,
+      longitude: 14.263625,
+    },
   };
 
   const mockBookId = 'test-book-id';
@@ -98,7 +113,7 @@ describe('BookService', () => {
       }),
     });
 
-    console.log(response.data)
+    console.log(response.data);
     expect(response.data).toEqual(mockResponse);
   });
 });

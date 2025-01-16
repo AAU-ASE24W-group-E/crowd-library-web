@@ -147,6 +147,28 @@ describe('UserLibraryMyBooks', () => {
     expect(wrapper.vm.showAddBook).toBe(false); 
   });
 
+  it('shows import button when add button is clicked', async () => {
+    const addButton = wrapper.find('.add-book-btn');
+    await addButton.trigger('click');
+
+    const importButton = wrapper.find('.import-btn');
+    expect(importButton.isVisible()).toBe(true); 
+  });
+
+  it('does not import anything if isbn input is empty', async () => {
+    const addButton = wrapper.find('.add-book-btn');
+    await addButton.trigger('click');
+
+    const isbnInput = wrapper.find('#isbn-input');
+    await isbnInput.setValue('978-3-453-32198-4'); 
+  
+    const importButton = wrapper.find('.import-btn');
+    await importButton.trigger('click');
+    
+    expect(importButton.isVisible()).toBe(true); 
+  });
+
+
   it('triggers the BookLibraryPopup component when a book action is triggered', async () => {
     const editButton = wrapper.find('.edit-button');
     await editButton.trigger('click');
