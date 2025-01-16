@@ -18,10 +18,10 @@
       </button>
     </div>
 
-    <div v-if="activeTab === 'myBooksTab'">
+    <div v-show="activeTab === 'myBooksTab'">
       <UserLibraryMyBooks :mybooks="mybooks" />
     </div>
-    <div v-if="activeTab === 'anotherTab'">
+    <div v-show="activeTab === 'borrowedBooksTab'">
       <!-- BorrowedBooks COmponent TODO -->
     </div>
   </div>

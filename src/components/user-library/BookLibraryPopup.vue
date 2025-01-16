@@ -12,24 +12,24 @@
           <VueToggles
             v-model="editable.isAvailable.value"
             :height="30"
-            :width="130"
+            :width="140"
             checkedText="Available"
             uncheckedText="Unavailable"
             checkedBg="green"
             uncheckedBg="grey"
             class="available-toggle"
           />
-          <div v-for="(toggle, key) in editable" :key="key">
+          <div v-for="(toggle, key) in editable" :key="key" class="flex justify-center items-center">
             <div v-if="toggle && 'checkedText' in toggle">
               <VueToggles
                 v-model="editable[key].value"
                 :height="30"
-                :width="130"
+                :width="140"
                 :checkedText="toggle.checkedText"
                 :uncheckedText="'Not ' + toggle.checkedText"
                 checkedBg="#6584ad"
                 uncheckedBg="grey"
-                class="flag-toggle"
+                class="flag-toggle text-center"
                 :disabled="!editable.isAvailable.value"
               />
             </div>
