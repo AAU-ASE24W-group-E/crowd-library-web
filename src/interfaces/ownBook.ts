@@ -1,12 +1,12 @@
+import type { Book } from '@/interfaces/book.ts';
+import type { Owner } from '@/interfaces/owner.ts';
+
 export interface OwnBook {
-    id?: string;
-    
-    title: string;
-    author: string;
-    isbn: string;
-    publishYear?: number;
-    coverId: string;
-    edition: string;
-    authors: string[];
-    languages: string[];
-  }
+  book: Book;
+  lendable: boolean;
+  giftable: boolean;
+  exchangeable: boolean;
+  status: boolean;
+  distance: number;
+  owner: Owner;
+}
