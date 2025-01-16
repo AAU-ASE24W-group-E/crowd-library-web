@@ -36,7 +36,7 @@ const bookRequests = ref([
             format: 'Paperback',
             language: 'EN',
             ISBN: '1122334455',
-            owner: 'Owner1',
+            owner: 'User1',
             lat: 46.617415,
             long: 14.263625,
         }
@@ -55,7 +55,7 @@ const bookRequests = ref([
             format: 'Hardcover',
             language: 'EN',
             ISBN: '2233445566',
-            owner: 'Owner2',
+            owner: 'User2',
             lat: 46.619025,
             long: 14.265755,
         }
@@ -74,7 +74,7 @@ const bookRequests = ref([
             format: 'Paperback',
             language: 'ES',
             ISBN: '3344556677',
-            owner: 'Owner3',
+            owner: 'User2',
             lat: 46.622305,
             long: 14.272915,
         }
