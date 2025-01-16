@@ -74,12 +74,13 @@ describe('UserLibrary', () => {
     expect(myBooksTabContent.exists()).toBe(true);
   });
 
-  it('does not render UserLibraryMyBooks component when "Borrowed Books" tab is active', async () => {
+  it('does render but not show UserLibraryMyBooks component when "Borrowed Books" tab is active', async () => {
     const borrowedBooksTab = wrapper.findAll('.tabs-header button').at(1); // "Borrowed Books"
     await borrowedBooksTab.trigger('click');
 
     const myBooksTabContent = wrapper.findComponent(UserLibraryMyBooks);
-    expect(myBooksTabContent.exists()).toBe(false);
+    expect(myBooksTabContent.exists()).toBe(true);
+    expect(myBooksTabContent.isVisible()).toBe(false);
   });
 
   it('ensures that the tab switching changes the content display', async () => {
@@ -90,7 +91,7 @@ describe('UserLibrary', () => {
     await borrowedBooksTab.trigger('click');
     
     const initialTabContentAfterSwitch = wrapper.findComponent(UserLibraryMyBooks);
-    expect(initialTabContentAfterSwitch.exists()).toBe(false); // No content for BorrowedBooks tab
+    expect(initialTabContentAfterSwitch.isVisible()).toBe(false); 
   });
 
   it('sets the correct active tab on clicking a button', async () => {
