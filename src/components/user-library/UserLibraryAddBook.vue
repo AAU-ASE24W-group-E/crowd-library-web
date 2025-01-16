@@ -114,11 +114,11 @@ const handleImport = async () => {
       return;
     }
     Snackbar.showSnackbar('We are trying to import the book.', SnackbarType.GENERAL);
-    let importedBook = await bookService.importBookByIsbn(isbnInput.value);
-    Snackbar.showSnackbar('Successfully imported ' + importedBook.title, SnackbarType.SUCCESS);
+    let importBook = (await bookService.importBookByIsbn(isbnInput.value)).data;
+    Snackbar.showSnackbar('Successfully imported ' + importBook.title, SnackbarType.SUCCESS);
   } catch (error) {
-    console.log(error.message);
-    Snackbar.showSnackbar('Something went wrong.', SnackbarType.ERROR);
+    console.log(error.response?.data?.message);
+    Snackbar.showSnackbar('Something went wrong. ' + error.response?.data?.message, SnackbarType.ERROR, 5);
   }
 };
 </script>
