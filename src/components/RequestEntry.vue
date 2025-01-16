@@ -12,7 +12,7 @@
           <span
             class="text-xl font-semibold dark:text-title-dark-mode-text">Request for {{ request.for }} (by {{
               request.from
-            }})</span>
+            }}): {{ request.book.title }}</span>
           <div class="flex flex-row max-sm:flex-col max-sm:mt-2 sm:space-x-8 max-sm:space-y-2">
             <div class="flex flex-col">
               <span class="tw-book-entry-info-title">Publisher: <span
