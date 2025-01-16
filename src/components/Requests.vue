@@ -3,7 +3,7 @@
         <div class="flex flex-row w-full justify-between items-center max-[480px]:justify-center" />
         <Tabs>
             <Tab title="Incoming Requests" name="incomingTab">
-                <RequestList v-show="showRequestList" :requests="bookRequests" />
+                <RequestList v-show="showRequestList" :requests="getIncomingRequests(username, bookRequests)" />
             </Tab>
             <Tab title="Outgoing Requests" name="outgoingTab" />
         </Tabs>
@@ -83,5 +83,9 @@ const bookRequests = ref([
         }
     }
 ]);
+
+function getIncomingRequests(user, requests) {
+    return requests.filter(request => request.to === user);
+}
 
 </script>
