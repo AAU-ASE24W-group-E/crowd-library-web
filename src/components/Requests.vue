@@ -5,7 +5,9 @@
             <Tab title="Incoming Requests" name="incomingTab">
                 <RequestList v-show="showRequestList" :requests="getIncomingRequests(username, bookRequests)" />
             </Tab>
-            <Tab title="Outgoing Requests" name="outgoingTab" />
+            <Tab title="Outgoing Requests" name="outgoingTab">
+                <RequestList v-show="showRequestList" :requests="getOutgoingRequests(username, bookRequests)" />
+            </Tab>
         </Tabs>
     </div>
 </template>
@@ -86,6 +88,10 @@ const bookRequests = ref([
 
 function getIncomingRequests(user, requests) {
     return requests.filter(request => request.to === user);
+}
+
+function getOutgoingRequests(user, requests) {
+    return requests.filter(request => request.from === user);
 }
 
 </script>
