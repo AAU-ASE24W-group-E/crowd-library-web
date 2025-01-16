@@ -52,24 +52,7 @@ const emit = defineEmits(['handleImport']);
 
 const isbnInput = ref('');
 const foundBooks = ref([
-  {
-    title: 'The Living Forest',
-    year: '2015',
-    author: 'Alice Morningstar',
-    publisher: 'Whispering Pines',
-    format: 'Paperback',
-    language: 'EN',
-    ISBN: '1122334455',
-  },
-  {
-    title: 'Whispers of the Sky',
-    year: '2020',
-    author: 'John Saltsworth',
-    publisher: 'Ocean Breeze Press',
-    format: 'Hardcover',
-    language: 'EN',
-    ISBN: '2233445566',
-  }
+  
 ]);
 
 const handleAdd = (book) => {
