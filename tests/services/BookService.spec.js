@@ -116,4 +116,68 @@ describe('BookService', () => {
     console.log(response.data);
     expect(response.data).toEqual(mockResponse);
   });
+
+
+  it('should call findBooks twice and merge results for quick search', async () => {
+    const mockResponseByTitle = [mockBook];
+    const mockResponseByAuthor = [
+      {
+        ...mockBook,
+        book: { ...mockBook.book, id: '2', title: 'Another Title' },
+      },
+    ];
+    const quicksearch = 'The Forgotten Forest';
+  
+    bookService.findBooks = vi
+      .fn()
+      .mockResolvedValueOnce({ data: mockResponseByTitle }) 
+      .mockResolvedValueOnce({ data: mockResponseByAuthor });
+  
+    const response = await bookService.findBookByQuicksearch(quicksearch);
+  
+    expect(bookService.findBooks).toHaveBeenCalledTimes(2); 
+    expect(bookService.findBooks).toHaveBeenCalledWith(quicksearch, undefined); 
+    expect(bookService.findBooks).toHaveBeenCalledWith(undefined, quicksearch); 
+  
+    expect(response.length).toEqual(1);
+  });
+  
+  it('should deduplicate books by ID in quick search', async () => {
+    const duplicateBook = { ...mockBook, book: { ...mockBook.book } };
+    const mockResponseByTitle = [mockBook];
+    const mockResponseByAuthor = [duplicateBook];
+  
+    const quicksearch = 'The Forgotten Forest';
+  
+    
+    bookService.findBooks = vi
+      .fn()
+      .mockResolvedValueOnce({ data: mockResponseByTitle })
+      .mockResolvedValueOnce({ data: mockResponseByAuthor });
+  
+    const response = await bookService.findBookByQuicksearch(quicksearch);
+  
+    expect(bookService.findBooks).toHaveBeenCalledTimes(2); 
+    expect(bookService.findBooks).toHaveBeenCalledWith(quicksearch, undefined); 
+    expect(bookService.findBooks).toHaveBeenCalledWith(undefined, quicksearch); 
+  
+    expect(response).toEqual([mockBook]); 
+  });
+  
+  it('should handle empty results for quick search', async () => {
+    const quicksearch = 'Nonexistent Book';
+  
+    bookService.findBooks = vi
+      .fn()
+      .mockResolvedValueOnce({ data: [] }) 
+      .mockResolvedValueOnce({ data: [] }); 
+  
+    const response = await bookService.findBookByQuicksearch(quicksearch);
+  
+    expect(bookService.findBooks).toHaveBeenCalledTimes(2); 
+    expect(bookService.findBooks).toHaveBeenCalledWith(quicksearch, undefined); 
+    expect(bookService.findBooks).toHaveBeenCalledWith(undefined, quicksearch); 
+  
+    expect(response).toEqual([]);
+  });
 });

@@ -24,7 +24,8 @@
         v-for="(book, index) in mybooks"
         :key="index"
         :isMyBook="true"
-        :book="book"
+        :book="book.book"
+        :ownBook="book"
         @handleAction="handleAction"
       />
 

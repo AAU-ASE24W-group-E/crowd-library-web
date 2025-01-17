@@ -38,7 +38,8 @@ describe('BookEntry', () => {
   beforeEach(() => {
     wrapper = mount(BookEntry, {
       props: {
-        book: mockBook,
+        book: mockBook.book,
+        ownBook: mockBook,
         isWishlist: false,
         isSearchBook: true
       },

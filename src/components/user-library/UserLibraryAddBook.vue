@@ -7,15 +7,16 @@
       <input
         class="tw-input w-full rounded-3xl h-9 ml-5"
         @keyup.enter="handleSearch($event)"
-        :placeholder="'Search by title, author, ISBN...'"
+        v-model="searchInput"
+        :placeholder="'Search existing book by title or author...'"
       />
     </div>
     <div class="space-y-6 w-full m-4">
       <BookEntry
         v-for="(book, index) in foundBooks"
         :key="index"
-        :isNewBook="true"
         :book="book"
+        :isNewBook="true"
         @handleAdd="handleAdd"
       />
       <hr class="divide-line" />
@@ -57,54 +58,30 @@ import { bookService } from '@/services/BookService';
 const emit = defineEmits(['handleImport']);
 
 const isbnInput = ref('');
+const searchInput = ref(null);
 const foundBooks = ref([
-  {
-    book: {
-      id: '1',
-      title: 'The Forgotten Forest',
-      isbn: '1122334455',
-      publisher: 'Whispering Pines',
-      publishYear: 2015,
-      coverId: '14625765-L',
-      edition: 'First Edition',
-      format: 'Paperback',
-      authors: ['Alice Morningstar'],
-      languages: ['EN'],
-    },
-  },
-  {
-    book: {
-      id: '2',
-      title: 'Whispers of the Sea',
-      isbn: '2233445566',
-      publisher: 'Ocean Breeze Press',
-      publishYear: 2020,
-      coverId: '14625766-L',
-      edition: 'First Edition',
-      format: 'Hardcover',
-      authors: ['John Saltsworth'],
-      languages: ['EN'],
-    },
-  },
-  {
-    book: {
-      id: '3',
-      title: 'A Dance in the Rain',
-      isbn: '3344556677',
-      publisher: 'Rainfall Publishing',
-      publishYear: 2019,
-      coverId: '14625767-L',
-      edition: 'Second Edition',
-      format: 'Paperback',
-      authors: ['Elena Storm'],
-      languages: ['ES'],
-    },
-  },
 ]);
 
 const handleAdd = (book) => {
   // TODO handle add book
   //Snackbar.showSnackbar('Book was added to your library.', SnackbarType.SUCCESS);
+};
+
+const handleSearch = async () => {
+  const inputValue = searchInput.value;
+  if (inputValue === null || inputValue === undefined || inputValue === '') {
+    return;
+  }
+
+  await bookService.findBookByQuicksearch(inputValue)
+    .then((books) => {
+      console.log(books)
+      foundBooks.value = books;
+    })
+    .catch((error) => {
+      console.log(error.status);
+    });
+
 };
 
 const handleImport = async () => {
@@ -114,13 +91,17 @@ const handleImport = async () => {
   }
   Snackbar.showSnackbar('We are trying to import the book.', SnackbarType.GENERAL);
   await bookService.importBookByIsbn(isbnInput.value)
-  .then((book) => {
-    let importBook = book;
-    Snackbar.showSnackbar('Successfully imported ' + importBook.title, SnackbarType.SUCCESS);
-  })
-  .catch((error) => {
-    console.log(error.status);
-  });
+    .then((book) => {
+      let importBook = book;
+      searchInput.value = book.title;
+
+      Snackbar.showSnackbar('Successfully imported ' + importBook.title, SnackbarType.SUCCESS);
+      handleSearch();
+      isbnInput.value = undefined;
+    })
+    .catch((error) => {
+      console.log(error.status);
+    });
 };
 </script>
 <style setup>
