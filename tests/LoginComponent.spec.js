@@ -1,11 +1,11 @@
 import { mount } from '@vue/test-utils';
 import { Snackbar } from '@/utils/snackbar.ts';
 import { SnackbarType } from '@/enums/snackbar.ts';
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import LoginComponent from '@/components/LoginComponent.vue';
 import { createPinia, setActivePinia } from 'pinia';
-import apiClient from '@/api';
 import { authenticationService } from '@/services/AuthenticationService';
+import { userApiService } from '@/services/clients.js';
 
 // Mock Vue Router
 vi.mock('vue-router', () => ({
@@ -106,13 +106,13 @@ describe('LoginComponent', () => {
       },
     };
 
-    apiClient.post.mockResolvedValue(mockResponse);
+    userApiService.post.mockResolvedValue(mockResponse);
 
     console.log(mockAuthStore);
 
     const result = await authenticationService.login(mockPayload);
 
-    expect(apiClient.post).toHaveBeenCalledWith(`${authenticationService.subdomain}/login`, mockPayload);
+    expect(userApiService.post).toHaveBeenCalledWith(`${authenticationService.subdomain}/login`, mockPayload);
 
     expect(mockUserStore.setUser).toHaveBeenCalledWith(mockResponse.data.user);
     expect(mockAuthStore.setToken).toHaveBeenCalledWith(mockResponse.data.token);
