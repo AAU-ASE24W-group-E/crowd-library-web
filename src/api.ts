@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { Snackbar } from './utils/snackbar';
 import { SnackbarType } from './enums/snackbar';
 
+// DEPRECATED
 const apiClient = axios.create({
   baseURL: 'http://localhost:8080',
   headers: {

@@ -204,7 +204,9 @@ import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth';
 import { useUserStore } from '@/stores/user.ts';
 import { Theme } from '@/enums/theme.ts';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const userStore = useUserStore();
 
 let accountDropdownOpen = ref(false);
@@ -229,6 +231,7 @@ const handleThemeDropdownClick = () => {
 const logout = () => {
   authStore.clearToken();
   console.log('User logged out');
+  router.push("/");
 };
 
 const handleClickOutside = (event: MouseEvent) => {

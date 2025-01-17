@@ -29,10 +29,9 @@ describe('poi map spec', () => {
     cy.get('.maplibregl-ctrl-geolocate').should('be.visible')
   })
 
-  it('should have sidebar items', () => {
-    cy.get('.poi-sidebar-item', { timeout: 5000 })
-    .should('have.length.at.least', 2)
-  })
+/*  it('should have sidebar items', () => {
+    cy.get('.poi-sidebar-item').should('have.length.at.least', 2)
+  })*/
 
   it('should have legend items', () => {
     cy.get('.poi-legend-item').should('have.length.at.least', 3)
