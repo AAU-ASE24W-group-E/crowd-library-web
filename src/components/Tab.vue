@@ -5,9 +5,10 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
+    name: 'Tab',
     props: {
         name: {
             type: String,
@@ -18,6 +19,17 @@ export default defineComponent({
             required: true
         }
     },
+    setup() {
+
+    },
+    /*setup(props) {
+        const activeTab = inject('activeTab');
+        const activateTab = inject('activateTab');
+        const registerTab = inject('registerTab');
+        const tabs = inject('tabs');
+
+        const index = ref(null);
+    },*/
     computed: {
         /* Check if this tab is active by comparing index with activeTab from Tabs Component */
         isActive() {

@@ -70,7 +70,7 @@
         <button v-if="!isWishlist && isSearchBook" class="btn-primary btn-gray rounded-2xl">
           Add to wishlist
         </button>
-        <button v-if="isSearchBook" class="btn-primary btn-green rounded-2xl">Send request</button>
+        <button v-if="isSearchBook" @click="openPopup" class="btn-primary btn-green rounded-2xl">Send Request</button>
         <button v-if="isSearchBook" @click="handleShowOnMap" class="btn-primary btn-green rounded-2xl">Show on Map</button>
         <button v-if="isMyBook" @click="handleEditState" class="edit-button btn-primary btn-green rounded-2xl">Edit State</button>
         <button v-if="isMyBook" @click="handleDelete" class="delete-button btn-primary btn-gray rounded-2xl">Delete</button>
@@ -78,14 +78,19 @@
       </div>
     </div>
   </div>
+  <SendRequestPopup ref="requestPopup"/>
 </template>
 
 <script setup>
 import {  defineProps, ref } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import SendRequestPopup from './SendRequestPopup.vue';
 
 const emit = defineEmits(['showOnMapClicked', 'handleAction', 'handleAdd']);
+
+const requestPopup = ref(null);
+
 const props = defineProps({
   book: {
     type: Object,
@@ -130,6 +135,11 @@ function handleDelete() {
 function handleAdd() {
   emit('handleAdd', props.book);
 }
+
+// Function to open the popup
+const openPopup = () => {
+  requestPopup.value.show();
+};
 </script>
 
 <!--<style>
