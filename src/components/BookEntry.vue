@@ -70,7 +70,7 @@
         <button v-if="!isWishlist && isSearchBook" class="btn-primary btn-gray rounded-2xl">
           Add to wishlist
         </button>
-        <button v-if="isSearchBook" @click="openPopup" class="btn-primary btn-green rounded-2xl">Send Request</button>
+        <button v-if="isSearchBook && book.isAvailable" @click="openPopup" class="btn-primary btn-green rounded-2xl">Send Request</button>
         <button v-if="isSearchBook" @click="handleShowOnMap" class="btn-primary btn-green rounded-2xl">Show on Map</button>
         <button v-if="isMyBook" @click="handleEditState" class="edit-button btn-primary btn-green rounded-2xl">Edit State</button>
         <button v-if="isMyBook" @click="handleDelete" class="delete-button btn-primary btn-gray rounded-2xl">Delete</button>
