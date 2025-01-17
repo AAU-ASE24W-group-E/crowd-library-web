@@ -5,26 +5,21 @@
             <div class="popup-content" @click.stop>
                 <button @click="hide" class="popup-close-btn">X</button>
                 <div>
-                    <h1 class="title text-center text-2xl text-gray-500">Send a Request</h1>
+                    <h1 class="title text-center text-2xl text-gray-500">Send a Request to {{ book.owner }}</h1>
                 </div>
                 <div class="input-field mt-4">
-                    <label for="place" class="block text-sm font-medium">Place</label>
-                    <input id="place" type="text" placeholder="Enter place"
-                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                </div>
-                <div class="input-field mt-4">
-                    <label for="date" class="block text-sm font-medium">Date</label>
-                    <input id="date" type="date"
-                        class="cursor-pointer mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                </div>
-                <div class="input-field mt-4">
-                    <label for="date" class="block text-sm font-medium">Deadline</label>
-                    <input id="date" type="date"
-                        class="cursor-pointer mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <label for="request-purpose" class="block text-sm font-medium">I want to request this book for ...</label>
+                    <select
+                        id="request-purpose"
+                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="lending">Lending</option>
+                        <option value="exchanging">Exchanging</option>
+                        <option value="gifting">Gifting</option>
+                    </select>
                 </div>
                 <div class="flex justify-center space-x-4 mt-4">
                     <button @click="hide" class="btn-primary btn-gray rounded-2xl">Cancel</button>
-                    <button @click="hide" class="btn-primary btn-green rounded-2xl">Send Meeting Request</button>
+                    <button @click="hide" class="btn-primary btn-green rounded-2xl">Request Book</button>
                 </div>
             </div>
         </div>
@@ -36,12 +31,12 @@ import { ref } from 'vue';
 
 const isVisible = ref(false);
 
-/*const props = defineProps({
-    request: {
+const props = defineProps({
+    book: {
         type: Object,
         required: true,
     }
-});*/
+});
 
 // Function to show the popup
 const show = () => {
