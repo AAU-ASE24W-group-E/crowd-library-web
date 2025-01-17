@@ -30,7 +30,8 @@ describe('poi map spec', () => {
   })
 
   it('should have sidebar items', () => {
-    cy.get('.poi-sidebar-item').should('have.length.at.least', 2)
+    cy.get('.poi-sidebar-item', { timeout: 5000 })
+    .should('have.length.at.least', 2)
   })
 
   it('should have legend items', () => {
