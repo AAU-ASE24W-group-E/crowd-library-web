@@ -1,14 +1,17 @@
 import { describe, it, vi, expect, beforeEach } from 'vitest';
 import { bookService } from '@/services/BookService';
-import apiClient from '@/api';
+import { bookApiService } from '@/services/clients.ts';
 
-vi.mock('@/api', () => ({
-  default: {
+vi.mock('@/services/clients.ts', () => ({
+  userApiService: {},
+  lendingApiService: {},
+  bookApiService: {
     post: vi.fn(),
     put: vi.fn(),
     get: vi.fn(),
   },
 }));
+
 
 describe('BookService', () => {
   beforeEach(() => {
@@ -45,38 +48,38 @@ describe('BookService', () => {
   const mockIsbn = '1234567890';
 
   it('should call POST /book to create a book', async () => {
-    apiClient.post.mockResolvedValue({ data: mockBook });
+    bookApiService.post.mockResolvedValue({ data: mockBook });
 
     const response = await bookService.createBook(mockBook);
 
-    expect(apiClient.post).toHaveBeenCalledWith('/book', mockBook);
+    expect(bookApiService.post).toHaveBeenCalledWith('/book', mockBook);
     expect(response.data).toEqual(mockBook);
   });
 
   it('should call PUT /book/isbn/:isbn to import a book by ISBN', async () => {
-    apiClient.put.mockResolvedValue({ data: mockBook });
+    bookApiService.put.mockResolvedValue({ data: mockBook });
 
     const response = await bookService.importBookByIsbn(mockIsbn);
 
-    expect(apiClient.put).toHaveBeenCalledWith(`/book/isbn/${mockIsbn}`);
+    expect(bookApiService.put).toHaveBeenCalledWith(`/book/isbn/${mockIsbn}`);
     expect(response).toEqual(mockBook);
   });
 
   it('should call GET /book/:id to retrieve a book by ID', async () => {
-    apiClient.get.mockResolvedValue({ data: mockBook });
+    bookApiService.get.mockResolvedValue({ data: mockBook });
 
     const response = await bookService.getBook(mockBookId);
 
-    expect(apiClient.get).toHaveBeenCalledWith(`/book/${mockBookId}`);
+    expect(bookApiService.get).toHaveBeenCalledWith(`/book/${mockBookId}`);
     expect(response.data).toEqual(mockBook);
   });
 
   it('should call GET /book/isbn/:isbn to retrieve a book by ISBN', async () => {
-    apiClient.get.mockResolvedValue({ data: mockBook });
+    bookApiService.get.mockResolvedValue({ data: mockBook });
 
     const response = await bookService.getBookByIsbn(mockIsbn);
 
-    expect(apiClient.get).toHaveBeenCalledWith(`/book/isbn/${mockIsbn}`);
+    expect(bookApiService.get).toHaveBeenCalledWith(`/book/isbn/${mockIsbn}`);
     expect(response.data).toEqual(mockBook);
   });
 
@@ -86,11 +89,11 @@ describe('BookService', () => {
     const author = 'Test Author';
     const maxResults = 5;
 
-    apiClient.get.mockResolvedValue({ data: mockResponse });
+    bookApiService.get.mockResolvedValue({ data: mockResponse });
 
     const response = await bookService.findBooks(title, author, maxResults);
 
-    expect(apiClient.get).toHaveBeenCalledWith('/book', {
+    expect(bookApiService.get).toHaveBeenCalledWith('/book', {
       params: new URLSearchParams({
         title,
         author,
@@ -103,11 +106,11 @@ describe('BookService', () => {
   it('should call GET /book without optional parameters to find books', async () => {
     const mockResponse = [mockBook];
 
-    apiClient.get.mockResolvedValue({ data: mockResponse });
+    bookApiService.get.mockResolvedValue({ data: mockResponse });
 
     const response = await bookService.findBooks();
 
-    expect(apiClient.get).toHaveBeenCalledWith('/book', {
+    expect(bookApiService.get).toHaveBeenCalledWith('/book', {
       params: new URLSearchParams({
         maxResults: '10',
       }),
@@ -127,57 +130,57 @@ describe('BookService', () => {
       },
     ];
     const quicksearch = 'The Forgotten Forest';
-  
-    bookService.findBooks = vi
-      .fn()
-      .mockResolvedValueOnce({ data: mockResponseByTitle }) 
-      .mockResolvedValueOnce({ data: mockResponseByAuthor });
-  
-    const response = await bookService.findBookByQuicksearch(quicksearch);
-  
-    expect(bookService.findBooks).toHaveBeenCalledTimes(2); 
-    expect(bookService.findBooks).toHaveBeenCalledWith(quicksearch, undefined); 
-    expect(bookService.findBooks).toHaveBeenCalledWith(undefined, quicksearch); 
-  
-    expect(response.length).toEqual(1);
-  });
-  
-  it('should deduplicate books by ID in quick search', async () => {
-    const duplicateBook = { ...mockBook, book: { ...mockBook.book } };
-    const mockResponseByTitle = [mockBook];
-    const mockResponseByAuthor = [duplicateBook];
-  
-    const quicksearch = 'The Forgotten Forest';
-  
-    
+
     bookService.findBooks = vi
       .fn()
       .mockResolvedValueOnce({ data: mockResponseByTitle })
       .mockResolvedValueOnce({ data: mockResponseByAuthor });
-  
+
     const response = await bookService.findBookByQuicksearch(quicksearch);
-  
-    expect(bookService.findBooks).toHaveBeenCalledTimes(2); 
-    expect(bookService.findBooks).toHaveBeenCalledWith(quicksearch, undefined); 
-    expect(bookService.findBooks).toHaveBeenCalledWith(undefined, quicksearch); 
-  
-    expect(response).toEqual([mockBook]); 
+
+    expect(bookService.findBooks).toHaveBeenCalledTimes(2);
+    expect(bookService.findBooks).toHaveBeenCalledWith(quicksearch, undefined);
+    expect(bookService.findBooks).toHaveBeenCalledWith(undefined, quicksearch);
+
+    expect(response.length).toEqual(1);
   });
-  
-  it('should handle empty results for quick search', async () => {
-    const quicksearch = 'Nonexistent Book';
-  
+
+  it('should deduplicate books by ID in quick search', async () => {
+    const duplicateBook = { ...mockBook, book: { ...mockBook.book } };
+    const mockResponseByTitle = [mockBook];
+    const mockResponseByAuthor = [duplicateBook];
+
+    const quicksearch = 'The Forgotten Forest';
+
+
     bookService.findBooks = vi
       .fn()
-      .mockResolvedValueOnce({ data: [] }) 
-      .mockResolvedValueOnce({ data: [] }); 
-  
+      .mockResolvedValueOnce({ data: mockResponseByTitle })
+      .mockResolvedValueOnce({ data: mockResponseByAuthor });
+
     const response = await bookService.findBookByQuicksearch(quicksearch);
-  
-    expect(bookService.findBooks).toHaveBeenCalledTimes(2); 
-    expect(bookService.findBooks).toHaveBeenCalledWith(quicksearch, undefined); 
-    expect(bookService.findBooks).toHaveBeenCalledWith(undefined, quicksearch); 
-  
+
+    expect(bookService.findBooks).toHaveBeenCalledTimes(2);
+    expect(bookService.findBooks).toHaveBeenCalledWith(quicksearch, undefined);
+    expect(bookService.findBooks).toHaveBeenCalledWith(undefined, quicksearch);
+
+    expect(response).toEqual([mockBook]);
+  });
+
+  it('should handle empty results for quick search', async () => {
+    const quicksearch = 'Nonexistent Book';
+
+    bookService.findBooks = vi
+      .fn()
+      .mockResolvedValueOnce({ data: [] })
+      .mockResolvedValueOnce({ data: [] });
+
+    const response = await bookService.findBookByQuicksearch(quicksearch);
+
+    expect(bookService.findBooks).toHaveBeenCalledTimes(2);
+    expect(bookService.findBooks).toHaveBeenCalledWith(quicksearch, undefined);
+    expect(bookService.findBooks).toHaveBeenCalledWith(undefined, quicksearch);
+
     expect(response).toEqual([]);
   });
 });

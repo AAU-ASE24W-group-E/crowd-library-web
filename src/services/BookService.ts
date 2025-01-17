@@ -1,27 +1,26 @@
-import apiClient from '@/api.ts';
-
 import type { Book } from '@/interfaces/book.ts';
 import type { Owner } from '@/interfaces/owner.ts';
+import { bookApiService } from '@/services/clients.ts';
 
 class BookService {
   readonly subdomain: string = '/book';
   readonly subdomain_owner: string = '/book-owner';
 
   async createBook(book: Book) {
-    return await apiClient.post(`${this.subdomain}`, book);
+    return await bookApiService.post(`${this.subdomain}`, book);
   }
 
   async importBookByIsbn(isbn: string) {
-    return (await apiClient.put(`${this.subdomain}/isbn/${isbn}`)).data;
-    
+    return (await bookApiService.put(`${this.subdomain}/isbn/${isbn}`)).data;
+
   }
 
   async getBook(id: string) {
-    return await apiClient.get(`${this.subdomain}/${id}`);
+    return await bookApiService.get(`${this.subdomain}/${id}`);
   }
 
   async getBookByIsbn(isbn: string) {
-    return await apiClient.get(`${this.subdomain}/isbn/${isbn}`);
+    return await bookApiService.get(`${this.subdomain}/isbn/${isbn}`);
   }
 
 
@@ -42,14 +41,14 @@ class BookService {
     if (title) params.append('title', title);
     if (author) params.append('author', author);
     params.append('maxResults', maxResults.toString());
-    return await apiClient.get(`${this.subdomain}`, { params });
+    return await bookApiService.get(`${this.subdomain}`, { params });
   }
 
   async createBookOwnership(book: Book, owner: Owner) {
-    return await apiClient.post(`${this.subdomain_owner}/${owner.id}/book/${book.id}`);
+    return await bookApiService.post(`${this.subdomain_owner}/${owner.id}/book/${book.id}`);
   }
 
-  
+
 }
 
 export const bookService = new BookService();
