@@ -3,7 +3,7 @@
   <div class="tw-component-container px-0 w-full" ref="dropdownRef">
     <div class="flex flex-row w-full justify-between items-center">
       <div>
-        <h1 class="tw-subheading text-[30px] text-gray-600">Books on Map</h1>
+        <h1 class="tw-subheading text-[30px]">Books on Map</h1>
       </div>
       <div class="flex flex-row items-center space-x-6 pr-1">
         <div class="flex flex-row items-center space-x-2">
@@ -129,7 +129,6 @@ export default {
     }
 
     onMounted(() => {
-      console.log("Mounted")
       map = new maplibregl.Map({
         container: 'book-map',
         style: map_style,

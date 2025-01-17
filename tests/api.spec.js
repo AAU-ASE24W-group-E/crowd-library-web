@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import apiClient from '@/api';
 import { mount } from '@vue/test-utils';
 import LoginComponent from '@/components/LoginComponent.vue';
+import { userApiService } from '@/services/clients.ts';
 
 vi.mock('vue-router', () => ({
   useRouter: vi.fn(() => ({
@@ -38,7 +38,7 @@ describe('API Client - Interceptors', () => {
   it('should add Authorization header if token exists', async () => {
     const mockRequest = { headers: {} };
 
-    const updatedConfig = await apiClient.interceptors.request.handlers[0].fulfilled(mockRequest);
+    const updatedConfig = await userApiService.interceptors.request.handlers[0].fulfilled(mockRequest);
 
     expect(updatedConfig.headers.Authorization).toBe('Bearer mock-token');
   });
@@ -48,7 +48,7 @@ describe('API Client - Interceptors', () => {
     authStoreMock.token = null;
 
     const mockRequest = { headers: {} };
-    const updatedConfig = await apiClient.interceptors.request.handlers[0].fulfilled(mockRequest);
+    const updatedConfig = await userApiService.interceptors.request.handlers[0].fulfilled(mockRequest);
 
     console.log(updatedConfig.headers.Authorization);
 
@@ -58,7 +58,7 @@ describe('API Client - Interceptors', () => {
   it('should return response directly if no error occurs', async () => {
     const mockResponse = { data: 'mock-data' };
 
-    const response = await apiClient.interceptors.response.handlers[0].fulfilled(mockResponse);
+    const response = await userApiService.interceptors.response.handlers[0].fulfilled(mockResponse);
 
     expect(response).toEqual(mockResponse);
   });
@@ -70,7 +70,7 @@ describe('API Client - Interceptors', () => {
       },
     };
 
-    await expect(apiClient.interceptors.response.handlers[0].rejected(mockError)).rejects.toEqual(
+    await expect(userApiService.interceptors.response.handlers[0].rejected(mockError)).rejects.toEqual(
       mockError
     );
   });

@@ -189,6 +189,14 @@
         dark:hover:bg-green-900;
     }
 
+    .btn-gray {
+        @apply bg-gray-300
+        hover:bg-gray-400
+        dark:text-title-dark-mode-text
+        dark:bg-gray-600
+        dark:hover:bg-gray-700;
+    }
+
     .tw-checkbox {
         @apply w-4
         h-4
@@ -346,7 +354,7 @@
     }
 
     .tw-link-style {
-        @apply text-black dark:text-title-dark-mode-text hover:text-blue-500 text-center transition-all duration-300 decoration-0 font-medium
+        @apply text-blue-800 dark:text-title-dark-mode-text hover:text-blue-500 text-center transition-all duration-300 decoration-0 font-medium
     }
 
     .tw-footer-margin {
@@ -359,7 +367,8 @@
         p-4 space-y-4
         max-sm:w-full
         max-sm:mt-20
-        max-h-[78vh];
+        max-h-[78vh]
+        dark:text-title-dark-mode-text dark:bg-dark-mode;
     }
 
     .map-sidebar-container {
@@ -367,11 +376,13 @@
         w-[95%]
         /* max-sm:w-full */
         mb-5 mt-5
-         flex-row max-sm:flex-col
+        flex-row max-sm:flex-col
+        dark:text-title-dark-mode-text dark:bg-dark-mode;
     }
 
     .map-container {
-        @apply flex-1 w-[75%] max-sm:w-full  bg-gray-50 p-8 max-sm:p-0 ;
+        @apply flex-1 w-[75%] max-sm:w-full  bg-gray-50 p-8 max-sm:p-0
+        dark:text-title-dark-mode-text dark:bg-dark-mode;
       }
 
     .snackbar {

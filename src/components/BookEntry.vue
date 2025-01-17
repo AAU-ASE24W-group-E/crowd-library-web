@@ -25,12 +25,12 @@
           <div class="flex flex-col">
             <span class="tw-book-entry-info-title">ISBN: <span
               class="tw-book-entry-info-value">{{ book.ISBN }}</span></span>
-            <span class="tw-book-entry-info-title">Owner: <span class="tw-book-entry-info-value">{{ book.owner }}</span></span>
-            <span class="tw-book-entry-info-title">Status: <span
+            <span v-if="isSearchBook"  class="tw-book-entry-info-title">Owner: <span class="tw-book-entry-info-value">{{ book.owner }}</span></span>
+            <span v-if="!isNewBook" class="tw-book-entry-info-title">Status: <span
               :class="{'text-green-500': book.isAvailable, 'text-red-500': !book.isAvailable}">
               {{ book.status }}</span></span>
           </div>
-          <div v-if="book.isAvailable" class="flex flex-col">
+          <div v-if="book.isAvailable && !isNewBook" class="flex flex-col">
              <span class="tw-book-entry-info-title">Lendable:
                <span :class="{'text-green-500': book.isLendable, 'text-red-500': !book.isLendable}">
                  {{ book.isLendable ? 'Yes' : 'No' }}
@@ -67,28 +67,43 @@
     >
       <div
         class="flex flex-row w-full mt-2 space-x-16 max-md:space-x-6 ml-24 max-sm:space-x-0 max-sm:flex-col max-sm:space-y-4 max-sm:justify-center max-sm:ml-0">
-        <button v-if="!isWishlist" class="btn-primary btn-gray rounded-2xl">
+        <button v-if="!isWishlist && isSearchBook" class="btn-primary btn-gray rounded-2xl">
           Add to wishlist
         </button>
-        <button class="btn-primary btn-green rounded-2xl">Send request</button>
-        <button @click="handleShowOnMap" class="btn-primary btn-green rounded-2xl">Show on Map</button>
+        <button v-if="isSearchBook" class="btn-primary btn-green rounded-2xl">Send request</button>
+        <button v-if="isSearchBook" @click="handleShowOnMap" class="btn-primary btn-green rounded-2xl">Show on Map</button>
+        <button v-if="isMyBook" @click="handleEditState" class="edit-button btn-primary btn-green rounded-2xl">Edit State</button>
+        <button v-if="isMyBook" @click="handleDelete" class="delete-button btn-primary btn-gray rounded-2xl">Delete</button>
+        <button v-if="isNewBook" @click="handleAdd" class="add-btn-of-book btn-primary btn-green rounded-2xl">Add Book</button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineEmits, defineProps, ref } from 'vue';
+import {  defineProps, ref } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
-const emit = defineEmits(['showOnMapClicked']);
+const emit = defineEmits(['showOnMapClicked', 'handleAction', 'handleAdd']);
 const props = defineProps({
   book: {
     type: Object,
     required: true,
   },
   isWishlist: {
+    type: Boolean,
+    default: false,
+  },
+  isSearchBook:{
+    type: Boolean,
+    default: false,
+  },
+  isMyBook: {
+    type: Boolean,
+    default: false,
+  },
+  isNewBook: {
     type: Boolean,
     default: false,
   },
@@ -102,6 +117,18 @@ function toggleDropdown() {
 
 function handleShowOnMap() {
   emit('showOnMapClicked', props.book);
+}
+
+function handleEditState() {
+  emit('handleAction', props.book, "EDIT");
+}
+
+function handleDelete() {
+  emit('handleAction', props.book, "DELETE");
+}
+
+function handleAdd() {
+  emit('handleAdd', props.book);
 }
 </script>
 
