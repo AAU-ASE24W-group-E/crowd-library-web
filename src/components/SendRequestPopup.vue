@@ -13,7 +13,7 @@
                         id="request-purpose"
                         class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option v-if="book.isLendable" value="lending">Lending</option>
-                        <option v-if="book.isExchangable" value="exchanging">Exchanging</option>
+                        <option v-if="book.isExchangeable" value="exchanging">Exchanging</option>
                         <option v-if="book.isGiftable" value="gifting">Gifting</option>
                     </select>
                 </div>
