@@ -22,7 +22,7 @@
                     <input id="date" type="date"
                         class="cursor-pointer mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
-                <div class="flex space-x-8 mt-4">
+                <div class="flex justify-center space-x-4 mt-4">
                     <button @click="hide" class="btn-primary btn-gray rounded-2xl">Cancel</button>
                     <button @click="hide" class="btn-primary btn-green rounded-2xl">Send Meeting Request</button>
                 </div>
