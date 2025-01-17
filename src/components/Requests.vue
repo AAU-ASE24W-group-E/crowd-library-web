@@ -3,10 +3,10 @@
         <div class="flex flex-row w-full justify-between items-center max-[480px]:justify-center" />
         <Tabs>
             <Tab title="Incoming Requests" name="incomingTab">
-                <RequestList v-show="showRequestList" :requests="getIncomingRequests(username, bookRequests)" />
+                <RequestList v-show="showRequestList" :requests="getIncomingRequests(username, bookRequests)" :incoming="true" />
             </Tab>
             <Tab title="Outgoing Requests" name="outgoingTab">
-                <RequestList v-show="showRequestList" :requests="getOutgoingRequests(username, bookRequests)" />
+                <RequestList v-show="showRequestList" :requests="getOutgoingRequests(username, bookRequests)" :incoming="false" />
             </Tab>
         </Tabs>
     </div>

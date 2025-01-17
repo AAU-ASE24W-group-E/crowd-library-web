@@ -41,7 +41,7 @@
     }" class="transition-all duration-300 ease-in-out w-full">
       <div
         class="flex flex-row w-full mt-2 space-x-16 max-md:space-x-6 ml-24 max-sm:space-x-0 max-sm:flex-col max-sm:space-y-4 max-sm:justify-center max-sm:ml-0">
-        <button v-show="dropdownOpen" id="withdrawBtn" class="btn-primary btn-gray rounded-2xl">Withdraw</button>
+        <button v-if="!incoming" v-show="dropdownOpen" id="withdrawBtn" class="btn-primary btn-gray rounded-2xl">Withdraw</button>
         <button v-show="dropdownOpen" id="declineBtn" class="btn-primary btn-gray rounded-2xl">Decline</button>
         <button v-show="dropdownOpen" id="suggestMeetingBtn" class="btn-primary btn-green rounded-2xl">Suggest
           Meeting</button>
@@ -56,14 +56,14 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 const props = defineProps({
+  incoming: {
+    type: Boolean,
+    required: true,
+  },
   request: {
     type: Object,
     required: true,
-  },
-  isWishlist: {
-    type: Boolean,
-    default: false,
-  },
+  }
 });
 
 const dropdownOpen = ref(false);
@@ -71,5 +71,4 @@ const dropdownOpen = ref(false);
 function toggleDropdown() {
   dropdownOpen.value = !dropdownOpen.value;
 }
-
 </script>
