@@ -45,10 +45,10 @@
         <button v-show="dropdownOpen" id="declineBtn" class="btn-primary btn-gray rounded-2xl">Decline</button>
         <button @click="openPopup" v-show="dropdownOpen" id="suggestMeetingBtn" class="btn-primary btn-green rounded-2xl">Suggest
           Meeting</button>
-        <MeetingPopup ref="meetingPopup" :request="request"/>
       </div>
     </div>
   </div>
+  <MeetingPopup ref="meetingPopup" :request="request"/>
 </template>
 
 <script setup>
