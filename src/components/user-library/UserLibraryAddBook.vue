@@ -54,17 +54,26 @@ import BookEntry from '@/components/BookEntry.vue';
 import { SnackbarType } from '@/enums/snackbar.ts';
 import { Snackbar } from '@/utils/snackbar.ts';
 import { bookService } from '@/services/BookService';
+import { useUserStore } from '@/stores/user';
 
-const emit = defineEmits(['handleImport']);
+const emit = defineEmits(['handleImport', 'bookAdded']);
+const userStore = useUserStore();
 
 const isbnInput = ref('');
 const searchInput = ref(null);
 const foundBooks = ref([
 ]);
 
-const handleAdd = (book) => {
-  // TODO handle add book
-  //Snackbar.showSnackbar('Book was added to your library.', SnackbarType.SUCCESS);
+const handleAdd = async (book) => {
+  await bookService.createBookOwnership(book.id, userStore.getUser().id)
+  .then((response) => {
+      console.log(response);
+      emit('bookAdded');
+      Snackbar.showSnackbar(book.title + ' was added to your library.', SnackbarType.SUCCESS, 10);
+    })
+    .catch((error) => {
+      console.log(error.status);
+    });
 };
 
 const handleSearch = async () => {

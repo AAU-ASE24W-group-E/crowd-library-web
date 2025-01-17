@@ -3,14 +3,15 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import UserLibraryMyBooks from '@/components/user-library/UserLibraryMyBooks.vue';
 import UserLibraryAddBook from '@/components/user-library/UserLibraryAddBook.vue';
 import BookEntry from '@/components/BookEntry.vue';
-import { nextTick } from 'vue'; 
+import { ref } from 'vue';
+
 import BookLibraryPopup from '@/components/user-library/BookLibraryPopup.vue';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { createPinia, setActivePinia } from 'pinia'
 
 describe('UserLibraryMyBooks', () => {
   let wrapper;
 
-  const mybooks = [
+  const mock_books = [
     {
       book: {
         id: '1',
@@ -87,13 +88,28 @@ describe('UserLibraryMyBooks', () => {
       },
     }
   ];
+  let pinia;
 
-  beforeEach(() => {
+  const createComponent = () => {
     wrapper = mount(UserLibraryMyBooks, {
-      props: {
-        mybooks: mybooks,
+      global: {
+        plugins: [pinia],
+        
       },
+      // data(){
+      //   return {
+      //     mybooks: ref(mock_books)
+      //   }
+      // }
     });
+  };
+
+  
+  beforeEach(() => {
+    pinia = createPinia();
+    setActivePinia(pinia);
+    createComponent();
+    wrapper.vm.mybooks = mock_books;
   });
 
   afterEach(() => {
@@ -102,8 +118,7 @@ describe('UserLibraryMyBooks', () => {
 
   it('renders the book list with BookEntry components', () => {
     const bookEntries = wrapper.find('.my-book-list').findAllComponents(BookEntry);
-    
-    expect(bookEntries.length).toBe(mybooks.length);
+    expect(bookEntries.length).toBe(wrapper.vm.mybooks.length);
   });
 
   it('renders the book list with BookEntry components - empty text is not there', () => {

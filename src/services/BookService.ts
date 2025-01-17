@@ -44,10 +44,9 @@ class BookService {
     return await bookApiService.get(`${this.subdomain}`, { params });
   }
 
-  async createBookOwnership(book: Book, owner: Owner) {
-    return await bookApiService.post(`${this.subdomain_owner}/${owner.id}/book/${book.id}`);
+  async createBookOwnership(bookId: string, ownerId: string) {
+    return await bookApiService.post(`${this.subdomain_owner}/${ownerId}/book/${bookId}`);
   }
-
 
 }
 

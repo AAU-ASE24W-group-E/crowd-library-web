@@ -17,7 +17,7 @@
         </button>
       </div>
     </div>
-    <UserLibraryAddBook v-show="showAddBook" />
+    <UserLibraryAddBook v-show="showAddBook" @bookAdded="refreshMyBookList"/>
 
     <div v-show="!showAddBook" class="my-book-list space-y-6 w-full mt-4">
       <BookEntry
@@ -57,9 +57,8 @@ const showAddBook = ref(false);
 const showPopup = ref(false);
 const popupBookRef = ref(null);
 const popupTypeRef = ref(null);
-const props = defineProps(['mybooks']);
 
-const mybooks = ref(props.mybooks);
+const mybooks = ref([]);
 
 const handleAction = (book, type) => {
   popupBookRef.value = book;
@@ -67,13 +66,18 @@ const handleAction = (book, type) => {
   showPopup.value = true;
 };
 
+const refreshMyBookList = async () => {
+  // TODO get books of owner
+}
+
+
 const toggleAddBook = (type) => {
-  if (type == 'cancel' && showAddBook.value) {
-    Snackbar.showSnackbar('Adding books was cancelled.', SnackbarType.GENERAL);
-  } else if (type != 'cancel' && showAddBook.value) {
-    // TODO add book
-    //SNackbar
-  }
+  // if (type == 'cancel' && showAddBook.value) {
+  //   Snackbar.showSnackbar('Adding books was cancelled.', SnackbarType.GENERAL);
+  // } else if (type != 'cancel' && showAddBook.value) {
+  //   // TODO add book
+  //   //SNackbar
+  // }
   showAddBook.value = !showAddBook.value;
 };
 
