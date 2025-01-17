@@ -1,11 +1,11 @@
 import apiClient from '@/api.ts';
 
 import type { Book } from '@/interfaces/book.ts';
-import type { OwnBook } from '@/interfaces/ownBook.ts';
-import type { AxiosRequestConfig } from 'axios';
+import type { Owner } from '@/interfaces/owner.ts';
 
 class BookService {
   readonly subdomain: string = '/book';
+  readonly subdomain_owner: string = '/book-owner';
 
   async createBook(book: Book) {
     return await apiClient.post(`${this.subdomain}`, book);
@@ -43,6 +43,10 @@ class BookService {
     if (author) params.append('author', author);
     params.append('maxResults', maxResults.toString());
     return await apiClient.get(`${this.subdomain}`, { params });
+  }
+
+  async createBookOwnership(book: Book, owner: Owner) {
+    return await apiClient.post(`${this.subdomain_owner}/${owner.id}/book/${book.id}`);
   }
 
   
