@@ -49,9 +49,9 @@ export default {
 
 <template>
   <div class="h-[50vh] max-h-[50vh] overflow-hidden">
-    <div class="sidebar-item-count tw-heading-2 text-[1.5em] mb-5 mt-2">{{ title_pois }} [{{ listCount }}]</div>
+    <div class="sidebar-list-title sidebar-item-count">{{ title_pois }} [{{ listCount }}]</div>
     <div
-      class="rounded-lg bg-gray-200 overflow-y-auto h-[40vh] max-h-[40vh] max-sm:h-[200px] max-sm:max-h-[200px] scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100"
+      class="sidebar-list-scrollbar  scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100"
     >
       <POISidebarItem
         class="mr-4 ml-4 mb-2 mt-2 overflow-hidden"
@@ -64,3 +64,16 @@ export default {
     </div>
   </div>
 </template>
+
+<style scoped>
+  .sidebar-list-scrollbar{
+    @apply rounded-lg bg-gray-200 overflow-y-auto h-[40vh] max-h-[40vh] max-sm:h-[200px] max-sm:max-h-[200px]
+    dark:text-title-dark-mode-text dark:bg-gray-800;
+  }
+
+  .sidebar-list-title{
+    @apply  tw-heading-2 text-[1.5em] mb-5 mt-2;
+  }
+
+
+</style>
