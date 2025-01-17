@@ -58,6 +58,7 @@ jobs:
     needs: [build]
     permissions:
       packages: write
+    if: success() && github.ref == 'refs/heads/main'
     steps:
       - name: Checkout from build
         uses: actions/checkout@v4
