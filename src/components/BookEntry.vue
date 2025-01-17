@@ -78,7 +78,7 @@
       </div>
     </div>
   </div>
-  <SendRequestPopup ref="requestPopup"/>
+  <SendRequestPopup ref="requestPopup" :book="book"/>
 </template>
 
 <script setup>
