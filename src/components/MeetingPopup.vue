@@ -5,7 +5,7 @@
             <div class="popup-content" @click.stop>
                 <button @click="hide" class="popup-close-btn">X</button>
                 <div>
-                    <h1 class="title text-center">Send a Meeting Suggestion to {{ request.from }}</h1>
+                    <h1 class="title text-center text-2xl text-gray-500">Send a Meeting Suggestion to {{ request.from }}</h1>
                 </div>
                 <div class="input-field mt-4">
                     <label for="place" class="block text-sm font-medium">Place</label>
