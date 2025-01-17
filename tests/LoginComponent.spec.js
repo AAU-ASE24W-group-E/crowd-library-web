@@ -26,11 +26,15 @@ vi.mock('@/stores/auth', () => ({
   useAuthStore: vi.fn(() => mockAuthStore),
 }));
 
-vi.mock('@/api', () => ({
-  default: {
-    post: vi.fn(), // Mock für die Methode `post`
+vi.mock('@/services/clients.ts', () => ({
+  userApiService: {
+    post: vi.fn(),
+    put: vi.fn(),
   },
+  lendingApiService: {},
+  bookApiService: {},
 }));
+
 
 describe('LoginComponent', () => {
   let wrapper;
@@ -121,7 +125,6 @@ describe('LoginComponent', () => {
   });
 
 
-
   it('shows "This user could not be found" if UserNotFoundException is thrown', async () => {
     vi.spyOn(authenticationService, 'login').mockRejectedValueOnce({
       response: {
@@ -130,7 +133,7 @@ describe('LoginComponent', () => {
     });
 
     const snackbarSpy = vi.spyOn(Snackbar, 'showSnackbar');
-    await fillAndSubmitLoginForm()
+    await fillAndSubmitLoginForm();
 
     expect(snackbarSpy).toHaveBeenCalledWith(
       'This user could not be found',
@@ -149,7 +152,7 @@ describe('LoginComponent', () => {
     });
 
     const snackbarSpy = vi.spyOn(Snackbar, 'showSnackbar');
-    await fillAndSubmitLoginForm()
+    await fillAndSubmitLoginForm();
 
     expect(snackbarSpy).toHaveBeenCalledWith(
       'Wrong password, try again',
@@ -168,7 +171,7 @@ describe('LoginComponent', () => {
     });
 
     const snackbarSpy = vi.spyOn(Snackbar, 'showSnackbar');
-    await fillAndSubmitLoginForm()
+    await fillAndSubmitLoginForm();
 
     expect(snackbarSpy).toHaveBeenCalledWith(
       'An unexpected error occurred, check console',
@@ -180,9 +183,9 @@ describe('LoginComponent', () => {
   });
 
   async function fillAndSubmitLoginForm(usernameOrEmail = 'someuser', password = 'somepassword') {
-    await wrapper.find('#username-email').setValue(usernameOrEmail)
-    await wrapper.find('#password').setValue(password)
+    await wrapper.find('#username-email').setValue(usernameOrEmail);
+    await wrapper.find('#password').setValue(password);
 
-    await wrapper.find('form').trigger('submit.prevent')
+    await wrapper.find('form').trigger('submit.prevent');
   }
 });
