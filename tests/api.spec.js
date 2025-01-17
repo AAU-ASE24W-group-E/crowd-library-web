@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { mount } from '@vue/test-utils';
 import LoginComponent from '@/components/LoginComponent.vue';
-import { userApiService } from '@/services/clients.js';
+import { userApiService } from '@/services/clients.ts';
 
 vi.mock('vue-router', () => ({
   useRouter: vi.fn(() => ({

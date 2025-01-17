@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import LoginComponent from '@/components/LoginComponent.vue';
 import { createPinia, setActivePinia } from 'pinia';
 import { authenticationService } from '@/services/AuthenticationService';
-import { userApiService } from '@/services/clients.js';
+import { userApiService } from '@/services/clients.ts';
 
 // Mock Vue Router
 vi.mock('vue-router', () => ({
