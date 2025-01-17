@@ -108,18 +108,19 @@ const handleAdd = (book) => {
 };
 
 const handleImport = async () => {
-  try {
-    if (isbnInput.value.trim() === '') {
-      Snackbar.showSnackbar('Please enter an ISBN.', SnackbarType.WARN);
-      return;
-    }
-    Snackbar.showSnackbar('We are trying to import the book.', SnackbarType.GENERAL);
-    let importBook = (await bookService.importBookByIsbn(isbnInput.value)).data;
-    Snackbar.showSnackbar('Successfully imported ' + importBook.title, SnackbarType.SUCCESS);
-  } catch (error) {
-    console.log(error.response?.data?.message);
-    Snackbar.showSnackbar('Something went wrong. ' + error.response?.data?.message, SnackbarType.ERROR, 5);
+  if (isbnInput.value.trim() === '') {
+    Snackbar.showSnackbar('Please enter an ISBN.', SnackbarType.WARN);
+    return;
   }
+  Snackbar.showSnackbar('We are trying to import the book.', SnackbarType.GENERAL);
+  await bookService.importBookByIsbn(isbnInput.value)
+  .then((book) => {
+    let importBook = book;
+    Snackbar.showSnackbar('Successfully imported ' + importBook.title, SnackbarType.SUCCESS);
+  })
+  .catch((error) => {
+    console.log(error.status);
+  });
 };
 </script>
 <style setup>

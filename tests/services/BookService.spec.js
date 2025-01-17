@@ -59,7 +59,7 @@ describe('BookService', () => {
     const response = await bookService.importBookByIsbn(mockIsbn);
 
     expect(apiClient.put).toHaveBeenCalledWith(`/book/isbn/${mockIsbn}`);
-    expect(response.data).toEqual(mockBook);
+    expect(response).toEqual(mockBook);
   });
 
   it('should call GET /book/:id to retrieve a book by ID', async () => {

@@ -11,7 +11,8 @@ class BookService {
   }
 
   async importBookByIsbn(isbn: string) {
-    return await apiClient.put(`${this.subdomain}/isbn/${isbn}`);
+    return (await apiClient.put(`${this.subdomain}/isbn/${isbn}`)).data;
+    
   }
 
   async getBook(id: string) {
