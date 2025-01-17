@@ -190,9 +190,9 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { reactive, ref } from 'vue';
 import config from '@/config.json';
 import { useRouter } from 'vue-router';
-import { authenticationService } from '../services/AuthenticationService.ts';
 import { Snackbar } from '@/utils/snackbar.ts';
 import { SnackbarType } from '@/enums/snackbar.ts';
+import { authenticationService } from '@/services/AuthenticationService.ts';
 
 library.add(faEye, faEyeSlash);
 

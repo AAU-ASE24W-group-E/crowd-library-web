@@ -1,7 +1,8 @@
 import axios from 'axios';
-import { useAuthStore } from '@/stores/auth.ts'
-import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth.ts';
+import { useRouter } from 'vue-router';
 
+// DEPRECATED
 const apiClient = axios.create({
   baseURL: 'http://localhost:8080',
   headers: {

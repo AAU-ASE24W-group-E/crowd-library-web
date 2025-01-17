@@ -1,7 +1,7 @@
-import apiClient from '@/api.ts';
 import type { User } from '@/interfaces/user.ts';
 import { useUserStore } from '@/stores/user.ts'
 import { useAuthStore } from '@/stores/auth.ts'
+import { userApiService } from '@/services/clients.ts';
 
 export interface LoginPayload {
   username: string;
@@ -25,14 +25,14 @@ class AuthenticationService {
   readonly subdomain: string = '/user';
 
   async registerUser(payload: RegisterPayload) {
-    return await apiClient.post(this.subdomain, payload);
+    return await userApiService.post(this.subdomain, payload);
   }
 
   async login(payload: LoginPayload) {
     const userStore = useUserStore();
     const authStore = useAuthStore();
 
-    const response = await apiClient.post<{ data: LoginResponse }>(
+    const response = await userApiService.post<LoginResponse>(
       `${this.subdomain}/login`,
       payload
     );
@@ -46,7 +46,7 @@ class AuthenticationService {
   }
 
   async setInitialLogin(uid: string) {
-    return await apiClient.put(`${this.subdomain}/${uid}/set-initial-login`);
+    return await userApiService.put(`${this.subdomain}/${uid}/set-initial-login`);
   }
 }
 
