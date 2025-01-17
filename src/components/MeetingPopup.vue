@@ -4,8 +4,8 @@
         <div v-if="isVisible" class="tw-component-container popup-overlay" @click="hide">
             <div class="popup-content" @click.stop>
                 <button @click="hide" class="popup-close-btn">X</button>
-                <div class="modal-header">
-                    <h2 class="title">Send a Meeting Suggestion to {{ request.from }}</h2>
+                <div>
+                    <h1 class="title text-center">Send a Meeting Suggestion to {{ request.from }}</h1>
                 </div>
                 <div class="input-field mt-4">
                     <label for="place" class="block text-sm font-medium">Place</label>
