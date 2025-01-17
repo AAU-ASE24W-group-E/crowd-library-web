@@ -1,4 +1,4 @@
-import apiClient from '@/api.ts';
+import { userApiService } from '@/services/clients.ts';
 
 export interface LocationPayload {
   longitude: number;
@@ -9,11 +9,11 @@ class UserService {
   readonly subdomain: string = '/user';
 
   async setLocation(uid: string, payload: LocationPayload) {
-    return await apiClient.post(`${this.subdomain}/${uid}/address`, payload);
+    return await userApiService.post(`${this.subdomain}/${uid}/address`, payload);
   }
 
   async updateLocation(uid: string, payload: LocationPayload) {
-    return await apiClient.put(`${this.subdomain}/${uid}/address`, payload);
+    return await userApiService.put(`${this.subdomain}/${uid}/address`, payload);
   }
 }
 

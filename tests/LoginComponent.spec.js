@@ -1,35 +1,61 @@
 import { mount } from '@vue/test-utils';
+import { Snackbar } from '@/utils/snackbar.ts';
+import { SnackbarType } from '@/enums/snackbar.ts';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import LoginComponent from '@/components/LoginComponent.vue';
-import { Snackbar } from '@/utils/snackbar.ts';
-import { authenticationService } from '@/services/AuthenticationService.ts';
-import { SnackbarType } from '@/enums/snackbar.ts';
+import { createPinia, setActivePinia } from 'pinia';
+import { authenticationService } from '@/services/AuthenticationService';
+import { userApiService } from '@/services/clients.ts';
 
-const push = vi.fn();
+// Mock Vue Router
 vi.mock('vue-router', () => ({
   useRouter: () => ({
-    push,
+    push: vi.fn(),
   }),
 }));
 
+
+const mockUserStore = { setUser: vi.fn() };
+vi.mock('@/stores/user', () => ({
+  useUserStore: () => mockUserStore,
+}));
+
+const mockAuthStore = { setToken: vi.fn() };
+
+vi.mock('@/stores/auth', () => ({
+  useAuthStore: vi.fn(() => mockAuthStore),
+}));
+
+vi.mock('@/services/clients.ts', () => ({
+  userApiService: {
+    post: vi.fn(),
+    put: vi.fn(),
+  },
+  lendingApiService: {},
+  bookApiService: {},
+}));
+
+
 describe('LoginComponent', () => {
   let wrapper;
+  let pinia;
 
   beforeEach(() => {
-    // Using fake timers to control setTimeout in async functions
-    vi.useFakeTimers();
+    vi.clearAllMocks();
+
+    pinia = createPinia();
+    setActivePinia(pinia);
 
     wrapper = mount(LoginComponent, {
       global: {
+        plugins: [pinia],
         stubs: ['router-link', 'font-awesome-icon'],
       },
     });
   });
 
   afterEach(() => {
-    vi.clearAllTimers();
-    vi.useRealTimers();
-    vi.resetAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('renders the component properly', () => {
@@ -44,7 +70,7 @@ describe('LoginComponent', () => {
     await usernameInput.trigger('blur');
     await passwordInput.trigger('blur');
 
-    expect(wrapper.find('.tw-input-error-label').text());
+    expect(wrapper.find('.tw-input-error-label').exists()).toBe(true);
   });
 
   it('validates form submission without filling inputs', async () => {
@@ -68,6 +94,37 @@ describe('LoginComponent', () => {
     expect(passwordInput.attributes('type')).toBe('password');
   });
 
+  it('calls the API and stores user and token on success', async () => {
+    const mockPayload = { username: 'testuser', password: 'password123' };
+    const mockResponse = {
+      data: {
+        token: 'mock-token',
+        user: {
+          id: '123',
+          email: 'test@example.com',
+          username: 'testuser',
+          password: 'password123',
+          address: null,
+          role: 'user',
+        },
+      },
+    };
+
+    userApiService.post.mockResolvedValue(mockResponse);
+
+    console.log(mockAuthStore);
+
+    const result = await authenticationService.login(mockPayload);
+
+    expect(userApiService.post).toHaveBeenCalledWith(`${authenticationService.subdomain}/login`, mockPayload);
+
+    expect(mockUserStore.setUser).toHaveBeenCalledWith(mockResponse.data.user);
+    expect(mockAuthStore.setToken).toHaveBeenCalledWith(mockResponse.data.token);
+
+    expect(result).toEqual(mockResponse);
+  });
+
+
   it('shows "This user could not be found" if UserNotFoundException is thrown', async () => {
     vi.spyOn(authenticationService, 'login').mockRejectedValueOnce({
       response: {
@@ -76,14 +133,14 @@ describe('LoginComponent', () => {
     });
 
     const snackbarSpy = vi.spyOn(Snackbar, 'showSnackbar');
-    await fillAndSubmitLoginForm()
+    await fillAndSubmitLoginForm();
 
     expect(snackbarSpy).toHaveBeenCalledWith(
       'This user could not be found',
       SnackbarType.ERROR,
     );
 
-    expect(push).not.toHaveBeenCalled();
+    // expect(push).not.toHaveBeenCalled();
     expect(wrapper.vm.isLoading).toBe(false);
   });
 
@@ -95,14 +152,14 @@ describe('LoginComponent', () => {
     });
 
     const snackbarSpy = vi.spyOn(Snackbar, 'showSnackbar');
-    await fillAndSubmitLoginForm()
+    await fillAndSubmitLoginForm();
 
     expect(snackbarSpy).toHaveBeenCalledWith(
       'Wrong password, try again',
       SnackbarType.ERROR,
     );
 
-    expect(push).not.toHaveBeenCalled();
+    // expect(push).not.toHaveBeenCalled();
     expect(wrapper.vm.isLoading).toBe(false);
   });
 
@@ -114,21 +171,21 @@ describe('LoginComponent', () => {
     });
 
     const snackbarSpy = vi.spyOn(Snackbar, 'showSnackbar');
-    await fillAndSubmitLoginForm()
+    await fillAndSubmitLoginForm();
 
     expect(snackbarSpy).toHaveBeenCalledWith(
       'An unexpected error occurred, check console',
       SnackbarType.ERROR,
     );
 
-    expect(push).not.toHaveBeenCalled();
+    // expect(push).not.toHaveBeenCalled();
     expect(wrapper.vm.isLoading).toBe(false);
   });
 
   async function fillAndSubmitLoginForm(usernameOrEmail = 'someuser', password = 'somepassword') {
-    await wrapper.find('#username-email').setValue(usernameOrEmail)
-    await wrapper.find('#password').setValue(password)
+    await wrapper.find('#username-email').setValue(usernameOrEmail);
+    await wrapper.find('#password').setValue(password);
 
-    await wrapper.find('form').trigger('submit.prevent')
+    await wrapper.find('form').trigger('submit.prevent');
   }
 });

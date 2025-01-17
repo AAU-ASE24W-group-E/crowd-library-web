@@ -34,6 +34,7 @@ describe('BookEntry', () => {
       props: {
         book: mockBook,
         isWishlist: false,
+        isSearchBook: true
       },
       global: {
         stubs: ['router-link', 'font-awesome-icon'],
