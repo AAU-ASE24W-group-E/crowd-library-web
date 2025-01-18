@@ -71,13 +71,7 @@ const refreshMyBookList = async () => {
 }
 
 
-const toggleAddBook = (type) => {
-  // if (type == 'cancel' && showAddBook.value) {
-  //   Snackbar.showSnackbar('Adding books was cancelled.', SnackbarType.GENERAL);
-  // } else if (type != 'cancel' && showAddBook.value) {
-  //   // TODO add book
-  //   //SNackbar
-  // }
+const toggleAddBook = () => {
   showAddBook.value = !showAddBook.value;
 };
 

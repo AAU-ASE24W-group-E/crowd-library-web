@@ -1,13 +1,28 @@
 import { mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import UserLibraryMyBooks from '@/components/user-library/UserLibraryMyBooks.vue';
-import UserLibraryAddBook from '@/components/user-library/UserLibraryAddBook.vue';
 import BookEntry from '@/components/BookEntry.vue';
-import { ref } from 'vue';
+import UserLibraryAddBook from '@/components/user-library/UserLibraryAddBook.vue';
 
 import BookLibraryPopup from '@/components/user-library/BookLibraryPopup.vue';
-import { createPinia, setActivePinia } from 'pinia'
+import { createPinia, setActivePinia } from 'pinia';
 
+const mockUserStore = {
+  setUser: vi.fn(),
+  getUser: vi.fn().mockReturnValue({ id: "user" })
+};
+vi.mock('@/stores/user', () => ({
+  useUserStore: () => mockUserStore,
+}));
+
+
+vi.mock('@/services/BookService', () => ({
+  bookService: {
+    createBookOwnership: vi.fn(),
+    findBookByQuicksearch: vi.fn(),
+    importBookByIsbn: vi.fn(),
+  },
+}));
 describe('UserLibraryMyBooks', () => {
   let wrapper;
 
@@ -86,7 +101,7 @@ describe('UserLibraryMyBooks', () => {
         latitude: 46.622305,
         longitude: 14.272915,
       },
-    }
+    },
   ];
   let pinia;
 
@@ -94,17 +109,13 @@ describe('UserLibraryMyBooks', () => {
     wrapper = mount(UserLibraryMyBooks, {
       global: {
         plugins: [pinia],
-        
       },
-      // data(){
-      //   return {
-      //     mybooks: ref(mock_books)
-      //   }
-      // }
+      components: {
+        UserLibraryAddBook,
+      },
     });
   };
 
-  
   beforeEach(() => {
     pinia = createPinia();
     setActivePinia(pinia);
@@ -114,6 +125,7 @@ describe('UserLibraryMyBooks', () => {
 
   afterEach(() => {
     vi.resetAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('renders the book list with BookEntry components', () => {
@@ -138,7 +150,6 @@ describe('UserLibraryMyBooks', () => {
     expect(addBookForm.isVisible()).toBe(true);
   });
 
-
   it('displays "Cancel" button when the "Add Book" form is visible', async () => {
     const addButton = wrapper.find('.add-book-btn');
     await addButton.trigger('click');
@@ -159,7 +170,7 @@ describe('UserLibraryMyBooks', () => {
     const cancelButton = wrapper.find('.cancel-adding-btn');
     await cancelButton.trigger('click');
     expect(toggleAddBookSpy).toHaveBeenCalledWith('cancel');
-    expect(wrapper.vm.showAddBook).toBe(false); 
+    expect(wrapper.vm.showAddBook).toBe(false);
   });
 
   it('shows import button when add button is clicked', async () => {
@@ -167,7 +178,7 @@ describe('UserLibraryMyBooks', () => {
     await addButton.trigger('click');
 
     const importButton = wrapper.find('.import-btn');
-    expect(importButton.isVisible()).toBe(true); 
+    expect(importButton.isVisible()).toBe(true);
   });
 
   it('does not import anything if isbn input is empty', async () => {
@@ -175,14 +186,13 @@ describe('UserLibraryMyBooks', () => {
     await addButton.trigger('click');
 
     const isbnInput = wrapper.find('#isbn-input');
-    await isbnInput.setValue('978-3-453-32198-4'); 
-  
+    await isbnInput.setValue('978-3-453-32198-4');
+
     const importButton = wrapper.find('.import-btn');
     await importButton.trigger('click');
-    
-    expect(importButton.isVisible()).toBe(true); 
-  });
 
+    expect(importButton.isVisible()).toBe(true);
+  });
 
   it('triggers the BookLibraryPopup component when a book action is triggered', async () => {
     const editButton = wrapper.find('.edit-button');
@@ -225,8 +235,8 @@ describe('UserLibraryMyBooks', () => {
     const editButton = wrapper.find('.edit-button');
     await editButton.trigger('click');
     const popup = wrapper.findComponent(BookLibraryPopup);
-    
-    expect(popup.exists()).toBe(true); 
+
+    expect(popup.exists()).toBe(true);
     expect(popup.props().popupType).toBe('EDIT');
   });
 
@@ -237,7 +247,7 @@ describe('UserLibraryMyBooks', () => {
 
     expect(popup.exists()).toBe(true);
 
-    await popup.vm.$emit('close', true, {}); 
+    await popup.vm.$emit('close', true, {});
     expect(wrapper.vm.showPopup).toBe(false);
   });
 

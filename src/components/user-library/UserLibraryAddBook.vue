@@ -61,12 +61,12 @@ const userStore = useUserStore();
 
 const isbnInput = ref('');
 const searchInput = ref(null);
-const foundBooks = ref([
-]);
+const foundBooks = ref([]);
 
 const handleAdd = async (book) => {
-  await bookService.createBookOwnership(book.id, userStore.getUser().id)
-  .then((response) => {
+  await bookService
+    .createBookOwnership(book.id, userStore.getUser().id)
+    .then((response) => {
       console.log(response);
       emit('bookAdded');
       Snackbar.showSnackbar(book.title + ' was added to your library.', SnackbarType.SUCCESS, 10);
@@ -82,15 +82,15 @@ const handleSearch = async () => {
     return;
   }
 
-  await bookService.findBookByQuicksearch(inputValue)
+  await bookService
+    .findBookByQuicksearch(inputValue)
     .then((books) => {
-      console.log(books)
+      console.log(books);
       foundBooks.value = books;
     })
     .catch((error) => {
       console.log(error.status);
     });
-
 };
 
 const handleImport = async () => {
@@ -99,7 +99,8 @@ const handleImport = async () => {
     return;
   }
   Snackbar.showSnackbar('We are trying to import the book.', SnackbarType.GENERAL);
-  await bookService.importBookByIsbn(isbnInput.value)
+  await bookService
+    .importBookByIsbn(isbnInput.value)
     .then((book) => {
       let importBook = book;
       searchInput.value = book.title;
@@ -112,6 +113,7 @@ const handleImport = async () => {
       console.log(error.status);
     });
 };
+
 </script>
 <style setup>
 .divide-line {
