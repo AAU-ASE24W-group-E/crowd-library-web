@@ -14,6 +14,11 @@ function checkInputRendering(wrapper, id, labelText, inputType, hasPlaceholder, 
   }
 }
 
+function checkButton(button, text) {
+  expect(button.exists()).toBe(true);
+  expect(button.text()).toBe(text);
+}
+
 vi.mock('vue-router', () => ({
   useRouter: () => ({
     push,
@@ -46,25 +51,13 @@ describe('MeetingPopup', () => {
     expect(wrapper.find('h1.title').text()).toBe('Send a Meeting Suggestion to User1');
 
     // Check buttons and their text
-    const closeBtn = wrapper.find('#closeBtn');
-    expect(closeBtn.exists()).toBe(true);
-    expect(closeBtn.text()).toBe('X');
+    checkButton(wrapper.find('#closeBtn'), 'X');
+    checkButton(wrapper.find('#cancelBtn'), 'Cancel');
+    checkButton(wrapper.find('#sendMeetingReqBtn'), 'Send Meeting Request');
 
-    const grayBtn = wrapper.find('#cancelBtn');
-    expect(closeBtn.exists()).toBe(true);
-    expect(grayBtn.text()).toBe('Cancel');
-
-    const greenBtn = wrapper.find('#sendMeetingReqBtn');
-    expect(closeBtn.exists()).toBe(true);
-    expect(greenBtn.text()).toBe('Send Meeting Request');
-
-    // Check place label and input
+    // Check labels and their input
     checkInputRendering(wrapper, "place", "Place", "text", true, "Enter place");
-
-    // Check date label and input
     checkInputRendering(wrapper, "date", "Date", "date", false, null);
-
-    // Check deadline label and input
     checkInputRendering(wrapper, "deadline", "Deadline", "date", false, null);
   });
 
