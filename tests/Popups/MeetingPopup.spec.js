@@ -85,4 +85,14 @@ describe('MeetingPopup', () => {
     await cancelBtn.trigger('click');
     expect(hideSpy).toHaveBeenCalled();
   });
+
+  /** THIS IS ONLY PRELIMINARY* */
+  it('hides popup when send meeting request button is clicked', async () => {
+    const hideSpy = vi.spyOn(wrapper.vm, 'hide');
+    await wrapper.vm.show();
+    await wrapper.vm.$nextTick();
+    const sendMeetingReqBtn = wrapper.find('button.btn-primary.btn-green.rounded-2xl');
+    await sendMeetingReqBtn.trigger('click');
+    expect(hideSpy).toHaveBeenCalled();
+  });
 });
