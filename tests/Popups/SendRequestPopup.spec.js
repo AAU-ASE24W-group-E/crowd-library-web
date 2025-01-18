@@ -25,7 +25,7 @@ describe('SendRequestPopup', () => {
           owner: "User1",
           isLendable: true,
           isExchangeable: true,
-          isGiftable: false
+          isGiftable: true
         }
       }
     });
@@ -49,5 +49,11 @@ describe('SendRequestPopup', () => {
     checkButton(wrapper.find('#closeBtn'), 'X');
     checkButton(wrapper.find('#cancelBtn'), 'Cancel');
     checkButton(wrapper.find('#requestBookBtn'), 'Request Book');
+
+    // Check dropdown (select box)
+    const selectBox = wrapper.find('#request-purpose');
+    expect(selectBox.exists()).toBe(true);
+    const options = wrapper.findAll('option');
+    expect(options.length).toBe(3);
   });
 });
