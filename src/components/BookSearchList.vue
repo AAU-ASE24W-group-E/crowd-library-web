@@ -95,7 +95,7 @@
 
 <script setup>
 import BookEntry from '@/components/BookEntry.vue';
-import { defineProps, onMounted, onUnmounted, ref } from 'vue';
+import { defineProps, onMounted, onUnmounted, ref, defineExpose } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faArrowDownWideShort, faChevronDown, faX } from '@fortawesome/free-solid-svg-icons';
 
@@ -146,11 +146,19 @@ const showOnMapClicked = (book) => {
   emits('showOnMapClicked', book);
 };
 
+const updateBooks = (newBooks) => {
+  books.value =  [...newBooks];
+};
+
 onMounted(() => {
   document.addEventListener('click', handleClickOutside);
 });
 
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside);
+});
+
+defineExpose({
+  updateBooks,
 });
 </script>

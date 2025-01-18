@@ -5,14 +5,14 @@
         <button
           @click="mapClicked"
           :class="getMapButtonClass"
-          class="btn-primary rounded-r-none rounded-l-md w-28 hover:scale-100 hover:-translate-y-0"
+          class="map-search-btn btn-primary rounded-r-none rounded-l-md w-28 hover:scale-100 hover:-translate-y-0"
         >
           Map
         </button>
         <button
           @click="listClicked"
           :class="getListButtonClass"
-          class="btn-primary rounded-l-none rounded-r-md w-28 hover:scale-100 hover:-translate-y-0"
+          class="list-search-btn  btn-primary rounded-l-none rounded-r-md w-28 hover:scale-100 hover:-translate-y-0"
         >
           Book List
         </button>
@@ -20,7 +20,7 @@
     </div>
 
     <BookSearchMap ref="mapComponent" v-show="!showBookList" :books="currentBooks" />
-    <BookSearchList
+    <BookSearchList ref="listComponent"
       v-show="showBookList"
       :books="currentBooks"
       @showOnMapClicked="showOnMapClicked"
@@ -42,6 +42,7 @@ import config from "@/config.json";
 
 const showBookList = ref(true);
 const mapComponent =  ref<InstanceType<typeof BookSearchMap> | null>(null);
+const listComponent =  ref<InstanceType<typeof BookSearchList> | null>(null);
 // Used to receive the input string of the search bar
 const route = useRoute()
 const router = useRouter()
@@ -131,6 +132,8 @@ const isLoading = ref(false)
 watch(() => route.query.q, fetchAvailableBooks, { immediate: true })
 
 async function fetchAvailableBooks(q) {
+  showBookList.value = true;
+
   if (!q || q === '') {
     console.log('No query parameter provided')
     return
@@ -161,7 +164,7 @@ async function fetchAvailableBooks(q) {
     if (response.status === 200) {
       const books = response.data.results
       currentBooks.value.splice(0, currentBooks.value.length, ...books)
-      triggerRef(currentBooks)
+      updateBooksInChildComponents(currentBooks.value)
       console.log('Available Books:', currentBooks.value)
     } else {
       console.error('Error fetching books:', response)
@@ -196,5 +199,10 @@ const listClicked = () => {
 const showOnMapClicked = (book:OwnBook) => {
   showBookList.value = false;
   mapComponent.value.zoomToPoint(book);
+};
+
+const updateBooksInChildComponents = (books:OwnBook[]) => {
+  mapComponent.value.updateBooks(books);
+  listComponent.value.updateBooks(books)
 };
 </script>

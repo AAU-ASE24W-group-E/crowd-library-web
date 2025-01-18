@@ -170,7 +170,7 @@ function toggleDropdown() {
 }
 
 function handleShowOnMap() {
-  emit('showOnMapClicked', props.book);
+  emit('showOnMapClicked', props.ownBook);
 }
 
 function handleEditState() {
