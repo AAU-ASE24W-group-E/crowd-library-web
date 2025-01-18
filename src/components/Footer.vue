@@ -13,10 +13,6 @@
       <div
         class="w-full flex items-center pb-2 justify-center font-medium space-x-16"
       >
-        <router-link to="/about"
-                     class="tw-link-style">
-          About Us
-        </router-link>
         <router-link to="/imprint"
                      class="tw-link-style">
           Imprint
