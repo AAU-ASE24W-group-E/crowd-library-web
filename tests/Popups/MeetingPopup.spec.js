@@ -9,11 +9,10 @@ function checkInputRendering(wrapper, id, labelText, inputType, hasPlaceholder, 
   expect(wrapper.find(`label[for="${id}"]`).text()).toBe(labelText);
   expect(wrapper.find(`input[id="${id}"]`).exists()).toBe(true);
   expect(wrapper.find(`input[id="${id}"]`).element.type).toBe(inputType);
-  if(hasPlaceholder){
+  if (hasPlaceholder) {
     expect(wrapper.find(`input[id="${id}"]`).element.placeholder).toBe(placeHolderText);
   }
 }
-
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
@@ -75,6 +74,15 @@ describe('MeetingPopup', () => {
     await wrapper.vm.$nextTick();
     const closeBtn = wrapper.find('button.popup-close-btn');
     await closeBtn.trigger('click');
+    expect(hideSpy).toHaveBeenCalled();
+  });
+
+  it('hides popup when cancel button is clicked', async () => {
+    const hideSpy = vi.spyOn(wrapper.vm, 'hide');
+    await wrapper.vm.show();
+    await wrapper.vm.$nextTick();
+    const cancelBtn = wrapper.find('button.btn-primary.btn-gray.rounded-2xl');
+    await cancelBtn.trigger('click');
     expect(hideSpy).toHaveBeenCalled();
   });
 });
