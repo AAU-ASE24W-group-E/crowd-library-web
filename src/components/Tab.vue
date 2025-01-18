@@ -3,10 +3,8 @@
         <slot></slot> <!-- Use slot to insert content later when used -->
     </div>
 </template>
-
 <script>
 import { defineComponent, inject } from 'vue';
-
 export default defineComponent({
     name: 'Tab',
     props: {
@@ -17,28 +15,25 @@ export default defineComponent({
         title: {
             type: String,
             required: true
-        }
+        },
     },
-    setup() {
-
+    data() {
+        return {
+            index: null // Initialize index
+        };
     },
-    /*setup(props) {
-        const activeTab = inject('activeTab');
-        const activateTab = inject('activateTab');
-        const registerTab = inject('registerTab');
-        const tabs = inject('tabs');
-
-        const index = ref(null);
-    },*/
     computed: {
         /* Check if this tab is active by comparing index with activeTab from Tabs Component */
         isActive() {
-            return this.$parent.activeTab === this.index;
+            if (this.index !== null) {
+                return this.$parent.activeTab === this.index;
+            }
+            return false;
         }
     },
-    created() {
+    mounted() {
+        // Access the parent (=Tabs) component after the component has been mounted
         if (this.$parent && this.$parent.tabs) {
-            // Ensure $parent (=Tabs component) and tabs array are available
             this.index = this.$parent.tabs.length;
             this.$parent.registerTab({
                 title: this.title,
