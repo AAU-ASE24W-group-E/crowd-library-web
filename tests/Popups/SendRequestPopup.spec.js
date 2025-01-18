@@ -43,5 +43,15 @@ describe('SendRequestPopup', () => {
     expect(wrapper.find('.popup-overlay').exists()).toBe(true);
     expect(wrapper.find('.popup-content').exists()).toBe(true);
     expect(wrapper.find('h1.title').text()).toBe('Send a Request to User1');
+    expect(wrapper.find("label[for=request-purpose]").exists()).toBe(true);
+    expect(wrapper.find("label[for=request-purpose]").text()).toBe("I want to request this book for ...");
+
+    // Check the buttons and their text
+    expect(wrapper.find('button.popup-close-btn').exists()).toBe(true);
+    expect(wrapper.find('button.popup-close-btn').text()).toBe('X');
+    expect(wrapper.findAll('button.btn-primary.btn-gray.rounded-2xl').length).toBe(1);
+    expect(wrapper.find('button.btn-primary.btn-gray.rounded-2xl').text()).toBe('Cancel');
+    expect(wrapper.findAll('button.btn-primary.btn-green.rounded-2xl').length).toBe(1);
+    expect(wrapper.find('button.btn-primary.btn-green.rounded-2xl').text()).toBe('Request Book');
   });
 });
