@@ -47,11 +47,16 @@ describe('SendRequestPopup', () => {
     expect(wrapper.find("label[for=request-purpose]").text()).toBe("I want to request this book for ...");
 
     // Check the buttons and their text
-    expect(wrapper.find('button.popup-close-btn').exists()).toBe(true);
-    expect(wrapper.find('button.popup-close-btn').text()).toBe('X');
-    expect(wrapper.findAll('button.btn-primary.btn-gray.rounded-2xl').length).toBe(1);
-    expect(wrapper.find('button.btn-primary.btn-gray.rounded-2xl').text()).toBe('Cancel');
-    expect(wrapper.findAll('button.btn-primary.btn-green.rounded-2xl').length).toBe(1);
-    expect(wrapper.find('button.btn-primary.btn-green.rounded-2xl').text()).toBe('Request Book');
+    const closeBtn = wrapper.find('button.popup-close-btn');
+    expect(closeBtn.exists()).toBe(true);
+    expect(closeBtn.text()).toBe('X');
+
+    const grayBtns = wrapper.findAll('button.btn-primary.btn-gray.rounded-2xl');
+    expect(grayBtns.length).toBe(1);
+    expect(grayBtns.at(0).text()).toBe('Cancel');
+
+    const greenBtns = wrapper.findAll('button.btn-primary.btn-green.rounded-2xl');
+    expect(greenBtns.length).toBe(1);
+    expect(greenBtns.at(0).text()).toBe('Request Book');
   });
 });
