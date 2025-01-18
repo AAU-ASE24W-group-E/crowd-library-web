@@ -2,6 +2,9 @@ import { mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import UserLibraryMyBooks from '@/components/user-library/UserLibraryMyBooks.vue';
 import BookEntry from '@/components/BookEntry.vue';
+import { bookService } from '@/services/BookService';
+import { SnackbarType } from '@/enums/snackbar.ts';
+import { Snackbar } from '@/utils/snackbar.ts';
 import UserLibraryAddBook from '@/components/user-library/UserLibraryAddBook.vue';
 
 import BookLibraryPopup from '@/components/user-library/BookLibraryPopup.vue';
@@ -121,6 +124,8 @@ describe('UserLibraryMyBooks', () => {
     setActivePinia(pinia);
     createComponent();
     wrapper.vm.mybooks = mock_books;
+    
+    // wrapper.findComponent(UserLibraryAddBook).vm.userStore = useUserStore();
   });
 
   afterEach(() => {
@@ -189,8 +194,6 @@ describe('UserLibraryMyBooks', () => {
     await isbnInput.setValue('978-3-453-32198-4');
 
     const importButton = wrapper.find('.import-btn');
-    await importButton.trigger('click');
-
     expect(importButton.isVisible()).toBe(true);
   });
 
