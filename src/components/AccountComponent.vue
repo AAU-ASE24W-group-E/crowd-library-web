@@ -170,7 +170,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
-import { authenticationService } from '@/services/AuthenticationService.ts';
+import { userService } from '@/services/UserService.ts';
 import { Snackbar } from '@/utils/snackbar.ts';
 import { SnackbarType } from '@/enums/snackbar.ts';
 
@@ -267,6 +267,11 @@ const validatePasswordForm = () => {
   );
 };
 
+const resetFormToUserStore = () => {
+  updateForm.email = userStore.user?.email || '';
+  updateForm.username = userStore.user?.username || '';
+};
+
 const updateUserInfo = async () => {
   if (isLoading.value) return;
 
@@ -284,15 +289,20 @@ const updateUserInfo = async () => {
     const email = updateForm.email.trim().toLowerCase();
     const username = updateForm.username.trim().toLowerCase();
 
-    await authenticationService.updateUserInfo({ email, username });
+    await userService.updateUserInfo(userStore.user.id, { email, username });
     Snackbar.showSnackbar('User info updated successfully!', SnackbarType.SUCCESS);
+
     userStore.setUser({ ...userStore.user, email, username });
-  } catch (e) {
-    Snackbar.showSnackbar('Failed to update user info. Please try again.', SnackbarType.ERROR);
+  } catch (error) {
+    console.error('Error updating user info:', error);
+    Snackbar.showSnackbar('Failed to update user info. Reverting changes.', SnackbarType.ERROR);
+
+    resetFormToUserStore();
   } finally {
     isLoading.value = false;
   }
 };
+
 
 const updatePassword = async () => {
   if (isLoading.value) return;
@@ -301,7 +311,7 @@ const updatePassword = async () => {
   isLoading.value = true;
 
   try {
-    await authenticationService.updatePassword({
+    await userService.updatePassword(userStore.user?.id ?? "",{
       oldPassword: updateForm.oldPassword,
       newPassword: updateForm.newPassword,
     });
@@ -309,6 +319,9 @@ const updatePassword = async () => {
   } catch (e) {
     Snackbar.showSnackbar('Failed to update password. Please try again.', SnackbarType.ERROR);
   } finally {
+    updateForm.oldPassword = '';
+    updateForm.newPassword = '';
+    updateForm.confirmPassword = '';
     isLoading.value = false;
   }
 };

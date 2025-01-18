@@ -5,6 +5,16 @@ export interface LocationPayload {
   latitude: number;
 }
 
+export interface UserPayload {
+  email: string;
+  username: string;
+}
+
+export interface PasswordPayload {
+  oldPassword: string;
+  newPassword: string;
+}
+
 class UserService {
   readonly subdomain: string = '/user';
 
@@ -14,6 +24,17 @@ class UserService {
 
   async updateLocation(uid: string, payload: LocationPayload) {
     return await userApiService.put(`${this.subdomain}/${uid}/address`, payload);
+  }
+
+  async updateUserInfo(uid: string, payload: UserPayload ) {
+    console.log("Send update user request", payload);
+    return await userApiService.put(`${this.subdomain}/${uid}/`, payload);
+
+  }
+
+  async updatePassword(uid: string, payload: PasswordPayload) {
+    console.log("Send update password request");
+    return await userApiService.put(`${this.subdomain}/${uid}/password`, payload);
   }
 }
 
