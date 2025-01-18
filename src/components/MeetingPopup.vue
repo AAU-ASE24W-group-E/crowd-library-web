@@ -3,7 +3,7 @@
         class="flex flex-row w-full mt-2 space-x-16 max-md:space-x-6 ml-24 max-sm:space-x-0 max-sm:flex-col max-sm:space-y-4 max-sm:justify-center max-sm:ml-0">
         <div v-if="isVisible" class="tw-component-container popup-overlay" @click="hide">
             <div class="popup-content" @click.stop>
-                <button @click="hide" class="popup-close-btn">X</button>
+                <button @click="hide" class="popup-close-btn" id="closeBtn">X</button>
                 <div>
                     <h1 class="title text-center text-2xl text-gray-500">Send a Meeting Suggestion to {{ request.from }}</h1>
                 </div>
@@ -23,8 +23,8 @@
                         class="cursor-pointer mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
                 <div class="flex justify-center space-x-4 mt-4">
-                    <button @click="hide" class="btn-primary btn-gray rounded-2xl">Cancel</button>
-                    <button @click="hide" class="btn-primary btn-green rounded-2xl">Send Meeting Request</button>
+                    <button @click="hide" class="btn-primary btn-gray rounded-2xl" id="cancelBtn">Cancel</button>
+                    <button @click="hide" class="btn-primary btn-green rounded-2xl" id="sendMeetingReqBtn">Send Meeting Request</button>
                 </div>
             </div>
         </div>
