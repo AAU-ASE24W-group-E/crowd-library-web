@@ -83,5 +83,9 @@ describe('RequestEntry', () => {
   
       expect(wrapper.vm.dropdownSortOpen).toBe(false);
     });
+
+    it("incoming is false", async () => {
+      expect(wrapper.vm.incoming).toBe(false);
+    });
   });
   
