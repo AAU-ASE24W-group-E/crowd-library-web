@@ -50,8 +50,6 @@ import BookLibraryPopup from './BookLibraryPopup.vue';
 import BookEntry from '@/components/BookEntry.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { SnackbarType } from '@/enums/snackbar.ts';
-import { Snackbar } from '@/utils/snackbar.ts';
 
 const showAddBook = ref(false);
 const showPopup = ref(false);
