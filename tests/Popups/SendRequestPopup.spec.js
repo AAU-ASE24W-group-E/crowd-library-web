@@ -4,6 +4,11 @@ import SendRequestPopup from '@/components/SendRequestPopup.vue';
 
 const push = vi.fn();
 
+function checkButton(button, text) {
+  expect(button.exists()).toBe(true);
+  expect(button.text()).toBe(text);
+}
+
 vi.mock('vue-router', () => ({
   useRouter: () => ({
     push,
@@ -41,16 +46,8 @@ describe('SendRequestPopup', () => {
     expect(wrapper.find("label[for=request-purpose]").text()).toBe("I want to request this book for ...");
 
     // Check the buttons and their text
-    const closeBtn = wrapper.find('#closeBtn');
-    expect(closeBtn.exists()).toBe(true);
-    expect(closeBtn.text()).toBe('X');
-
-    const grayBtn = wrapper.find('#cancelBtn');
-    expect(grayBtn.exists()).toBe(true);
-    expect(grayBtn.text()).toBe('Cancel');
-
-    const greenBtn = wrapper.find('#requestBookBtn');
-    expect(greenBtn.exists()).toBe(true);
-    expect(greenBtn.text()).toBe('Request Book');
+    checkButton(wrapper.find('#closeBtn'), 'X');
+    checkButton(wrapper.find('#cancelBtn'), 'Cancel');
+    checkButton(wrapper.find('#requestBookBtn'), 'Request Book');
   });
 });
