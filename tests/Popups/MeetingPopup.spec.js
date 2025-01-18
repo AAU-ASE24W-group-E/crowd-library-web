@@ -51,9 +51,11 @@ describe('MeetingPopup', () => {
     expect(closeBtn.text()).toBe('X');
 
     const grayBtn = wrapper.find('#cancelBtn');
+    expect(closeBtn.exists()).toBe(true);
     expect(grayBtn.text()).toBe('Cancel');
 
     const greenBtn = wrapper.find('#sendMeetingReqBtn');
+    expect(closeBtn.exists()).toBe(true);
     expect(greenBtn.text()).toBe('Send Meeting Request');
 
     // Check place label and input
