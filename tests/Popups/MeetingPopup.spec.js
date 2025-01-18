@@ -47,12 +47,17 @@ describe('MeetingPopup', () => {
     expect(wrapper.find('h1.title').text()).toBe('Send a Meeting Suggestion to User1');
 
     // Check buttons and their text
-    expect(wrapper.find('button.popup-close-btn').exists()).toBe(true);
-    expect(wrapper.find('button.popup-close-btn').text()).toBe('X');
-    expect(wrapper.findAll('button.btn-primary.btn-gray.rounded-2xl').length).toBe(1);
-    expect(wrapper.find('button.btn-primary.btn-gray.rounded-2xl').text()).toBe('Cancel');
-    expect(wrapper.findAll('button.btn-primary.btn-green.rounded-2xl').length).toBe(1);
-    expect(wrapper.find('button.btn-primary.btn-green.rounded-2xl').text()).toBe('Send Meeting Request');
+    const closeBtn = wrapper.find('button.popup-close-btn');
+    expect(closeBtn.exists()).toBe(true);
+    expect(closeBtn.text()).toBe('X');
+
+    const grayBtns = wrapper.findAll('button.btn-primary.btn-gray.rounded-2xl');
+    expect(grayBtns.length).toBe(1);
+    expect(grayBtns.at(0).text()).toBe('Cancel');
+
+    const greenBtns = wrapper.findAll('button.btn-primary.btn-green.rounded-2xl');
+    expect(greenBtns.length).toBe(1);
+    expect(greenBtns.at(0).text()).toBe('Send Meeting Request');
 
     // Check place label and input
     checkInputRendering(wrapper, "place", "Place", "text", true, "Enter place");
