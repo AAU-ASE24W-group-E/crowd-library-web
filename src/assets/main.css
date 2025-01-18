@@ -445,10 +445,10 @@
     background: rgba(0, 0, 0, 0.5);
   }
   .popup-content {
-    @apply bg-[white] max-w-lg w-full relative p-5 rounded-lg;
+    @apply bg-white text-black dark:bg-dark-mode-inside dark:text-dark-mode-text rounded-lg max-w-lg w-full relative p-5;
   }
+
   .popup-close-btn {
-    @apply absolute text-base cursor-pointer border-[none] right-2.5 top-2.5;
-    background: none;
+    @apply absolute text-base cursor-pointer border-none right-2.5 top-2.5 text-black dark:text-gray-400 hover:dark:text-gray-300;
   }
 }
