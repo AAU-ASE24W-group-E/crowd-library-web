@@ -31,18 +31,24 @@
 <script setup>
 import BookSearchList from '@/components/BookSearchList.vue';
 import BookSearchMap from '@/components/BookSearchMap.vue';
-import { computed, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { computed, ref, shallowRef, triggerRef, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { bookService } from '@/services/BookService'
+import { Snackbar } from '@/utils/snackbar.ts'
+import { SnackbarType } from '@/enums/snackbar.ts'
+import { useUserStore } from '@/stores/user.ts'
 
 const showBookList = ref(true);
 const mapComponent = ref(null);
 
 // Used to receive the input string of the search bar
 // Todo books request must be handled
-const route = useRoute();
-const query = route.query.q || null;
+const route = useRoute()
+const router = useRouter()
+const userStore = useUserStore()
+//const query = route.query.q || null;
 
-const currentBooks = ref([
+const currentBooks = shallowRef([
   {
     title: 'The Forgotten Forest',
     year: '2015',
@@ -384,6 +390,51 @@ const currentBooks = ref([
     long: 14.268315,
   },
 ]);
+
+const isLoading = ref(false)
+
+// replace mock books in currentBooks by content loaded from the server using query parameter
+watch(() => route.query.q, fetchAvailableBooks, { immediate: true })
+
+async function fetchAvailableBooks(q) {
+  if (!q || q === '') {
+    console.log('No query parameter provided')
+    return
+  }
+  const userLocation = userStore.user?.address
+  if (!userLocation || !userLocation.longitude || !userLocation.latitude) {
+    console.error('User location not available')
+    Snackbar.showSnackbar('Please set your location first', SnackbarType.GENERAL)
+    await router.push('/set-location');
+    return
+  }
+  // fetch books from the server
+  console.log('fetching books with query:', q)
+  const query = {
+    latitude: userLocation.latitude,
+    longitude: userLocation.longitude,
+    quickSearch: q
+  }
+  try {
+    //loading.value = true
+    const response = await bookService.getAvailableBooks(query)
+    console.log('Books fetched:', response)
+    if (response.status === 200) {
+      const books = response.data.results
+      currentBooks.value.splice(0, currentBooks.value.length, ...books)
+      triggerRef(currentBooks)
+      console.log('Available Books:', currentBooks.value)
+    } else {
+      console.error('Error fetching books:', response)
+      Snackbar.showSnackbar('Error fetching books', SnackbarType.ERROR)
+    }
+  } catch (err) {
+    console.error('Error fetching books:', err)
+    Snackbar.showSnackbar('Error fetching books', SnackbarType.ERROR)
+  } finally {
+    //loading.value = false
+  }
+}
 
 const getListButtonClass = computed(() => ({
   'btn-blue': showBookList.value,

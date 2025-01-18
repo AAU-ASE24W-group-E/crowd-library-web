@@ -81,7 +81,7 @@ const handleLocationEdit = async () => {
     await userService.updateLocation(userStore.user?.id ?? "", payload);
 
     Snackbar.showSnackbar('Location was set successfully', SnackbarType.SUCCESS);
-    await router.push('/login');
+    await router.push('/');
   } catch (e) {
     Snackbar.showSnackbar(
       'There was an error setting the location, check out console',
