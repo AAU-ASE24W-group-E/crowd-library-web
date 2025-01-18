@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { defineEmits, onMounted, ref } from 'vue';
-import L, { type LeafletMouseEvent, Map, Marker,  type LatLngTuple } from 'leaflet';
+import L, { type LeafletMouseEvent, Map, Marker } from 'leaflet';
 import 'leaflet-control-geocoder';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
@@ -61,11 +61,9 @@ const resetMarker = () => {
 };
 
 onMounted(() => {
-  const initialCoordinates: LatLngTuple = (
-    userLocation.value?.lat && userLocation.value?.lng
-  ) 
-    ? [userLocation.value.lat, userLocation.value.lng] // If valid user location
-    : (config.DEFAULT_SAVED_LOCATION as LatLngTuple);
+  const initialCoordinates = userLocation.value
+    ? [userLocation.value.lat, userLocation.value.lng]
+    : config.DEFAULT_SAVED_LOCATION;
 
   map = L.map('map').setView(initialCoordinates, 13);
 

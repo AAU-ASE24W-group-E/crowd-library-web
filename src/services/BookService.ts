@@ -48,6 +48,9 @@ class BookService {
     return await bookApiService.post(`${this.subdomain_owner}/${ownerId}/book/${bookId}`);
   }
 
+  async findOwnBooks(ownerId: string) {
+    return await bookApiService.get(`${this.subdomain_owner}/${ownerId}/book`);
+  }
 }
 
 export const bookService = new BookService();

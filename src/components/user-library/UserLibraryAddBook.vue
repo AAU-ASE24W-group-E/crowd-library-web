@@ -20,7 +20,7 @@
         :isNewBook="true"
         @handleAdd="handleAdd"
       />
-      <hr class="divide-line" />
+      <hr class="divide-line mt-10" />
       <div class="add-book-by-isbn">
         <a
           class="tw-link-style mr-5"
@@ -68,7 +68,6 @@ const handleAdd = async (book) => {
   await bookService
     .createBookOwnership(book.id, userStore.getUser().id)
     .then((response) => {
-      console.log(response);
       emit('bookAdded');
       Snackbar.showSnackbar(book.title + ' was added to your library.', SnackbarType.SUCCESS, 10);
     })
@@ -79,14 +78,12 @@ const handleAdd = async (book) => {
 
 const handleSearch = async () => {
   const inputValue = searchInput.value;
-  if (inputValue === null || inputValue === undefined || inputValue === '') {
+  if (inputValue === null || inputValue === undefined || inputValue === '' || inputValue.length == 1) {
     return;
   }
-
   await bookService
     .findBookByQuicksearch(inputValue)
     .then((books) => {
-      console.log(books);
       foundBooks.value = books;
     })
     .catch((error) => {
@@ -105,7 +102,6 @@ const handleImport = async () => {
     .then((book) => {
       let importBook = book;
       searchInput.value = book.title;
-
       Snackbar.showSnackbar('Successfully imported ' + importBook.title, SnackbarType.SUCCESS);
       handleSearch();
       isbnInput.value = undefined;

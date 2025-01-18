@@ -12,12 +12,16 @@
         >
           Go back
         </button>
-        <button @click="toggleAddBook"  v-show="!showAddBook" class="add-book-btn btn-primary btn-green">
+        <button
+          @click="toggleAddBook"
+          v-show="!showAddBook"
+          class="add-book-btn btn-primary btn-green"
+        >
           <font-awesome-icon class="add-icon tw-icon text-gray-100" :icon="faPlus" />
         </button>
       </div>
     </div>
-    <UserLibraryAddBook v-show="showAddBook" @bookAdded="refreshMyBookList"/>
+    <UserLibraryAddBook v-show="showAddBook" @bookAdded="refreshMyBookList" />
 
     <div v-show="!showAddBook" class="my-book-list space-y-6 w-full mt-4">
       <BookEntry
@@ -44,12 +48,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import UserLibraryAddBook from '@/components/user-library/UserLibraryAddBook.vue';
 import BookLibraryPopup from './BookLibraryPopup.vue';
 import BookEntry from '@/components/BookEntry.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { bookService } from '@/services/BookService';
+import { useUserStore } from '@/stores/user';
+
+const userStore = useUserStore();
 
 const showAddBook = ref(false);
 const showPopup = ref(false);
@@ -64,10 +72,21 @@ const handleAction = (book, type) => {
   showPopup.value = true;
 };
 
-const refreshMyBookList = async () => {
-  // TODO get books of owner
-}
+onMounted(() => {
+  refreshMyBookList();
+});
 
+const refreshMyBookList = async () => {
+  if(userStore.getUser() == undefined) return
+  await bookService
+    .findOwnBooks(userStore.getUser().id)
+    .then((books) => {
+      mybooks.value = books.data;
+    })
+    .catch((error) => {
+      console.log(error.status);
+    });
+};
 
 const toggleAddBook = () => {
   showAddBook.value = !showAddBook.value;
@@ -93,7 +112,7 @@ const handlePopUpClosed = (actionFinished, editedfields) => {
 </script>
 
 <style scoped>
-.library-empty-text{
-  @apply font-semibold dark:text-title-dark-mode-text
+.library-empty-text {
+  @apply font-semibold dark:text-title-dark-mode-text;
 }
 </style>

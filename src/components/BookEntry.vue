@@ -36,7 +36,7 @@
             >
             <span v-if="!isNewBook" class="tw-book-entry-info-title"
               >Status:
-              <span :class="{ 'text-green-500': ownBook.status, 'text-red-500': !ownBook.status }">
+              <span :class="{ 'text-green-500': ownBook.status == 'AVAILABLE', 'text-red-500': ownBook.status == 'UNAVAILABLE' }">
                 {{ ownBook.status }}</span
               ></span
             >
@@ -163,7 +163,6 @@ const props = defineProps({
   },
 });
 
-console.log(props.book);
 const dropdownOpen = ref(false);
 
 function toggleDropdown() {

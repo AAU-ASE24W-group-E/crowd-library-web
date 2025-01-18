@@ -52,13 +52,10 @@ describe('API Client - Interceptors', () => {
   });
 
   it('should not add Authorization header if token does not exist', async () => {
-    console.log(authStoreMock);
     authStoreMock.token = null;
 
     const mockRequest = { headers: {} };
     const updatedConfig = await userApiService.interceptors.request.handlers[0].fulfilled(mockRequest);
-
-    console.log(updatedConfig.headers.Authorization);
 
     expect(updatedConfig.headers.Authorization).toBeUndefined();
   });

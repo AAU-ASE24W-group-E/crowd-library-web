@@ -3,9 +3,88 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import UserLibraryMyBooks from '@/components/user-library/UserLibraryMyBooks.vue';
 import BookEntry from '@/components/BookEntry.vue';
 import UserLibraryAddBook from '@/components/user-library/UserLibraryAddBook.vue';
+import { Snackbar } from '@/utils/snackbar.ts';
+import { bookService } from '@/services/BookService';
 
 import BookLibraryPopup from '@/components/user-library/BookLibraryPopup.vue';
 import { createPinia, setActivePinia } from 'pinia';
+const mock_books = [
+  {
+    book: {
+      id: '1',
+      title: 'The Forgotten Forest',
+      isbn: '1122334455',
+      publisher: 'Whispering Pines',
+      publishYear: 2015,
+      coverId: '14625765-L',
+      edition: 'First Edition',
+      format: 'Paperback',
+      authors: ['Alice Morningstar'],
+      languages: ['EN'],
+    },
+    lendable: true,
+    giftable: true,
+    exchangeable: false,
+    status: true, // Available
+    distance: 0,
+    owner: {
+      id: 'Owner1',
+      name: 'Owner1',
+      latitude: 46.617415,
+      longitude: 14.263625,
+    },
+  },
+  {
+    book: {
+      id: '2',
+      title: 'Whispers of the Sea',
+      isbn: '2233445566',
+      publisher: 'Ocean Breeze Press',
+      publishYear: 2020,
+      coverId: '14625766-L',
+      edition: 'First Edition',
+      format: 'Hardcover',
+      authors: ['John Saltsworth'],
+      languages: ['EN'],
+    },
+    lendable: false,
+    giftable: false,
+    exchangeable: true,
+    status: false, // Unavailable
+    distance: 0,
+    owner: {
+      id: 'Owner2',
+      name: 'Owner2',
+      latitude: 46.619025,
+      longitude: 14.265755,
+    },
+  },
+  {
+    book: {
+      id: '3',
+      title: 'A Dance in the Rain',
+      isbn: '3344556677',
+      publisher: 'Rainfall Publishing',
+      publishYear: 2019,
+      coverId: '14625767-L',
+      edition: 'Second Edition',
+      format: 'Paperback',
+      authors: ['Elena Storm'],
+      languages: ['ES'],
+    },
+    lendable: true,
+    giftable: false,
+    exchangeable: false,
+    status: true, // Available
+    distance: 0,
+    owner: {
+      id: 'Owner3',
+      name: 'Owner3',
+      latitude: 46.622305,
+      longitude: 14.272915,
+    },
+  },
+];
 
 const mockUserStore = {
   setUser: vi.fn(),
@@ -18,91 +97,20 @@ vi.mock('@/stores/user', () => ({
 
 vi.mock('@/services/BookService', () => ({
   bookService: {
-    createBookOwnership: vi.fn(),
-    findBookByQuicksearch: vi.fn(),
-    importBookByIsbn: vi.fn(),
+    createBookOwnership: vi.fn(() => Promise.resolve([])),
+    findBookByQuicksearch: vi.fn(() => Promise.resolve(mock_books)),
+    importBookByIsbn: vi.fn(() => Promise.resolve({data: mock_books[0]})),
+    findOwnBooks: vi.fn(() => Promise.resolve({data: mock_books})),
   },
 }));
+
+vi.mock('@/services/Snackbar', () => ({
+  showSnackbar: vi.fn(),
+}));
+
 describe('UserLibraryMyBooks', () => {
   let wrapper;
-
-  const mock_books = [
-    {
-      book: {
-        id: '1',
-        title: 'The Forgotten Forest',
-        isbn: '1122334455',
-        publisher: 'Whispering Pines',
-        publishYear: 2015,
-        coverId: '14625765-L',
-        edition: 'First Edition',
-        format: 'Paperback',
-        authors: ['Alice Morningstar'],
-        languages: ['EN'],
-      },
-      lendable: true,
-      giftable: true,
-      exchangeable: false,
-      status: true, // Available
-      distance: 0,
-      owner: {
-        id: 'Owner1',
-        name: 'Owner1',
-        latitude: 46.617415,
-        longitude: 14.263625,
-      },
-    },
-    {
-      book: {
-        id: '2',
-        title: 'Whispers of the Sea',
-        isbn: '2233445566',
-        publisher: 'Ocean Breeze Press',
-        publishYear: 2020,
-        coverId: '14625766-L',
-        edition: 'First Edition',
-        format: 'Hardcover',
-        authors: ['John Saltsworth'],
-        languages: ['EN'],
-      },
-      lendable: false,
-      giftable: false,
-      exchangeable: true,
-      status: false, // Unavailable
-      distance: 0,
-      owner: {
-        id: 'Owner2',
-        name: 'Owner2',
-        latitude: 46.619025,
-        longitude: 14.265755,
-      },
-    },
-    {
-      book: {
-        id: '3',
-        title: 'A Dance in the Rain',
-        isbn: '3344556677',
-        publisher: 'Rainfall Publishing',
-        publishYear: 2019,
-        coverId: '14625767-L',
-        edition: 'Second Edition',
-        format: 'Paperback',
-        authors: ['Elena Storm'],
-        languages: ['ES'],
-      },
-      lendable: true,
-      giftable: false,
-      exchangeable: false,
-      status: true, // Available
-      distance: 0,
-      owner: {
-        id: 'Owner3',
-        name: 'Owner3',
-        latitude: 46.622305,
-        longitude: 14.272915,
-      },
-    },
-  ];
+  let addComponent;
   let pinia;
 
   const createComponent = () => {
@@ -121,8 +129,7 @@ describe('UserLibraryMyBooks', () => {
     setActivePinia(pinia);
     createComponent();
     wrapper.vm.mybooks = mock_books;
-    
-    // wrapper.findComponent(UserLibraryAddBook).vm.userStore = useUserStore();
+    addComponent = wrapper.findComponent(UserLibraryAddBook);
   });
 
   afterEach(() => {
@@ -264,7 +271,6 @@ describe('UserLibraryMyBooks', () => {
   it('does not trigger a search request when the search input is empty', async () => {
     const searchInput = wrapper.find('#search-input');
     await searchInput.setValue('');
-    const addComponent = wrapper.findComponent(UserLibraryAddBook)
 
     await addComponent.vm.handleSearch();
     expect(addComponent.vm.foundBooks).toEqual([]);
@@ -273,9 +279,61 @@ describe('UserLibraryMyBooks', () => {
   it('does not trigger a import request when the isbn input is empty', async () => {
     const isbnInput = wrapper.find('#isbn-input');
     await isbnInput.setValue('');
-    const addComponent = wrapper.findComponent(UserLibraryAddBook)
 
     await addComponent.vm.handleImport();
     expect(addComponent.vm.searchInput).toEqual(null);
+  });
+
+
+  it('successfully imports a book when handleImport is triggered with a valid ISBN', async () => {
+    const isbnInput = wrapper.find('#isbn-input');
+    await isbnInput.setValue('978-3-453-32198-4');
+    const showSnackbarSpy = vi.spyOn(Snackbar, 'showSnackbar');
+    const importBookByIsbnSpy = vi.spyOn(bookService, 'importBookByIsbn').mockResolvedValue({ data: mock_books[0] });
+    
+    await addComponent.vm.handleImport();
+    expect(importBookByIsbnSpy).toHaveBeenCalledWith('978-3-453-32198-4');
+    expect(addComponent.vm.searchInput).toBe(mock_books[0].title);
+    expect(showSnackbarSpy).toHaveBeenCalledWith('Successfully imported ' + mock_books[0].title, expect.anything());
+    
+    const updatedIsbnInput = wrapper.find('#isbn-input');
+    expect(updatedIsbnInput.element.value).toBe('');
+  });
+
+  it('triggers handleSearch when Enter key is pressed in the search input', async () => {
+    const searchInput = wrapper.find('#search-input');
+    const handleSearchSpy = vi.spyOn(addComponent.vm, 'handleSearch');
+    await searchInput.trigger('keyup.enter');
+  
+    expect(handleSearchSpy).toHaveBeenCalled();
+    expect(handleSearchSpy).toHaveBeenCalledWith(expect.anything());
+  });
+
+  it('successfully performs a book search and updates foundBooks.value', async () => {
+    const inputValue = 'The Forgotten Forest';
+    addComponent.vm.searchInput = inputValue;
+    await addComponent.vm.handleSearch(inputValue);
+    expect(bookService.findBookByQuicksearch).toHaveBeenCalledWith(inputValue);
+  
+    expect(addComponent.vm.foundBooks).toEqual(mock_books);
+  });
+
+  it('performs book search not finding anything', async () => {
+    const inputValue = 'Not findable';
+    bookService.findBookByQuicksearch.mockResolvedValue([]);
+
+    addComponent.vm.searchInput = inputValue;
+    await addComponent.vm.handleSearch(inputValue);
+    expect(bookService.findBookByQuicksearch).toHaveBeenCalledWith(inputValue);
+  
+    expect(addComponent.vm.foundBooks).toEqual([]);
+  });
+
+  it('does not get error for one letter search', async () => {
+    const searchInput = wrapper.find('#search-input');
+    await searchInput.setValue('a');
+
+    await addComponent.vm.handleSearch();
+    expect(addComponent.vm.foundBooks).toEqual([]);
   });
 });

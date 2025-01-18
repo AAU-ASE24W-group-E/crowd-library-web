@@ -116,7 +116,6 @@ describe('BookService', () => {
       }),
     });
 
-    console.log(response.data);
     expect(response.data).toEqual(mockResponse);
   });
 
