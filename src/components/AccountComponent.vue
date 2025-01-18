@@ -57,37 +57,93 @@
       </div>
     </form>
 
-    <!-- Form for changing password -->
     <form
       @submit.prevent="updatePassword"
       class="flex flex-col items-center w-full h-full mb-3"
     >
+      <!-- Old Password -->
       <div class="w-full mb-6">
-        <label for="password" class="tw-input-label">New Password</label>
+        <label for="old-password" class="tw-input-label">Old Password</label>
         <div class="relative">
           <input
             class="tw-input"
-            v-bind:class="{ 'tw-input-error': isControlInvalid('password') }"
-            v-model="updateForm.password"
-            id="password"
-            :type="hidePassword ? 'password' : 'text'"
-            autocomplete="new-password"
-            placeholder="New Password"
-            @blur="handleBlur('password')"
+            v-bind:class="{ 'tw-input-error': isControlInvalid('oldPassword') }"
+            v-model="updateForm.oldPassword"
+            id="old-password"
+            :type="hideOldPassword ? 'password' : 'text'"
+            autocomplete="current-password"
+            placeholder="Old Password"
+            @blur="handleBlur('oldPassword')"
           />
           <button
             type="button"
-            @click="togglePasswordVisibility"
+            @click="toggleOldPasswordVisibility"
             class="absolute inset-y-0 end-0 flex items-center pe-3 text-gray-500"
           >
-            <font-awesome-icon :icon="hidePassword ? 'eye-slash' : 'eye'" />
+            <font-awesome-icon :icon="hideOldPassword ? 'eye-slash' : 'eye'" />
           </button>
-          <div v-if="isControlInvalid('password')" class="tw-input-error-label">
-            <div v-if="errors.password.required">This field is required</div>
+          <div v-if="isControlInvalid('oldPassword')" class="tw-input-error-label">
+            <div v-if="errors.oldPassword.required">This field is required</div>
           </div>
         </div>
       </div>
 
+      <!-- New Password -->
+      <div class="w-full mb-6">
+        <label for="new-password" class="tw-input-label">New Password</label>
+        <div class="relative">
+          <input
+            class="tw-input"
+            v-bind:class="{ 'tw-input-error': isControlInvalid('newPassword') }"
+            v-model="updateForm.newPassword"
+            id="new-password"
+            :type="hideNewPassword ? 'password' : 'text'"
+            autocomplete="new-password"
+            placeholder="New Password"
+            @blur="handleBlur('newPassword')"
+          />
+          <button
+            type="button"
+            @click="toggleNewPasswordVisibility"
+            class="absolute inset-y-0 end-0 flex items-center pe-3 text-gray-500"
+          >
+            <font-awesome-icon :icon="hideNewPassword ? 'eye-slash' : 'eye'" />
+          </button>
+          <div v-if="isControlInvalid('newPassword')" class="tw-input-error-label">
+            <div v-if="errors.newPassword.required">This field is required</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confirm New Password -->
+      <div class="w-full mb-6">
+        <label for="confirm-password" class="tw-input-label">Confirm New Password</label>
+        <div class="relative">
+          <input
+            class="tw-input"
+            v-bind:class="{ 'tw-input-error': isControlInvalid('confirmPassword') }"
+            v-model="updateForm.confirmPassword"
+            id="confirm-password"
+            :type="hideConfirmPassword ? 'password' : 'text'"
+            autocomplete="new-password"
+            placeholder="Confirm New Password"
+            @blur="handleBlur('confirmPassword')"
+          />
+          <button
+            type="button"
+            @click="toggleConfirmPasswordVisibility"
+            class="absolute inset-y-0 end-0 flex items-center pe-3 text-gray-500"
+          >
+            <font-awesome-icon :icon="hideConfirmPassword ? 'eye-slash' : 'eye'" />
+          </button>
+          <div v-if="isControlInvalid('confirmPassword')" class="tw-input-error-label">
+            <div v-if="errors.confirmPassword.required">This field is required</div>
+            <div v-if="errors.confirmPassword.mismatch">Passwords do not match</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
       <div class="w-full mb-2">
         <button
           :disabled="isLoading"
@@ -101,6 +157,8 @@
         </button>
       </div>
     </form>
+
+
   </div>
 
 </template>
@@ -115,8 +173,6 @@ import { useUserStore } from '@/stores/user';
 import { authenticationService } from '@/services/AuthenticationService.ts';
 import { Snackbar } from '@/utils/snackbar.ts';
 import { SnackbarType } from '@/enums/snackbar.ts';
-import LocationSettingView from '@/views/LocationSettingView.vue'
-import LocationSetting from '@/components/LocationSetting.vue'
 
 library.add(faEye, faEyeSlash);
 
@@ -126,19 +182,32 @@ const userStore = useUserStore();
 const updateForm = reactive({
   email: '',
   username: '',
-  password: '',
+  oldPassword: '',
+  newPassword: '',
+  confirmPassword: '',
 });
 
 const errors = reactive({
   email: { required: false, touched: false },
   username: { required: false, touched: false },
-  password: { required: false, touched: false },
+  oldPassword: { required: false, touched: false },
+  newPassword: { required: false, touched: false },
+  confirmPassword: { required: false, touched: false, mismatch: false },
 });
 
-const hidePassword = ref(true);
+const hideOldPassword = ref(true);
+const hideNewPassword = ref(true);
+const hideConfirmPassword = ref(true);
 const isLoading = ref(false);
 
-// Load user data from the store, excluding password
+const isAnyPasswordFieldFilled = () => {
+  return (
+    updateForm.oldPassword.trim() !== '' ||
+    updateForm.newPassword.trim() !== '' ||
+    updateForm.confirmPassword.trim() !== ''
+  );
+};
+
 watchEffect(() => {
   if (userStore.user) {
     updateForm.email = userStore.user.email || '';
@@ -147,10 +216,24 @@ watchEffect(() => {
 });
 
 const isControlInvalid = (field) => {
+  if (!isAnyPasswordFieldFilled()) {
+    errors[field].required = false;
+    if (field === 'confirmPassword') {
+      errors.confirmPassword.mismatch = false;
+    }
+    return false;
+  }
+
   const value = updateForm[field];
   const isEmpty = !value || value.trim() === '';
   errors[field].required = isEmpty;
-  return isEmpty && errors[field].touched;
+
+  if (field === 'confirmPassword') {
+    errors.confirmPassword.mismatch =
+      updateForm.newPassword !== updateForm.confirmPassword;
+  }
+
+  return errors[field].required || errors[field].mismatch;
 };
 
 const handleBlur = (field) => {
@@ -158,22 +241,42 @@ const handleBlur = (field) => {
   isControlInvalid(field);
 };
 
-const togglePasswordVisibility = () => {
-  hidePassword.value = !hidePassword.value;
+const toggleOldPasswordVisibility = () => {
+  hideOldPassword.value = !hideOldPassword.value;
 };
 
-const validateForm = (fields) => {
-  fields.forEach((field) => {
+const toggleNewPasswordVisibility = () => {
+  hideNewPassword.value = !hideNewPassword.value;
+};
+
+const toggleConfirmPasswordVisibility = () => {
+  hideConfirmPassword.value = !hideConfirmPassword.value;
+};
+
+const validatePasswordForm = () => {
+  ['oldPassword', 'newPassword', 'confirmPassword'].forEach((field) => {
     errors[field].touched = true;
     isControlInvalid(field);
   });
 
-  return fields.every((field) => !errors[field].required);
+  return (
+    !errors.oldPassword.required &&
+    !errors.newPassword.required &&
+    !errors.confirmPassword.required &&
+    !errors.confirmPassword.mismatch
+  );
 };
 
 const updateUserInfo = async () => {
   if (isLoading.value) return;
-  if (!validateForm(['email', 'username'])) return;
+
+  const fieldsToValidate = ['email', 'username'];
+  fieldsToValidate.forEach((field) => {
+    errors[field].touched = true;
+    isControlInvalid(field);
+  });
+
+  if (fieldsToValidate.some((field) => errors[field].required)) return;
 
   isLoading.value = true;
 
@@ -193,12 +296,15 @@ const updateUserInfo = async () => {
 
 const updatePassword = async () => {
   if (isLoading.value) return;
-  if (!validateForm(['password'])) return;
+  if (!validatePasswordForm()) return;
 
   isLoading.value = true;
 
   try {
-    await authenticationService.updatePassword({ password: updateForm.password });
+    await authenticationService.updatePassword({
+      oldPassword: updateForm.oldPassword,
+      newPassword: updateForm.newPassword,
+    });
     Snackbar.showSnackbar('Password updated successfully!', SnackbarType.SUCCESS);
   } catch (e) {
     Snackbar.showSnackbar('Failed to update password. Please try again.', SnackbarType.ERROR);
@@ -207,3 +313,4 @@ const updatePassword = async () => {
   }
 };
 </script>
+
