@@ -6,6 +6,7 @@
       </div>
       <input
         class="tw-input w-full rounded-3xl h-9 ml-5"
+        id="search-input"
         @keyup.enter="handleSearch($event)"
         v-model="searchInput"
         :placeholder="'Search existing book by title or author...'"

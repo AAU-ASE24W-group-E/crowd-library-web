@@ -260,4 +260,13 @@ describe('UserLibraryMyBooks', () => {
     await popup.vm.$emit('close', false, {});
     expect(wrapper.vm.showPopup).toBe(false);
   });
+
+  it('does not trigger a search request when the search input is empty', async () => {
+    const isbnInput = wrapper.find('#search-input');
+    await isbnInput.setValue('');
+    const addComponent = wrapper.findComponent(UserLibraryAddBook)
+
+    await addComponent.vm.handleSearch();
+    expect(addComponent.vm.foundBooks).toEqual([]);
+  });
 });
