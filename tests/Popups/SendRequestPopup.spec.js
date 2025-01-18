@@ -17,16 +17,10 @@ describe('SendRequestPopup', () => {
     wrapper = mount(SendRequestPopup, {
       props: {
         book: {
-          title: 'The Forgotten Forest',
-          year: '2015',
-          author: 'Alice Morningstar',
-          publisher: 'Whispering Pines',
-          format: 'Paperback',
-          language: 'EN',
-          ISBN: '1122334455',
-          owner: 'User1',
-          lat: 46.617415,
-          long: 14.263625,
+          owner: "User1",
+          isLendable: true,
+          isExchangeable: true,
+          isGiftable: false
         }
       }
     });
