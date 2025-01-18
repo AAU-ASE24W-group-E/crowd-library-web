@@ -3,19 +3,25 @@ import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import BookEntry from "@/components/BookEntry.vue";
 
 const mockBook = {
-  title: "Sample Book",
-  year: 2021,
-  author: "John Doe",
-  publisher: "Sample Publisher",
-  format: "Hardcover",
-  language: "English",
-  ISBN: "123-4567890123",
-  owner: "Library",
-  isAvailable: true,
-  isLendable: true,
-  isExchangeable: false,
-  isGiftable: true,
-  status: "Available",
+  book: {
+      title: "Sample Book",
+      year: 2021,
+      authors: ["John Doe"],
+      publisher: "Sample Publisher",
+      format: "Hardcover",
+      languages: ["English"],
+      ISBN: "123-4567890123",
+  },
+  owner: {
+    name: "Library",
+    latitude: 46.617415,
+    longitude: 14.263625,
+    id: 'Owner1'
+  },
+  status: true,
+  lendable: true,
+  exchangeable: false,
+  giftable: true
 };
 
 
@@ -32,7 +38,8 @@ describe('BookEntry', () => {
   beforeEach(() => {
     wrapper = mount(BookEntry, {
       props: {
-        book: mockBook,
+        book: mockBook.book,
+        ownBook: mockBook,
         isWishlist: false,
         isSearchBook: true
       },
@@ -55,7 +62,7 @@ describe('BookEntry', () => {
 
   it("renders 'No' with red text for unavailable attributes", async () => {
     await wrapper.setProps({
-      book: { ...mockBook, isLendable: false, isExchangeable: false, isGiftable: false },
+      book: { ...mockBook, lendable: false, exchangeable: false, giftable: false },
     });
 
     const lendableSpan = wrapper.find(".tw-book-entry-info-title span.text-red-500");
