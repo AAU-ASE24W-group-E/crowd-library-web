@@ -65,7 +65,7 @@ describe('MeetingPopup', () => {
     const hideSpy = vi.spyOn(wrapper.vm, 'hide');
     await wrapper.vm.show();
     await wrapper.vm.$nextTick();
-    const closeBtn = wrapper.find('button.popup-close-btn');
+    const closeBtn = wrapper.find('#closeBtn');
     await closeBtn.trigger('click');
     expect(hideSpy).toHaveBeenCalled();
   });
@@ -74,7 +74,7 @@ describe('MeetingPopup', () => {
     const hideSpy = vi.spyOn(wrapper.vm, 'hide');
     await wrapper.vm.show();
     await wrapper.vm.$nextTick();
-    const cancelBtn = wrapper.find('button.btn-primary.btn-gray.rounded-2xl');
+    const cancelBtn = wrapper.find('#cancelBtn');
     await cancelBtn.trigger('click');
     expect(hideSpy).toHaveBeenCalled();
   });
@@ -84,7 +84,7 @@ describe('MeetingPopup', () => {
     const hideSpy = vi.spyOn(wrapper.vm, 'hide');
     await wrapper.vm.show();
     await wrapper.vm.$nextTick();
-    const sendMeetingReqBtn = wrapper.find('button.btn-primary.btn-green.rounded-2xl');
+    const sendMeetingReqBtn = wrapper.find('#sendMeetingReqBtn');
     await sendMeetingReqBtn.trigger('click');
     expect(hideSpy).toHaveBeenCalled();
   });
