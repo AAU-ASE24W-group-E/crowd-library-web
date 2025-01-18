@@ -12,19 +12,24 @@
         >
           Go back
         </button>
-        <button @click="toggleAddBook"  v-show="!showAddBook" class="add-book-btn btn-primary btn-green">
+        <button
+          @click="toggleAddBook"
+          v-show="!showAddBook"
+          class="add-book-btn btn-primary btn-green"
+        >
           <font-awesome-icon class="add-icon tw-icon text-gray-100" :icon="faPlus" />
         </button>
       </div>
     </div>
-    <UserLibraryAddBook v-show="showAddBook" />
+    <UserLibraryAddBook v-show="showAddBook" @bookAdded="refreshMyBookList" />
 
     <div v-show="!showAddBook" class="my-book-list space-y-6 w-full mt-4">
       <BookEntry
         v-for="(book, index) in mybooks"
         :key="index"
         :isMyBook="true"
-        :book="book"
+        :book="book.book"
+        :ownBook="book"
         @handleAction="handleAction"
       />
 
@@ -43,22 +48,23 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import UserLibraryAddBook from '@/components/user-library/UserLibraryAddBook.vue';
 import BookLibraryPopup from './BookLibraryPopup.vue';
 import BookEntry from '@/components/BookEntry.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { SnackbarType } from '@/enums/snackbar.ts';
-import { Snackbar } from '@/utils/snackbar.ts';
+import { bookService } from '@/services/BookService';
+import { useUserStore } from '@/stores/user';
+
+const userStore = useUserStore();
 
 const showAddBook = ref(false);
 const showPopup = ref(false);
 const popupBookRef = ref(null);
 const popupTypeRef = ref(null);
-const props = defineProps(['mybooks']);
 
-const mybooks = ref(props.mybooks);
+const mybooks = ref([]);
 
 const handleAction = (book, type) => {
   popupBookRef.value = book;
@@ -66,13 +72,23 @@ const handleAction = (book, type) => {
   showPopup.value = true;
 };
 
-const toggleAddBook = (type) => {
-  if (type == 'cancel' && showAddBook.value) {
-    Snackbar.showSnackbar('Adding books was cancelled.', SnackbarType.GENERAL);
-  } else if (type != 'cancel' && showAddBook.value) {
-    // TODO add book
-    //SNackbar
-  }
+onMounted(() => {
+  refreshMyBookList();
+});
+
+const refreshMyBookList = async () => {
+  if(userStore.getUser() == undefined) return
+  await bookService
+    .findOwnBooks(userStore.getUser().id)
+    .then((books) => {
+      mybooks.value = books.data;
+    })
+    .catch((error) => {
+      console.log(error.status);
+    });
+};
+
+const toggleAddBook = () => {
   showAddBook.value = !showAddBook.value;
 };
 
@@ -96,7 +112,7 @@ const handlePopUpClosed = (actionFinished, editedfields) => {
 </script>
 
 <style scoped>
-.library-empty-text{
-  @apply font-semibold dark:text-title-dark-mode-text
+.library-empty-text {
+  @apply font-semibold dark:text-title-dark-mode-text;
 }
 </style>

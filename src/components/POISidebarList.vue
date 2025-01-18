@@ -49,7 +49,7 @@ export default {
 
 <template>
   <div class="h-[50vh] max-h-[50vh] overflow-hidden">
-    <div class="sidebar-list-title sidebar-item-count">{{ title_pois }} [{{ listCount }}]</div>
+    <div class="sidebar-list-title tw-heading-2  sidebar-item-count">{{ title_pois }} [{{ listCount }}]</div>
     <div
       class="sidebar-list-scrollbar  scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100"
     >
@@ -72,7 +72,8 @@ export default {
   }
 
   .sidebar-list-title{
-    @apply  tw-heading-2 text-[1.5em] mb-5 mt-2;
+    @apply
+    text-[1.5em] mb-5 mt-2;
   }
 
 

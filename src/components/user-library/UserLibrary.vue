@@ -19,7 +19,7 @@
     </div>
 
     <div v-show="activeTab === 'myBooksTab'">
-      <UserLibraryMyBooks :mybooks="mybooks" />
+      <UserLibraryMyBooks />
     </div>
     <div v-show="activeTab === 'borrowedBooksTab'">
       <!-- BorrowedBooks COmponent TODO -->
@@ -33,8 +33,6 @@ import UserLibraryMyBooks from '@/components/user-library/UserLibraryMyBooks.vue
 
 const activeTab = ref('myBooksTab');
 
-const mybooks = ref([
-]);
 
 const setActiveTab = (tab) => {
   activeTab.value = tab;
