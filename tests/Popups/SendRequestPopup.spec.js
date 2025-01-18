@@ -42,8 +42,8 @@ describe('SendRequestPopup', () => {
     expect(wrapper.find('.popup-overlay').exists()).toBe(true);
     expect(wrapper.find('.popup-content').exists()).toBe(true);
     expect(wrapper.find('h1.title').text()).toBe('Send a Request to User1');
-    expect(wrapper.find("label[for=request-purpose]").exists()).toBe(true);
-    expect(wrapper.find("label[for=request-purpose]").text()).toBe("I want to request this book for ...");
+    expect(wrapper.find('label[for=request-purpose]').exists()).toBe(true);
+    expect(wrapper.find('label[for=request-purpose]').text()).toBe("I want to request this book for ...");
 
     // Check the buttons and their text
     checkButton(wrapper.find('#closeBtn'), 'X');
@@ -56,4 +56,11 @@ describe('SendRequestPopup', () => {
     const options = wrapper.findAll('option');
     expect(options.length).toBe(3);
   });
+
+  it('it changes the options based on what is selected', async () => {
+    await wrapper.vm.show();
+    expect(wrapper.find('option[value=lending]').exists()).toBe(true);
+    expect(wrapper.find('option[value=exchanging]').exists()).toBe(true);
+    expect(wrapper.find('option[value=gifting]').exists()).toBe(true);
+  })
 });
