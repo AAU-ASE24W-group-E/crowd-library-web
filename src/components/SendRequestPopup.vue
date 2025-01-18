@@ -3,7 +3,7 @@
         class="flex flex-row w-full mt-2 space-x-16 max-md:space-x-6 ml-24 max-sm:space-x-0 max-sm:flex-col max-sm:space-y-4 max-sm:justify-center max-sm:ml-0">
         <div v-if="isVisible" class="tw-component-container popup-overlay" @click="hide">
             <div class="popup-content" @click.stop>
-                <button @click="hide" class="popup-close-btn">X</button>
+                <button @click="hide" class="popup-close-btn" id="closeBtn">X</button>
                 <div>
                     <h1 class="title text-center text-2xl text-gray-500">Send a Request to {{ book.owner }}</h1>
                 </div>
@@ -18,8 +18,8 @@
                     </select>
                 </div>
                 <div class="flex justify-center space-x-4 mt-4">
-                    <button @click="hide" class="btn-primary btn-gray rounded-2xl">Cancel</button>
-                    <button @click="hide" class="btn-primary btn-green rounded-2xl">Request Book</button>
+                    <button @click="hide" class="btn-primary btn-gray rounded-2xl" id="cancelBtn">Cancel</button>
+                    <button @click="hide" class="btn-primary btn-green rounded-2xl" id="requestBookBtn">Request Book</button>
                 </div>
             </div>
         </div>
