@@ -43,11 +43,9 @@ import type { OwnBook } from '@/interfaces/ownBook.ts';
 const showBookList = ref(true);
 const mapComponent =  ref<InstanceType<typeof BookSearchMap> | null>(null);
 // Used to receive the input string of the search bar
-// Todo books request must be handled
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
-//const query = route.query.q || null;
 
 const currentBooks: OwnBook[] = shallowRef([
   {
@@ -125,7 +123,7 @@ const currentBooks: OwnBook[] = shallowRef([
       longitude: 14.272915,
     },
   }
-]
+])
 
 const isLoading = ref(false)
 
@@ -152,7 +150,7 @@ async function fetchAvailableBooks(q) {
     quickSearch: q
   }
   try {
-    //loading.value = true
+    isLoading.value = true
     const response = await bookService.getAvailableBooks(query)
     console.log('Books fetched:', response)
     if (response.status === 200) {
@@ -168,7 +166,7 @@ async function fetchAvailableBooks(q) {
     console.error('Error fetching books:', err)
     Snackbar.showSnackbar('Error fetching books', SnackbarType.ERROR)
   } finally {
-    //loading.value = false
+    isLoading.value = false
   }
 }
 
