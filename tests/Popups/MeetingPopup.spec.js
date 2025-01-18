@@ -38,7 +38,7 @@ describe('MeetingPopup', () => {
     vi.resetAllMocks();
   });
 
-  it('renders popup correctly', async () => {
+  it('renders popup correctly when visible', async () => {
     // Make the popup visible by calling the show method
     await wrapper.vm.show();
 
@@ -67,5 +67,14 @@ describe('MeetingPopup', () => {
 
     // Check deadline label and input
     checkInputRendering(wrapper, "deadline", "Deadline", "date", false, null);
+  });
+
+  it('hides popup when close button is clicked', async () => {
+    const hideSpy = vi.spyOn(wrapper.vm, 'hide');
+    await wrapper.vm.show();
+    await wrapper.vm.$nextTick();
+    const closeBtn = wrapper.find('button.popup-close-btn');
+    await closeBtn.trigger('click');
+    expect(hideSpy).toHaveBeenCalled();
   });
 });
