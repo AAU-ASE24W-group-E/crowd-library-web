@@ -2,9 +2,6 @@ import { mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import UserLibraryMyBooks from '@/components/user-library/UserLibraryMyBooks.vue';
 import BookEntry from '@/components/BookEntry.vue';
-import { bookService } from '@/services/BookService';
-import { SnackbarType } from '@/enums/snackbar.ts';
-import { Snackbar } from '@/utils/snackbar.ts';
 import UserLibraryAddBook from '@/components/user-library/UserLibraryAddBook.vue';
 
 import BookLibraryPopup from '@/components/user-library/BookLibraryPopup.vue';
