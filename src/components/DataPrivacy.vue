@@ -1,5 +1,5 @@
 <template>
-  <div class="tw-page-container p-6 bg-gray-50 dark:bg-black text-gray-800 dark:text-gray-200">
+  <div class="tw-page-container p-6 bg-white dark:bg-black text-gray-800 dark:text-gray-200">
     <main class="tw-component-container mt-10 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
       <section class="w-full">
         <h2 class="text-2xl font-semibold text-black dark:text-gray-200">Introduction</h2>
