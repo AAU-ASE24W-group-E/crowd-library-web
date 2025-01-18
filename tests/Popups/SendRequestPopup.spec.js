@@ -57,10 +57,50 @@ describe('SendRequestPopup', () => {
     expect(options.length).toBe(3);
   });
 
-  it('it changes the options based on what is selected', async () => {
+  it('changes the options based on what is selected', async () => {
     await wrapper.vm.show();
     expect(wrapper.find('option[value=lending]').exists()).toBe(true);
     expect(wrapper.find('option[value=exchanging]').exists()).toBe(true);
     expect(wrapper.find('option[value=gifting]').exists()).toBe(true);
-  })
+
+    await wrapper.setProps({
+      book: {
+        isLendable: false,
+        isExchangeable: true,
+        isGiftable: false,
+      },
+    });
+
+    expect(wrapper.find('option[value=lending]').exists()).toBe(false);
+    expect(wrapper.find('option[value=exchanging]').exists()).toBe(true);
+    expect(wrapper.find('option[value=gifting]').exists()).toBe(false);
+  });
+
+  it('hides popup when close button is clicked', async () => {
+    const hideSpy = vi.spyOn(wrapper.vm, 'hide');
+    await wrapper.vm.show();
+    await wrapper.vm.$nextTick();
+    const closeBtn = wrapper.find('#closeBtn');
+    await closeBtn.trigger('click');
+    expect(hideSpy).toHaveBeenCalled();
+  });
+
+  it('hides popup when cancel button is clicked', async () => {
+    const hideSpy = vi.spyOn(wrapper.vm, 'hide');
+    await wrapper.vm.show();
+    await wrapper.vm.$nextTick();
+    const cancelBtn = wrapper.find('#cancelBtn');
+    await cancelBtn.trigger('click');
+    expect(hideSpy).toHaveBeenCalled();
+  });
+
+  /** THIS IS ALSO ONLY PRELIMINARY* */
+  it('hides popup when request book button is clicked', async () => {
+    const hideSpy = vi.spyOn(wrapper.vm, 'hide');
+    await wrapper.vm.show();
+    await wrapper.vm.$nextTick();
+    const requestBookBtn = wrapper.find('#requestBookBtn');
+    await requestBookBtn.trigger('click');
+    expect(hideSpy).toHaveBeenCalled();
+  });
 });
