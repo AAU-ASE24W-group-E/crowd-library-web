@@ -66,6 +66,16 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue'),
     },
+    {
+      path: '/imprint',
+      name: 'imprint',
+      component: () => import('../views/ImprintView.vue'),
+    },
+    {
+      path: '/data-privacy',
+      name: 'data-privacy',
+      component: () => import('../views/DataPrivacyView.vue'),
+    },
   ],
 })
 
