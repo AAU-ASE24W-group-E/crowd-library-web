@@ -38,7 +38,7 @@ import { Snackbar } from '@/utils/snackbar.ts'
 import { SnackbarType } from '@/enums/snackbar.ts'
 import { useUserStore } from '@/stores/user.ts'
 import type { OwnBook } from '@/interfaces/ownBook.ts';
-
+import config from "@/config.json";
 
 const showBookList = ref(true);
 const mapComponent =  ref<InstanceType<typeof BookSearchMap> | null>(null);
@@ -135,8 +135,13 @@ async function fetchAvailableBooks(q) {
     console.log('No query parameter provided')
     return
   }
-  const userLocation = userStore.user?.address
-  if (!userLocation || !userLocation.longitude || !userLocation.latitude) {
+  let userLocation = userStore.user?.address
+  if (!userStore.user) {
+    userLocation = {
+      longitude: config.POI_MAP_DEFAULT_CENTER[0],
+      latitude: config.POI_MAP_DEFAULT_CENTER[1]
+    }
+  } else if (!userLocation || !userLocation.longitude || !userLocation.latitude) {
     console.error('User location not available')
     Snackbar.showSnackbar('Please set your location first', SnackbarType.GENERAL)
     await router.push('/set-location');
