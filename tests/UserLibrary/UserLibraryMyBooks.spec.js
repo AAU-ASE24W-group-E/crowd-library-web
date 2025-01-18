@@ -262,11 +262,20 @@ describe('UserLibraryMyBooks', () => {
   });
 
   it('does not trigger a search request when the search input is empty', async () => {
-    const isbnInput = wrapper.find('#search-input');
-    await isbnInput.setValue('');
+    const searchInput = wrapper.find('#search-input');
+    await searchInput.setValue('');
     const addComponent = wrapper.findComponent(UserLibraryAddBook)
 
     await addComponent.vm.handleSearch();
     expect(addComponent.vm.foundBooks).toEqual([]);
+  });
+
+  it('does not trigger a import request when the isbn input is empty', async () => {
+    const isbnInput = wrapper.find('#isbn-input');
+    await isbnInput.setValue('');
+    const addComponent = wrapper.findComponent(UserLibraryAddBook)
+
+    await addComponent.vm.handleImport();
+    expect(addComponent.vm.searchInput).toEqual(null);
   });
 });
