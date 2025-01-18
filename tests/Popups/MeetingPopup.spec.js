@@ -4,6 +4,17 @@ import MeetingPopup from '@/components/MeetingPopup.vue';
 
 const push = vi.fn();
 
+function checkInputRendering(wrapper, id, labelText, inputType, hasPlaceholder, placeHolderText) {
+  expect(wrapper.find(`label[for="${id}"]`).exists()).toBe(true);
+  expect(wrapper.find(`label[for="${id}"]`).text()).toBe(labelText);
+  expect(wrapper.find(`input[id="${id}"]`).exists()).toBe(true);
+  expect(wrapper.find(`input[id="${id}"]`).element.type).toBe(inputType);
+  if(hasPlaceholder){
+    expect(wrapper.find(`input[id="${id}"]`).element.placeholder).toBe(placeHolderText);
+  }
+}
+
+
 vi.mock('vue-router', () => ({
   useRouter: () => ({
     push,
@@ -32,6 +43,7 @@ describe('MeetingPopup', () => {
     await wrapper.vm.show();
 
     expect(wrapper.find('.popup-overlay').exists()).toBe(true);
+    expect(wrapper.find('.popup-content').exists()).toBe(true);
     expect(wrapper.find('h1.title').text()).toBe('Send a Meeting Suggestion to User1');
 
     // Check buttons and their text
@@ -43,22 +55,12 @@ describe('MeetingPopup', () => {
     expect(wrapper.find('button.btn-primary.btn-green.rounded-2xl').text()).toBe('Send Meeting Request');
 
     // Check place label and input
-    expect(wrapper.find('label[for="place"]').exists()).toBe(true);
-    expect(wrapper.find('label[for="place"]').text()).toBe('Place');
-    expect(wrapper.find('input[id="place"]').exists()).toBe(true);
-    expect(wrapper.find('input[id="place"]').element.type).toBe('text');
-    expect(wrapper.find('input[id="place"]').element.placeholder).toBe('Enter place');
+    checkInputRendering(wrapper, "place", "Place", "text", true, "Enter place");
 
     // Check date label and input
-    expect(wrapper.find('label[for="date"]').exists()).toBe(true);
-    expect(wrapper.find('label[for="date"]').text()).toBe('Date');
-    expect(wrapper.find('input[id="date"]').exists()).toBe(true);
-    expect(wrapper.find('input[id="date"]').element.type).toBe('date');
+    checkInputRendering(wrapper, "date", "Date", "date", false, null);
 
     // Check deadline label and input
-    expect(wrapper.find('label[for="deadline"]').exists()).toBe(true);
-    expect(wrapper.find('label[for="deadline"]').text()).toBe('Deadline');
-    expect(wrapper.find('input[id="deadline"]').exists()).toBe(true);
-    expect(wrapper.find('input[id="deadline"]').element.type).toBe('date');
+    checkInputRendering(wrapper, "deadline", "Deadline", "date", false, null);
   });
 });
