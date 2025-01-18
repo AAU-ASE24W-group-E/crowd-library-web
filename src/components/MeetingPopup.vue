@@ -5,22 +5,19 @@
             <div class="popup-content" @click.stop>
                 <button @click="hide" class="popup-close-btn" id="closeBtn">X</button>
                 <div>
-                    <h1 class="title text-center text-2xl text-gray-500">Send a Meeting Suggestion to {{ request.from }}</h1>
+                    <h1 class="popup-title">Send a Meeting Suggestion to {{ request.from }}</h1>
                 </div>
                 <div class="input-field mt-4">
-                    <label for="place" class="block text-sm font-medium">Place</label>
-                    <input id="place" type="text" placeholder="Enter place"
-                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <label for="place" class="popup-label">Place</label>
+                    <input id="place" type="text" placeholder="Enter place" class="popup-input" />
                 </div>
                 <div class="input-field mt-4">
-                    <label for="date" class="block text-sm font-medium">Date</label>
-                    <input id="date" type="date"
-                        class="cursor-pointer mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <label for="date" class="popup-label">Date</label>
+                    <input id="date" type="date" class="popup-input cursor-pointer" />
                 </div>
                 <div class="input-field mt-4">
-                    <label for="deadline" class="block text-sm font-medium">Deadline</label>
-                    <input id="deadline" type="date"
-                        class="cursor-pointer mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <label for="deadline" class="popup-label">Deadline</label>
+                    <input id="deadline" type="date" class="popup-input cursor-pointer" />
                 </div>
                 <div class="flex justify-center space-x-4 mt-4">
                     <button @click="hide" class="btn-primary btn-gray rounded-2xl" id="cancelBtn">Cancel</button>

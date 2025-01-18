@@ -5,13 +5,13 @@
             <div class="popup-content" @click.stop>
                 <button @click="hide" class="popup-close-btn" id="closeBtn">X</button>
                 <div>
-                    <h1 class="title text-center text-2xl text-gray-500">Send a Request to {{ book.owner }}</h1>
+                    <h1 class="popup-title">Send a Request to {{ book.owner }}</h1>
                 </div>
                 <div class="input-field mt-4">
-                    <label for="request-purpose" class="block text-sm font-medium">I want to request this book for ...</label>
+                    <label for="request-purpose" class="popup-label">I want to request this book for ...</label>
                     <select
                         id="request-purpose"
-                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        class="popup-input">
                         <option v-if="book.isLendable" value="lending">Lending</option>
                         <option v-if="book.isExchangeable" value="exchanging">Exchanging</option>
                         <option v-if="book.isGiftable" value="gifting">Gifting</option>
