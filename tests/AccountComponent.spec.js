@@ -92,4 +92,19 @@ describe('AccountComponent', () => {
     expect(wrapper.find('input#username').element.value).toBe('testuser');
   });
 
+  it('changes password successfully', async () => {
+    userService.updatePassword.mockResolvedValueOnce();
+
+    await wrapper.find('input#old-password').setValue('old-password');
+    await wrapper.find('input#new-password').setValue('new-password');
+    await wrapper.find('input#confirm-password').setValue('new-password');
+    await wrapper.find('form').trigger('submit.prevent');
+
+
+    expect(Snackbar.showSnackbar).toHaveBeenCalledWith(
+      'User info updated successfully!',
+      SnackbarType.SUCCESS
+    );
+  });
+
 });
