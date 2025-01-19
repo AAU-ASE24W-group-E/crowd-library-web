@@ -70,9 +70,9 @@ const resetMarker = () => {
 };
 
 onMounted(() => {
-  const initialCoordinates = userLocation.value
+  const initialCoordinates: L.LatLngTuple = userLocation.value
     ? [userLocation.value.lat, userLocation.value.lng]
-    : config.DEFAULT_SAVED_LOCATION;
+    : config.DEFAULT_SAVED_LOCATION as L.LatLngTuple;
 
   map = L.map('map').setView(initialCoordinates, 13);
 
