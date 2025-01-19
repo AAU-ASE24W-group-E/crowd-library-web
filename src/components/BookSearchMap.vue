@@ -39,7 +39,7 @@ let all_popups = []
 export default {
   props: ['books'],
   setup(props) {
-    let map
+    let map;
     let current_books = props.books
 
     const calculateBoundsOfAllBooks = (geojson) => {
@@ -81,7 +81,6 @@ export default {
     }
 
     const parseBooksToFeatureCollection = (ownBooks) => {
-      console.log(ownBooks)
       const features = ownBooks.map((ownBook) => {
         const {lon, lat} = getRandomCoordinatesInCircle(ownBook.owner.longitude, ownBook.owner.latitude)
         const properties = {ownBook: ownBook, status: ownBook.status}
@@ -93,15 +92,19 @@ export default {
     const updateBooks = (books) => {
       current_books = parseBooksToFeatureCollection([...books]);
       setBoundsToExtentOfAllBook();
+      if(map.getSource('book-data') == undefined) addMapSource(current_books,"book-data", "geojson")
+      else  map.getSource('book-data').setData(current_books)
     }
 
-
-    const addLayerToMap = async (map) => {
+    const addMapSource = (data, name, type) =>{
       map.addSource('book-data', {
         type: 'geojson',
         data: current_books,
       })
+    }
 
+
+    const addLayerToMap = async (map) => {
       map.addLayer({
         id: 'book-layer',
         type: 'circle',
@@ -115,13 +118,13 @@ export default {
               'case',
               ['==', ['get', 'status'], 'AVAILABLE'], availableColor,
               ['==', ['get', 'status'], 'UNAVAILABLE'], unavailableColor,
-              '#CCCCCC'
+              '#000000'
             ],
           'circle-stroke-color': [
               'case',
               ['==', ['get', 'status'], 'AVAILABLE'], availableColor,
               ['==', ['get', 'status'], 'UNAVAILABLE'], unavailableColor,
-              '#CCCCCC'
+              '#000000'
             ],
           'circle-stroke-opacity': 1,
         },
@@ -160,15 +163,16 @@ export default {
         zoom: default_zoom,
         attributionControl: false,
       })
-      updateBooks(props.books)
-      setBoundsToExtentOfAllBook()
+      current_books = parseBooksToFeatureCollection(props.books);
+      setBoundsToExtentOfAllBook();
 
       map.addControl(new maplibregl.NavigationControl(), 'top-right')
       map.addControl(new maplibregl.GeolocateControl(), 'bottom-right')
 
       map.on('load', async () => {
+        if(map.getSource('book-data') == undefined) addMapSource(current_books,"book-data", "geojson")
         addLayerToMap(map)
-      })
+      });
 
       map.on('click', 'book-layer', (e) => {
         openPopUp(e.features[0])
