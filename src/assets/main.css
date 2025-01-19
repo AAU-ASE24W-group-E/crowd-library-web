@@ -413,23 +413,30 @@
   }
 
   .tab-titles {
-    @apply flex cursor-pointer border-b-gray-300 border-b border-solid;
+    @apply flex cursor-pointer border-b-gray-300 border-b border-solid
+    dark:border-gray-600;
   }
 
   .tab-title {
     @apply bg-[#f1f1f1] border-r-gray-300 border-t-gray-300 border-l-gray-300 p-2.5 rounded-[10px_10px_0px_0px] border-r border-solid border-t border-l
+        hover:bg-gray-400
         dark:bg-gray-600
-        dark:hover:bg-gray-700;
+        dark:hover:bg-gray-700
+        dark:border-gray-600
+        dark:text-title-dark-mode-text;
   }
 
   .tab-title.active {
     @apply bg-blue-500 text-[white]
+        hover:bg-blue-600
         dark:bg-blue-700
-        dark:hover:bg-blue-800;
+        dark:hover:bg-blue-800
+        dark:text-title-dark-mode-text;
   }
 
   .tab-content {
-    @apply border border-gray-300 p-5 border-t-[none] border-solid;
+    @apply border border-gray-300 p-5 border-t-[none] border-solid
+    dark:border-gray-600;
   }
 
   .tw-book-entry-info-title {
