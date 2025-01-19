@@ -20,6 +20,7 @@ export const useAuthStore = defineStore('auth', () => {
   const clearToken = () => {
     token.value = null;
     localStorage.removeItem('auth_token');
+    localStorage.removeItem('user_data');
   };
 
   initializeToken();
