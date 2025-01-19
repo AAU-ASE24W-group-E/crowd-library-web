@@ -8,6 +8,7 @@ import LocationEditView from '@/views/LocationEditView.vue';
 import AccountView from '@/views/AccountView.vue'
 import UserLibraryView from '@/views/UserLibraryView.vue';
 import HomeView from '@/views/HomeView.vue';
+import RequestView from '@/views/RequestView.vue';
 
 // TODO we have to add restrictions
 const router = createRouter({
@@ -65,6 +66,11 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue'),
+    },
+    {
+      path: '/requests',
+      name: 'requests',
+      component: RequestView,
     },
   ],
 })

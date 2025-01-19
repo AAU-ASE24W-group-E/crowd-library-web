@@ -4,18 +4,21 @@
     ref="dropdownRef"
   >
     <div v-if="loggedIn" class="tw-navbar-dropdown-container">
-      <router-link v-if="loggedIn" to="/my-wishlist" class="navbar-button-container btn-primary">
-        <font-awesome-icon class="tw-icon text-3xl max-sm:text-2xl" :icon="faClipboardList" />
-      </router-link>
-    </div>
-
-    <div v-if="loggedIn" class="tw-navbar-dropdown-container">
       <router-link to="/my-books" class="navbar-button-container btn-primary">
         <font-awesome-icon class="tw-icon text-3xl max-sm:text-2xl" :icon="faBook" />
       </router-link>
     </div>
 
-    <div class="tw-navbar-dropdown-container w-[40px] max-md:w-[40px] max-sm:w-[35px] p-0" ref="themeDropdownRef">
+    <div v-if="loggedIn" class="tw-navbar-dropdown-container">
+      <router-link to="/my-requests" class="navbar-button-container btn-primary">
+        <font-awesome-icon class="tw-icon text-3xl max-sm:text-2xl" :icon="faMessage" />
+      </router-link>
+    </div>
+
+    <div
+      class="tw-navbar-dropdown-container w-[40px] max-md:w-[40px] max-sm:w-[35px] p-0"
+      ref="themeDropdownRef"
+    >
       <button
         @click="handleThemeDropdownClick"
         id="theme-button"
@@ -23,21 +26,30 @@
       >
         <img
           v-if="selectedTheme === Theme.Light"
-          :draggable=false
+          :draggable="false"
           src="../../assets/sun.svg"
           class="tw-icon w-[80px] h-auto object-contain"
           alt=""
         />
-        <font-awesome-icon v-if="selectedTheme === Theme.Dark" class="tw-icon text-3xl max-sm:text-2xl"
-                           :icon="faMoon"></font-awesome-icon>
-        <font-awesome-icon v-if="selectedTheme === Theme.System" class="tw-icon text-3xl max-sm:text-2xl"
-                           :icon="faDesktop"></font-awesome-icon>
+        <font-awesome-icon
+          v-if="selectedTheme === Theme.Dark"
+          class="tw-icon text-3xl max-sm:text-2xl"
+          :icon="faMoon"
+        ></font-awesome-icon>
+        <font-awesome-icon
+          v-if="selectedTheme === Theme.System"
+          class="tw-icon text-3xl max-sm:text-2xl"
+          :icon="faDesktop"
+        ></font-awesome-icon>
       </button>
 
       <!--      TODO -->
-      <div v-if="themeDropdownOpen"
-           class="right-0 w-28 tw-dropdown-inner-layout">
-        <a @click="selectTheme(Theme.Light)" class="tw-dropdown-inner-action-layout" id="light-option">
+      <div v-if="themeDropdownOpen" class="right-0 w-28 tw-dropdown-inner-layout">
+        <a
+          @click="selectTheme(Theme.Light)"
+          class="tw-dropdown-inner-action-layout"
+          id="light-option"
+        >
           <svg
             class="fill-gray-700 dark:fill-gray-300 tw-navbar-dropdown-icon h-7"
             xmlns="http://www.w3.org/2000/svg"
@@ -82,12 +94,20 @@
           </svg>
           Light
         </a>
-        <a @click="selectTheme(Theme.Dark)" class="tw-dropdown-inner-action-layout" id="dark-option">
+        <a
+          @click="selectTheme(Theme.Dark)"
+          class="tw-dropdown-inner-action-layout"
+          id="dark-option"
+        >
           <font-awesome-icon :icon="faMoon" class="tw-navbar-dropdown-icon" />
           Dark
         </a>
 
-        <a @click="selectTheme(Theme.System)" class="tw-dropdown-inner-action-layout" id="system-option">
+        <a
+          @click="selectTheme(Theme.System)"
+          class="tw-dropdown-inner-action-layout"
+          id="system-option"
+        >
           <font-awesome-icon :icon="faDesktop" class="tw-navbar-dropdown-icon" />
           System
         </a>
@@ -188,13 +208,13 @@
 import {
   faBook,
   faCircleUser,
-  faClipboardList,
   faDesktop,
   faGear,
   faHeart,
   faLocationDot,
   faMap,
   faMoon,
+  faMessage,
   faRightFromBracket,
   faRightToBracket,
   faUser,
@@ -281,19 +301,13 @@ const applyTheme = (theme: Theme) => {
 };
 
 const applySystemTheme = () => {
-  const prefersDark = window.matchMedia(
-    '(prefers-color-scheme: dark)',
-  ).matches;
-  prefersDark
-    ? document.body.classList.add('dark')
-    : document.body.classList.remove('dark');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  prefersDark ? document.body.classList.add('dark') : document.body.classList.remove('dark');
 };
 
 function handleSystemThemeChange(event: MediaQueryListEvent) {
   if (selectedTheme.value === Theme.System) {
-    event.matches
-      ? document.body.classList.add('dark')
-      : document.body.classList.remove('dark');
+    event.matches ? document.body.classList.add('dark') : document.body.classList.remove('dark');
   }
 }
 
