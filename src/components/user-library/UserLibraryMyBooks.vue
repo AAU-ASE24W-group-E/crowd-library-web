@@ -77,9 +77,9 @@ onMounted(() => {
 });
 
 const refreshMyBookList = async () => {
-  if(userStore.getUser() == undefined) return
+  if(userStore.user == undefined) return
   await bookService
-    .findOwnBooks(userStore.getUser().id)
+    .findOwnBooks(userStore.user?.id)
     .then((books) => {
       mybooks.value = books.data;
     })
