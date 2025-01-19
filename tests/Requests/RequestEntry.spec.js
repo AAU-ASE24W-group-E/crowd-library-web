@@ -37,6 +37,7 @@ describe('RequestEntry', () => {
       props: {
         request: mockRequest,
         isWishlist: false,
+        incoming: true,
       },
       global: {
         stubs: ['router-link', 'font-awesome-icon'],
@@ -74,24 +75,46 @@ describe('RequestEntry', () => {
   });
 
   // Check that buttons are not visible when dropdown is closed
-  it('does not render the buttons when dropdown is closed', async() => {
+  it('does not render the buttons when dropdown is closed for incoming requests', async() => {
     const declineBtn = wrapper.find('#declineBtn');
     const suggestMeetingBtn = wrapper.find('#suggestMeetingBtn');
     expect(declineBtn.isVisible()).toBe(false);
     expect(suggestMeetingBtn.isVisible()).toBe(false);
   });
 
+  it('does not render the withdraw button when dropdown is closed for outgoing requests', async() => {
+    await wrapper.setProps({ incoming: false });
+    const withdrawBtn = wrapper.find('#withdrawBtn');
+    expect(withdrawBtn.isVisible()).toBe(false);
+  });
+
   // Check that buttons are visible on click of dropdown
-  it('renders the buttons when dropdown is open', async() => {
+  it('renders the buttons when dropdown is open for incoming requests', async() => {
     // Trigger click action
     await wrapper.find('.tw-component-container').trigger('click');
     const declineBtn = wrapper.find('#declineBtn');
     const suggestMeetingBtn = wrapper.find('#suggestMeetingBtn');
+    const withdrawBtn = wrapper.find('#withdrawBtn');
     expect(declineBtn.exists()).toBe(true);
     expect(declineBtn.text()).toBe("Decline");
     expect(suggestMeetingBtn.exists()).toBe(true);
     expect(suggestMeetingBtn.text()).toBe("Suggest Meeting");
     expect(declineBtn.isVisible()).toBe(true);
     expect(suggestMeetingBtn.isVisible()).toBe(true);
+    expect(withdrawBtn.exists()).toBe(false);
+  });
+
+  it('renders the withdraw button when dropdown is open for outgoing requests', async() => {
+    // Trigger click action
+    await wrapper.setProps({ incoming: false });
+    await wrapper.find('.tw-component-container').trigger('click');
+    const declineBtn = wrapper.find('#declineBtn');
+    const suggestMeetingBtn = wrapper.find('#suggestMeetingBtn');
+    const withdrawBtn = wrapper.find('#withdrawBtn');
+    expect(declineBtn.exists()).toBe(false);
+    expect(suggestMeetingBtn.exists()).toBe(false);
+    expect(withdrawBtn.exists()).toBe(true);
+    expect(withdrawBtn.isVisible()).toBe(true);
+    expect(withdrawBtn.text()).toBe("Withdraw");
   });
 });
