@@ -63,11 +63,12 @@ export default {
       ]
     }
 
-    const parseBooksToFeatureCollection = (books) => {
-      const features = books.map((book) => {
-        const { lat, long, ...properties } = book
-        return point([long, lat], properties)
-      })
+    const parseBooksToFeatureCollection = (ownBooks) => {
+      const features = ownBooks.map((ownBook) => {
+        const latitude = ownBook.owner.latitude;
+        const longitude = ownBook.owner.longitude;
+        return point([latitude, longitude], ownBook)
+      });
       return featureCollection(features)
     }
 

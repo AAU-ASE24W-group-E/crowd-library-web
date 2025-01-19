@@ -1,6 +1,8 @@
 import axios, { type AxiosInstance } from 'axios';
 import { useAuthStore } from '@/stores/auth';
 import { useRouter } from 'vue-router';
+import { Snackbar } from '@/utils/snackbar.ts';
+import { SnackbarType } from '@/enums/snackbar.ts';
 
 export function createApiClient(baseURL: string): AxiosInstance {
   const apiClient = axios.create({
@@ -28,6 +30,14 @@ export function createApiClient(baseURL: string): AxiosInstance {
         console.warn('Token expired or invalid. Redirecting to Login...');
         authStore.clearToken();
         router.push('/login');
+      }
+
+      if (error.response?.status === 404) {
+        Snackbar.showSnackbar('Not found...', SnackbarType.WARN, 15)
+      }
+
+      if (error.response?.status === 400) {
+        Snackbar.showSnackbar('User error - ' + error.response?.data?.message, SnackbarType.WARN, 15)
       }
 
       return Promise.reject(error);

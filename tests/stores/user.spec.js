@@ -27,7 +27,7 @@ describe('useUserStore', () => {
 
   it('should get the user', () => {
     userStore.setUser(mockUser);
-    const fetchedUser = userStore.getUser();
+    const fetchedUser = userStore.user;
     expect(fetchedUser).toEqual(mockUser);
   });
 

@@ -5,6 +5,7 @@ import BookSearchView from  "@/views/BookSearchView.vue";
 import POIMapView from "@/views/POIMapView.vue";
 import LocationSettingView from "@/views/LocationSettingView.vue";
 import LocationEditView from '@/views/LocationEditView.vue';
+import AccountView from '@/views/AccountView.vue'
 import UserLibraryView from '@/views/UserLibraryView.vue';
 import HomeView from '@/views/HomeView.vue';
 import RequestView from '@/views/RequestView.vue';
@@ -27,6 +28,11 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: RegisterView,
+    },
+    {
+      path: '/account-settings',
+      name: 'account-settings',
+      component: AccountView,
     },
     {
       path: '/bookish-map',

@@ -83,7 +83,8 @@
       <BookEntry
         v-for="(book, index) in books"
         :key="index"
-        :book="book"
+        :book="book.book"
+        :ownBook="book"
         :isWishlist="isWishlist"
         :isSearchBook="true"
         @showOnMapClicked="showOnMapClicked"
