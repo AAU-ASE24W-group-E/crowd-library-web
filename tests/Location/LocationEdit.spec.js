@@ -90,6 +90,6 @@ describe('LocationEdit.vue', () => {
     await applyButton.trigger('click');
 
     expect(userService.updateLocation).toHaveBeenCalled();
-    expect(router.push).toHaveBeenCalledWith('/login');
+    expect(router.push).toHaveBeenCalledWith('/');
   });
 });
