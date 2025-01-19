@@ -57,6 +57,9 @@ export default {
         if (lat > maxLat) maxLat = lat
       })
 
+      if (minLat < -90 || minLat > 90 || maxLat < -90 || maxLat > 90) return;
+      if (minLng < -180 || minLng > 180 || maxLng < -180 || maxLng > 180) return;
+      
       return [
         [minLng, minLat],
         [maxLng, maxLat],
@@ -128,7 +131,9 @@ export default {
     const setBoundsToExtentOfAllBook = () => {
       closeAllPopups()
 
-      let bounds = calculateBoundsOfAllBooks(current_books)
+      let bounds = calculateBoundsOfAllBooks(current_books);
+      if(!bounds) return;
+
       map.fitBounds(bounds, {
         padding: 50,
         maxZoom: 15,
