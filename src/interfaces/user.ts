@@ -6,5 +6,6 @@ export interface User {
   username: string;
   password: string;
   address?: Address | null;
+  initialLoginPending: boolean;
   role: string;
 }
