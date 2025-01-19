@@ -5,8 +5,12 @@ import { ref, watch } from 'vue';
 export const useUserStore = defineStore('user', () => {
   const user = ref<User | null>(JSON.parse(localStorage.getItem('user_data') || 'null'));
 
-  const setUser = (userData: User) => {
-    user.value = userData;
+  const setUser = (userData: Partial<User>) => {
+    if (user.value) {
+      user.value = { ...user.value, ...userData };
+    } else {
+      user.value = userData as User;
+    }
     localStorage.setItem('user_data', JSON.stringify(userData));
   };
 
