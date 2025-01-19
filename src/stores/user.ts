@@ -10,6 +10,17 @@ export const useUserStore = defineStore('user', () => {
     localStorage.setItem('user_data', JSON.stringify(userData));
   };
 
+  const setAddress = (latitude: number, longitude: number) => {
+    if (user.value) {
+      user.value.address = {
+        latitude: latitude,
+        longitude: longitude,
+      };
+      localStorage.setItem('user_data', JSON.stringify(user.value));
+    }
+  };
+
+
   const clearUser = () => {
     user.value = null;
     localStorage.removeItem('user_data');
@@ -26,6 +37,7 @@ export const useUserStore = defineStore('user', () => {
   return {
     user,
     setUser,
+    setAddress,
     clearUser,
   };
 });
