@@ -24,16 +24,25 @@ import 'leaflet-control-geocoder';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import config from '@/config.json';
+import { useUserStore } from '@/stores/user.ts';
+
+const userStore = useUserStore();
+console.log(userStore.user?.address);
 
 const emit = defineEmits<{
   (e: 'locationSelected', location: { lat: number; lng: number } | null): void;
 }>();
 const clickedLocation = ref<{ lat: number; lng: number } | null>(null);
-const userLocation = ref<{ lat: number, lng: number } | null>(null);     // TODO fetch user location from backend
-// const userLocation = ref<{ lat: number; lng: number } | null>({
-//   lat: 40.7128,
-//   lng: -74.006,
-// });
+
+let userLocation = ref<{ lat: number; lng: number } | null>(null);
+if (userStore.user?.address) {
+  const address = userStore.user.address;
+  userLocation = ref<{ lat: number; lng: number } | null>({
+    lat: address.latitude,
+    lng: address.longitude,
+  });
+}
+
 
 let map: Map;
 let marker: Marker | null = null;
