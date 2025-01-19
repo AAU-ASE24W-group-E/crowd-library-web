@@ -41,7 +41,7 @@ describe('SendRequestPopup', () => {
 
     expect(wrapper.find('.popup-overlay').exists()).toBe(true);
     expect(wrapper.find('.popup-content').exists()).toBe(true);
-    expect(wrapper.find('h1.title').text()).toBe('Send a Request to User1');
+    expect(wrapper.find('h1.popup-title').text()).toBe('Send a Request to User1');
     expect(wrapper.find('label[for=request-purpose]').exists()).toBe(true);
     expect(wrapper.find('label[for=request-purpose]').text()).toBe("I want to request this book for ...");
 

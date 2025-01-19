@@ -48,7 +48,7 @@ describe('MeetingPopup', () => {
 
     expect(wrapper.find('.popup-overlay').exists()).toBe(true);
     expect(wrapper.find('.popup-content').exists()).toBe(true);
-    expect(wrapper.find('h1.title').text()).toBe('Send a Meeting Suggestion to User1');
+    expect(wrapper.find('h1.popup-title').text()).toBe('Send a Meeting Suggestion to User1');
 
     // Check buttons and their text
     checkButton(wrapper.find('#closeBtn'), 'X');
