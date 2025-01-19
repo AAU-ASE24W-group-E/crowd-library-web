@@ -2,7 +2,7 @@
   <div class="tw-component-container px-0">
     <div class="flex flex-row w-full justify-between items-center max-[480px]:flex-col">
       <div>
-        <h1 class="tw-subheading text-[30px]">Book List</h1>
+        <h1 class="tw-subheading text-[30px]">{{ heading }}</h1>
       </div>
       <div>
         <button
@@ -25,8 +25,7 @@
 
     <div v-show="!showAddBook" class="my-book-list space-y-6 w-full mt-4">
       <BookEntry
-        v-for="(book, index) in mybooks"
-        :key="index"
+        v-for="(book) in mybooks"
         :isMyBook="true"
         :book="book.book"
         :ownBook="book"
@@ -63,6 +62,7 @@ const showAddBook = ref(false);
 const showPopup = ref(false);
 const popupBookRef = ref(null);
 const popupTypeRef = ref(null);
+const heading = ref("Book List");
 
 const mybooks = ref([]);
 
@@ -89,6 +89,8 @@ const refreshMyBookList = async () => {
 };
 
 const toggleAddBook = () => {
+  if(heading.value == "Book List") heading.value = "Add Books";
+  else heading.value = "Book List";
   showAddBook.value = !showAddBook.value;
 };
 

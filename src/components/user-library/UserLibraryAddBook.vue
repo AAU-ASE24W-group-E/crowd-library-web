@@ -1,6 +1,8 @@
 <template>
   <div class="w-full">
-    <div class="relative w-full max-sm:hidden mt-10">
+    <div class="dark:text-title-dark-mode-text mt-2" >You can search for books in our system to add them to your own book list.</div>
+
+    <div class="relative w-full max-sm:hidden mt-4">
       <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
         <font-awesome-icon class="tw-icon text-gray-500 dark:text-gray-300 ml-5" :icon="faSearch" />
       </div>
@@ -28,7 +30,7 @@
           target="_blank"
         >
           These are not the <em>books</em> that you are looking for? Do you want to add a new
-          edition via ISBN?</a
+          book / edition via ISBN?</a
         >
         <input
           class="tw-input sm:w-[20%] w-full p-2"

@@ -6,7 +6,7 @@
     <div class="flex flex-row w-full">
       <img
         :src="`${config.OPENLIBRARY_COVER_URL}${book.coverId}.jpg`"
-        alt="COVER"
+        alt="Cover"
         class="object-contain decoration-0 mr-3 w-[80px] max-[48px]:hidden"
       />
       <div class="flex flex-col flex-grow">
@@ -122,7 +122,7 @@
           @click="handleAdd"
           class="add-btn-of-book btn-primary btn-green rounded-2xl"
         >
-          Add Book
+          Add to My Books
         </button>
       </div>
     </div>
@@ -168,7 +168,7 @@ const props = defineProps({
   },
 });
 
-const dropdownOpen = ref(false);
+const dropdownOpen = ref(false || props.isNewBook);
 
 function toggleDropdown() {
   dropdownOpen.value = !dropdownOpen.value;
