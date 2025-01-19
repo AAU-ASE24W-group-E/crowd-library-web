@@ -43,7 +43,7 @@ import LocationSelectionMap from '@/components/LocationSelectionMap.vue';
 import { Snackbar } from '@/utils/snackbar.ts';
 import { SnackbarType } from '@/enums/snackbar.ts';
 import { userService } from '@/services/UserService.ts';
-import { useUserStore } from '@/stores/user.ts'
+import { useUserStore } from '@/stores/user.ts';
 
 const isLoading = ref(false);
 const selectedLocation = ref<{ lat: number; lng: number } | null>(null);
@@ -76,9 +76,8 @@ const handleLocationEdit = async () => {
       longitude: selectedLocation.value.lng,
     };
 
-    // TODO -DONE uid has to be set
-
-    await userService.updateLocation(userStore.user?.id ?? "", payload);
+    await userService.updateLocation(userStore.user?.id ?? '', payload);
+    userStore.setAddress(payload.latitude, payload.longitude);
 
     Snackbar.showSnackbar('Location was set successfully', SnackbarType.SUCCESS);
     await router.push('/');
