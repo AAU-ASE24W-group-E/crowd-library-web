@@ -9,8 +9,8 @@ import AccountView from '@/views/AccountView.vue';
 import UserLibraryView from '@/views/UserLibraryView.vue';
 import HomeView from '@/views/HomeView.vue';
 import RequestView from '@/views/RequestView.vue';
-import ImprintView from '@/views/ImprintView.vue';
-import DataPrivacyView from '@/views/DataPrivacyView.vue';
+import ImprintView from '@/views/static/ImprintView.vue';
+import DataPrivacyView from '@/views/static/DataPrivacyView.vue';
 
 // TODO we have to add restrictions
 const router = createRouter({
