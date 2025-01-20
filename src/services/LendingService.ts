@@ -50,3 +50,5 @@ class LendingService {
   }
 
 }
+
+export const lendingService = new LendingService();
