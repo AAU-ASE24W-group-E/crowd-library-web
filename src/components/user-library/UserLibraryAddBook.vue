@@ -64,7 +64,7 @@ const foundBooks = ref([]);
 
 const handleAdd = async (book) => {
   await bookService
-    .createBookOwnership(book.id, userStore.getUser().id)
+    .createBookOwnership(book.id, userStore.user?.id)
     .then((response) => {
       emit('bookAdded');
       Snackbar.showSnackbar(book.title + ' was added to your library.', SnackbarType.SUCCESS, 10);
