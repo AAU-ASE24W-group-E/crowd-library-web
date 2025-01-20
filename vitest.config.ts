@@ -22,6 +22,7 @@ export default mergeConfig(
           '**/*.test.{js,ts,jsx,tsx}',
           '**/*.spec.{js,ts,jsx,tsx}',
           '**/*.d.ts',
+          'src/views/static/',
         ],
       },
     },
