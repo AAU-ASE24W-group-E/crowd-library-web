@@ -138,8 +138,8 @@ describe('BookService', () => {
     const response = await bookService.findBookByQuicksearch(quicksearch);
 
     expect(bookService.findBooks).toHaveBeenCalledTimes(2);
-    expect(bookService.findBooks).toHaveBeenCalledWith(quicksearch, undefined);
-    expect(bookService.findBooks).toHaveBeenCalledWith(undefined, quicksearch);
+    expect(bookService.findBooks).toHaveBeenCalledWith(quicksearch);
+    expect(bookService.findBooks).toHaveBeenCalledWith(null, quicksearch);
 
     expect(response.length).toEqual(1);
   });
@@ -160,8 +160,8 @@ describe('BookService', () => {
     const response = await bookService.findBookByQuicksearch(quicksearch);
 
     expect(bookService.findBooks).toHaveBeenCalledTimes(2);
-    expect(bookService.findBooks).toHaveBeenCalledWith(quicksearch, undefined);
-    expect(bookService.findBooks).toHaveBeenCalledWith(undefined, quicksearch);
+    expect(bookService.findBooks).toHaveBeenCalledWith(quicksearch);
+    expect(bookService.findBooks).toHaveBeenCalledWith(null, quicksearch);
 
     expect(response).toEqual([mockBook]);
   });
@@ -177,8 +177,8 @@ describe('BookService', () => {
     const response = await bookService.findBookByQuicksearch(quicksearch);
 
     expect(bookService.findBooks).toHaveBeenCalledTimes(2);
-    expect(bookService.findBooks).toHaveBeenCalledWith(quicksearch, undefined);
-    expect(bookService.findBooks).toHaveBeenCalledWith(undefined, quicksearch);
+    expect(bookService.findBooks).toHaveBeenCalledWith(quicksearch);
+    expect(bookService.findBooks).toHaveBeenCalledWith(null, quicksearch);
 
     expect(response).toEqual([]);
   });
