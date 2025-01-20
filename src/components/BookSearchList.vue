@@ -39,25 +39,34 @@
             <div class="flex-col flex items-center justify-center space-y-3">
               <span class="p-2 text-lg text-center dark:text-title-dark-mode-text">Filter by your preferences</span>
               <div class="flex flex-row space-x-2 w-[80%] max-sm:w-full">
-                <span class="w-[50%] dark:text-title-dark-mode-text">Distance:</span>
-                <input class="w-[40%]" type="range" />
+                <span class="w-[50%] dark:text-title-dark-mode-text">Distance: {{filterModel.distance}} km</span>
+                <input class="w-[40%]" type="range"
+                       min="2" max="50" step="1"
+                       v-model.lazy="filterModel.distance"
+                       @change="updateFilter" />
               </div>
               <div class="flex flex-row space-x-2 w-[80%] max-sm:w-full">
-                <span class="w-[50%] dark:text-title-dark-mode-text">Author:</span>
-                <input class="tw-input px-2 h-4 rounded-md w-[40%]" />
+                <label class="w-[50%] dark:text-title-dark-mode-text" for="filter-author">Author:</label>
+                <input class="tw-input px-2 h-4 rounded-md w-[40%]" id="filter-author"
+                       v-model.trim="filterModel.author"
+                       @change="updateFilter" />
               </div>
               <div class="flex flex-row space-x-6 max-sm:flex-col max-sm:space-x-0">
                 <div class="flex items-center">
-                  <input class="tw-checkbox" type="checkbox" />
-                  <span class="dark:text-title-dark-mode-text">lendable</span>
+                  <input class="tw-checkbox" type="checkbox" id="filter-lendable"
+                         v-model="filterModel.lendable"
+                         @change="updateFilter" />
+                  <label class="dark:text-title-dark-mode-text" for="filter-lendable">lendable</label>
                 </div>
                 <div class="flex items-center">
-                  <input class="tw-checkbox" type="checkbox" />
-                  <span class="dark:text-title-dark-mode-text">exchangeable</span>
+                  <input class="tw-checkbox" type="checkbox" id="filter-exchangeable"
+                         v-model="filterModel.exchangeable" />
+                  <label class="dark:text-title-dark-mode-text" for="filter-exchangeable">exchangeable</label>
                 </div>
                 <div class="flex items-center">
-                  <input class="tw-checkbox" type="checkbox" />
-                  <span class="dark:text-title-dark-mode-text">giftable</span>
+                  <input class="tw-checkbox" type="checkbox" id="filter-giftable"
+                         v-model="filterModel.giftable" />
+                  <label class="dark:text-title-dark-mode-text" for="filter-giftable">giftable</label>
                 </div>
               </div>
             </div>
@@ -96,9 +105,9 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import BookEntry from '@/components/BookEntry.vue';
-import { defineProps, onMounted, onUnmounted, ref, defineExpose } from 'vue';
+import { defineProps, onMounted, onUnmounted, ref, defineExpose, watch } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faArrowDownWideShort, faChevronDown, faX } from '@fortawesome/free-solid-svg-icons';
 
@@ -111,9 +120,25 @@ const emits = defineEmits(['showOnMapClicked']);
 // Example array of books
 const books = ref(props.books);
 
-let dropdownSortOpen = ref(false);
+const dropdownSortOpen = ref(false);
 const isWishlist = ref(false); // needed to determine if book entry is shown on book list or wishlist
 const dropdownRef = ref(null);
+
+interface Filter {
+  distance?: number;
+  author?: string;
+  lendable?: boolean;
+  exchangeable?: boolean;
+  giftable?: boolean;
+}
+const filterModel = ref<Filter>({ distance: 10 });
+watch(filterModel, (newVal) => {
+  console.log('Filter changed:', newVal);
+});
+
+function updateFilter() {
+  console.log('Filter updated:', filterModel.value);
+}
 
 const handleSelection = (event) => {
   const selectedValue = event.target.value;
