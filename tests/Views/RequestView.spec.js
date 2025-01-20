@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
 import { mount } from '@vue/test-utils';
-import HomeView from '@/views/HomeView.vue';
 import RequestView from '@/views/RequestView.vue';
 
 describe('RequestView', () => {
