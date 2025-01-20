@@ -41,8 +41,6 @@
           Try importing
         </button>
       </div>
-      <!-- v-bind:class="{ 'tw-input-error': isControlInvalid('usernameOrEmail') }" -->
-      <!-- @blur="handleBlur('usernameOrEmail')" -->
     </div>
   </div>
 </template>
