@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
-import { describe, it, beforeEach, vi, afterEach } from 'vitest';
+import { describe, it, beforeEach, vi, expect,afterEach } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
-import AccountComponent from '@/components/AccountComponent.vue';
+import ImprintComponent from '@/components/Imprint.vue';
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
@@ -14,7 +14,7 @@ describe('Imprint', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
     vi.clearAllMocks();
-    wrapper = mount(AccountComponent, {
+    wrapper = mount(ImprintComponent, {
       global: {
         stubs: ['router-link', 'font-awesome-icon'],
       },
@@ -26,6 +26,6 @@ describe('Imprint', () => {
   });
 
   it('should render the components correctly', () => {
-
+    expect(wrapper.find('.tw-page-container').exists()).toBe(true);
   });
 });
