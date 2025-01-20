@@ -39,15 +39,15 @@ let all_popups = []
 export default {
   props: ['books'],
   setup(props) {
-    let map
-    let books = props.books
+    let map;
+    let current_books = props.books
 
     const calculateBoundsOfAllBooks = (geojson) => {
       let minLng = Infinity
       let minLat = Infinity
       let maxLng = -Infinity
       let maxLat = -Infinity
-
+      
       geojson.features.forEach((feature) => {
         const [lng, lat] = feature.geometry.coordinates
 
@@ -57,29 +57,54 @@ export default {
         if (lat > maxLat) maxLat = lat
       })
 
+      if (minLat < -90 || minLat > 90 || maxLat < -90 || maxLat > 90) return;
+      if (minLng < -180 || minLng > 180 || maxLng < -180 || maxLng > 180) return;
+      
       return [
         [minLng, minLat],
         [maxLng, maxLat],
       ]
     }
 
+    const getRandomCoordinatesInCircle = (lon, lat) => {
+      const earthRadius = 6371000; 
+      const radius = 25; 
+
+      const angle = Math.random() * 2 * Math.PI;
+      const distance = Math.random() * radius; 
+
+      const angularDistance = distance / earthRadius;
+      const newLat = lat + (angularDistance * Math.cos(angle)) * (180 / Math.PI);
+      const newLon = lon + (angularDistance * Math.sin(angle)) * (180 / Math.PI) / Math.cos(lat * (Math.PI / 180));
+
+      return { lon: newLon, lat: newLat };
+    }
+
     const parseBooksToFeatureCollection = (ownBooks) => {
       const features = ownBooks.map((ownBook) => {
-        const latitude = ownBook.owner.latitude;
-        const longitude = ownBook.owner.longitude;
-        return point([latitude, longitude], ownBook)
+        const {lon, lat} = getRandomCoordinatesInCircle(ownBook.owner.longitude, ownBook.owner.latitude)
+        const properties = {ownBook: ownBook, status: ownBook.status}
+        return point([lon, lat], properties)
       });
       return featureCollection(features)
     }
 
-    books = parseBooksToFeatureCollection(books)
+    const updateBooks = (books) => {
+      current_books = parseBooksToFeatureCollection([...books]);
+      setBoundsToExtentOfAllBook();
+      if(map.getSource('book-data') == undefined) addMapSource(current_books,"book-data", "geojson")
+      else  map.getSource('book-data').setData(current_books)
+    }
 
-    const addLayerToMap = async (map) => {
+    const addMapSource = (data, name, type) =>{
       map.addSource('book-data', {
         type: 'geojson',
-        data: books,
+        data: current_books,
       })
+    }
 
+
+    const addLayerToMap = async (map) => {
       map.addLayer({
         id: 'book-layer',
         type: 'circle',
@@ -91,15 +116,15 @@ export default {
           'circle-stroke-width': 2,
           'circle-color': [
               'case',
-              ['==', ['get', 'status'], 'Available'], availableColor,
-              ['==', ['get', 'status'], 'Unavailable'], unavailableColor,
-              '#CCCCCC'
+              ['==', ['get', 'status'], 'AVAILABLE'], availableColor,
+              ['==', ['get', 'status'], 'UNAVAILABLE'], unavailableColor,
+              '#000000'
             ],
           'circle-stroke-color': [
               'case',
-              ['==', ['get', 'status'], 'Available'], availableColor,
-              ['==', ['get', 'status'], 'Unavailable'], unavailableColor,
-              '#CCCCCC'
+              ['==', ['get', 'status'], 'AVAILABLE'], availableColor,
+              ['==', ['get', 'status'], 'UNAVAILABLE'], unavailableColor,
+              '#000000'
             ],
           'circle-stroke-opacity': 1,
         },
@@ -109,7 +134,9 @@ export default {
     const setBoundsToExtentOfAllBook = () => {
       closeAllPopups()
 
-      let bounds = calculateBoundsOfAllBooks(books)
+      let bounds = calculateBoundsOfAllBooks(current_books);
+      if(!bounds) return;
+
       map.fitBounds(bounds, {
         padding: 50,
         maxZoom: 15,
@@ -120,7 +147,7 @@ export default {
     const openPopUp = (feature) => {
       closeAllPopups()
       const coordinates = feature.geometry.coordinates.slice()
-      const popupHTML = getPopupHTML(feature.properties)
+      const popupHTML = getPopupHTML(feature.properties.ownBook)
 
       let popup = new maplibregl.Popup({ offset: 5 })
         .setLngLat(coordinates)
@@ -136,15 +163,16 @@ export default {
         zoom: default_zoom,
         attributionControl: false,
       })
-
-      setBoundsToExtentOfAllBook()
+      current_books = parseBooksToFeatureCollection(props.books);
+      setBoundsToExtentOfAllBook();
 
       map.addControl(new maplibregl.NavigationControl(), 'top-right')
       map.addControl(new maplibregl.GeolocateControl(), 'bottom-right')
 
       map.on('load', async () => {
+        if(map.getSource('book-data') == undefined) addMapSource(current_books,"book-data", "geojson")
         addLayerToMap(map)
-      })
+      });
 
       map.on('click', 'book-layer', (e) => {
         openPopUp(e.features[0])
@@ -165,7 +193,7 @@ export default {
     })
 
     const getBookFeatureByIsbn = (isbn) => {
-      return books.features.find((feature) => feature.properties.ISBN === isbn)
+      return current_books.features.find((feature) => feature.properties.ISBN === isbn)
     }
 
     const closeAllPopups = () => {
@@ -180,7 +208,7 @@ export default {
       let feature = getBookFeatureByIsbn(book.ISBN)
       if(!feature) return
       map.flyTo({
-        center: [book.long - 0.0025, book.lat], 
+        center: [book.owner.longitude - 0.0025, book.owner.latitude], 
         zoom: 17,
         speed: 4,
         curve: 1.5
@@ -192,7 +220,8 @@ export default {
     return {
       map,
       setBoundsToExtentOfAllBook,
-      zoomToPoint
+      zoomToPoint,
+      updateBooks
     }
 
   }

@@ -27,7 +27,7 @@ describe('bookPopup', () => {
       longitude: 14.263625,
       id: 'Owner1'
     },
-    status: true,
+    status: "AVAILABLE",
     lendable: true,
     exchangeable: false,
     giftable: true
@@ -45,7 +45,7 @@ describe('bookPopup', () => {
 
    it('returns popup with status for valid book', () => {
     const html = getPopupHTML(valid_book)
-    const expectedValue = valid_book.status ? "Available" : "Unavailable";
+    const expectedValue = valid_book.status == "AVAILABLE" ? "Available" : "Unavailable";
     expect(html).toContain(expectedValue)
    });
 
@@ -70,7 +70,7 @@ describe('bookPopup', () => {
    });
 
    it('returns popup with correct color for valid book (unavailable)', () => {
-    let unavailable_book = { ...valid_book, status: 'Unavailable' };
+    let unavailable_book = { ...valid_book, status: 'UNAVAILABLE' };
     const html = getPopupHTML(unavailable_book)
     expect(html).toContain("text-red")
    });
