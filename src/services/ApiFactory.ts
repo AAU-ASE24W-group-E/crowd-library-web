@@ -40,6 +40,11 @@ export function createApiClient(baseURL: string): AxiosInstance {
         Snackbar.showSnackbar('User error - ' + error.response?.data?.message, SnackbarType.WARN, 15)
       }
 
+      if (!(error instanceof Error)) {
+        console.warn("Error is no instance of Error: ", error);
+        error = new Error(error?.message ?? 'Unknown error');
+      }
+
       return Promise.reject(error);
     },
   );

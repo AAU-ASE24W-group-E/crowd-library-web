@@ -41,7 +41,7 @@ describe('RegisterComponent', () => {
     await emailInput.setValue('invalid-email');
     await emailInput.trigger('blur');
 
-    expect(wrapper.find('.tw-input-error-label').text());
+    expect(wrapper.find('.tw-input-error-label').exists()).toBe(true);
   });
 
   it('validates username required correctly', async () => {
@@ -49,6 +49,7 @@ describe('RegisterComponent', () => {
     await usernameInput.setValue('');
     await usernameInput.trigger('blur');
 
+    expect(wrapper.find('.tw-input-error-label').exists()).toBe(true);
     expect(wrapper.vm.errors.username.required).toBe(true);
   });
 
@@ -57,6 +58,7 @@ describe('RegisterComponent', () => {
     await usernameInput.setValue('a'.repeat(21));
     await usernameInput.trigger('blur');
 
+    expect(wrapper.find('.tw-input-error-label').exists()).toBe(true);
     expect(wrapper.vm.errors.username.maxLength).toBe(true);
   });
 
@@ -65,11 +67,13 @@ describe('RegisterComponent', () => {
     await usernameInput.setValue('testing');
     await usernameInput.trigger('blur');
 
+    expect(wrapper.find('.tw-input-error-label').exists()).toBe(true);
     expect(wrapper.vm.errors.username.invalid).toBe(false);
 
     await usernameInput.setValue('testing@29d--x_');
     await usernameInput.trigger('blur');
 
+    expect(wrapper.find('.tw-input-error-label').exists()).toBe(true);
     expect(wrapper.vm.errors.username.invalid).toBe(true);
   });
 
@@ -78,6 +82,7 @@ describe('RegisterComponent', () => {
     await passwordInput.setValue('1');
     await passwordInput.trigger('blur');
 
+    expect(wrapper.find('.tw-input-error-label').exists()).toBe(true);
     expect(wrapper.vm.errors.password.minLength).toBe(true);
   });
 
@@ -89,6 +94,7 @@ describe('RegisterComponent', () => {
     await confirmPasswordInput.setValue('differentPassword');
     await confirmPasswordInput.trigger('blur');
 
+    expect(wrapper.find('.tw-input-error-label').exists()).toBe(true);
     expect(wrapper.vm.errors.confirmPassword.notMatch).toBe(true);
   });
 

@@ -3,7 +3,7 @@ import type { User } from '@/interfaces/user.ts';
 import { ref, watch } from 'vue';
 
 export const useUserStore = defineStore('user', () => {
-  const user = ref<User | null>(JSON.parse(localStorage.getItem('user_data') || 'null'));
+  const user = ref<User | null>(JSON.parse(localStorage.getItem('user_data') ?? 'null'));
 
   const setUser = (userData: Partial<User>) => {
     if (user.value) {
