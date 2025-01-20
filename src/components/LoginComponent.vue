@@ -181,7 +181,6 @@ const login = async () => {
     console.log(usernameOrEmail);
 
     const response = await authenticationService.login({ username: usernameOrEmail, password: loginForm.password });
-    const token = response.data.token;  // TODO handle token
 
     Snackbar.showSnackbar('Successfully logged in!', SnackbarType.SUCCESS);
 
