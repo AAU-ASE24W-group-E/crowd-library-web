@@ -60,12 +60,14 @@
                 </div>
                 <div class="flex items-center">
                   <input class="tw-checkbox" type="checkbox" id="filter-exchangeable"
-                         v-model="filterModel.exchangeable" />
+                         v-model="filterModel.exchangeable"
+                         @change="updateFilter" />
                   <label class="dark:text-title-dark-mode-text" for="filter-exchangeable">exchangeable</label>
                 </div>
                 <div class="flex items-center">
                   <input class="tw-checkbox" type="checkbox" id="filter-giftable"
-                         v-model="filterModel.giftable" />
+                         v-model="filterModel.giftable"
+                         @change="updateFilter" />
                   <label class="dark:text-title-dark-mode-text" for="filter-giftable">giftable</label>
                 </div>
               </div>
@@ -110,12 +112,16 @@ import BookEntry from '@/components/BookEntry.vue';
 import { defineProps, onMounted, onUnmounted, ref, defineExpose, watch } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faArrowDownWideShort, faChevronDown, faX } from '@fortawesome/free-solid-svg-icons';
+import { type LocationQuery, useRoute, useRouter } from 'vue-router'
 
 const categories = ref(['Distance', 'Author', 'Title', 'Year'].sort());
 const selectedCategories = ref([]);
 
 const props = defineProps(['books']);
 const emits = defineEmits(['showOnMapClicked']);
+
+const route = useRoute()
+const router = useRouter()
 
 // Example array of books
 const books = ref(props.books);
@@ -124,20 +130,49 @@ const dropdownSortOpen = ref(false);
 const isWishlist = ref(false); // needed to determine if book entry is shown on book list or wishlist
 const dropdownRef = ref(null);
 
+const query: LocationQuery = route.query;
+
 interface Filter {
+  q?: string;
   distance?: number;
   author?: string;
   lendable?: boolean;
   exchangeable?: boolean;
   giftable?: boolean;
 }
-const filterModel = ref<Filter>({ distance: 10 });
+const filterModel = ref<Filter>({
+  q: query.q as string,
+  distance: query.distance ? parseInt(query.distance as string) : 10,
+  author: query.author as string,
+  lendable: query.lendable === 'true',
+  exchangeable: query.exchangeable === 'true',
+  giftable: query.giftable === 'true',
+});
 watch(filterModel, (newVal) => {
   console.log('Filter changed:', newVal);
 });
 
-function updateFilter() {
-  console.log('Filter updated:', filterModel.value);
+async function updateFilter() {
+  const filter = filterModel.value
+  console.log('Filter updated:', filter);
+  const inputQuery: LocationQuery = { }
+  if (filter.q)
+    inputQuery.q = filter.q;
+  if (filter.author)
+    inputQuery.author = filter.author;
+  if (filter.distance)
+    inputQuery.distance = '' + filter.distance
+  if (filter.lendable)
+    inputQuery.lendable = 'true'
+  if (filter.exchangeable)
+    inputQuery.exchangeable = 'true'
+  if (filter.giftable)
+    inputQuery.giftable = 'true'
+
+  console.log('Query updated:', inputQuery);
+  await router.push({ path: '/book-search', query: inputQuery })
+    .then(() => console.log('Route updated:', router.currentRoute.value))
+    .catch((error) => console.error('Error updating route:', error))
 }
 
 const handleSelection = (event) => {
