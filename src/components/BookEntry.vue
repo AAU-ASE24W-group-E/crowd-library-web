@@ -95,7 +95,7 @@
         <button v-if="!isWishlist && isSearchBook" class="btn-primary btn-gray rounded-2xl">
           Add to wishlist
         </button>
-        <button v-if="isSearchBook" class="btn-primary btn-green rounded-2xl">Send request</button>
+        <button v-if="isSearchBook && book.isAvailable" @click="openPopup" class="btn-primary btn-green rounded-2xl">Send Request</button>
         <button
           v-if="isSearchBook"
           @click="handleShowOnMap"
@@ -127,6 +127,7 @@
       </div>
     </div>
   </div>
+  <SendRequestPopup ref="requestPopup" :book="book"/>
 </template>
 
 <script setup>
@@ -134,8 +135,12 @@ import { defineProps, ref } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import config from '@/config.json';
+import SendRequestPopup from './SendRequestPopup.vue';
 
 const emit = defineEmits(['showOnMapClicked', 'handleAction', 'handleAdd']);
+
+const requestPopup = ref(null);
+
 const props = defineProps({
   book: {
     type: Object, //Book
@@ -184,9 +189,14 @@ function handleDelete() {
 function handleAdd() {
   emit('handleAdd', props.book);
 }
+
+// Function to open the popup
+const openPopup = () => {
+  requestPopup.value.show();
+};
 </script>
 
-<style>
+<!--<style>
 .tw-book-entry-info-title {
   @apply text-sm dark:text-title-dark-mode-text;
 }
@@ -194,4 +204,4 @@ function handleAdd() {
 .tw-book-entry-info-value {
   @apply text-gray-600 dark:text-gray-400;
 }
-</style>
+</style>-->

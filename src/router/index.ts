@@ -1,13 +1,16 @@
-import {createRouter, createWebHistory} from 'vue-router'
-import LoginView from "@/views/LoginView.vue";
-import RegisterView from "@/views/RegisterView.vue";
-import BookSearchView from  "@/views/BookSearchView.vue";
-import POIMapView from "@/views/POIMapView.vue";
-import LocationSettingView from "@/views/LocationSettingView.vue";
+import { createRouter, createWebHistory } from 'vue-router';
+import LoginView from '@/views/LoginView.vue';
+import RegisterView from '@/views/RegisterView.vue';
+import BookSearchView from '@/views/BookSearchView.vue';
+import POIMapView from '@/views/POIMapView.vue';
+import LocationSettingView from '@/views/LocationSettingView.vue';
 import LocationEditView from '@/views/LocationEditView.vue';
-import AccountView from '@/views/AccountView.vue'
+import AccountView from '@/views/AccountView.vue';
 import UserLibraryView from '@/views/UserLibraryView.vue';
 import HomeView from '@/views/HomeView.vue';
+import RequestView from '@/views/RequestView.vue';
+import ImprintView from '@/views/ImprintView.vue';
+import DataPrivacyView from '@/views/DataPrivacyView.vue';
 
 // TODO we have to add restrictions
 const router = createRouter({
@@ -59,19 +62,21 @@ const router = createRouter({
       component: UserLibraryView,
     },
     {
+      path: '/my-requests',
+      name: 'requests',
+      component: RequestView,
+    },
+    {
       path: '/imprint',
       name: 'imprint',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/ImprintView.vue'),
+      component: ImprintView,
     },
     {
       path: '/data-privacy',
       name: 'data-privacy',
-      component: () => import('../views/DataPrivacyView.vue'),
+      component: DataPrivacyView,
     },
   ],
-})
+});
 
-export default router
+export default router;

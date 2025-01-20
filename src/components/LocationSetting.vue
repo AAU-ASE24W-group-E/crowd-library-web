@@ -43,7 +43,7 @@ import { Snackbar } from '@/utils/snackbar.ts';
 import { SnackbarType } from '@/enums/snackbar.ts';
 import { authenticationService } from '@/services/AuthenticationService.ts';
 import { userService } from '@/services/UserService.ts';
-import { useUserStore } from '@/stores/user.ts'
+import { useUserStore } from '@/stores/user.ts';
 
 const isLoading = ref(false);
 const selectedLocation = ref<{ lat: number; lng: number } | null>(null);
@@ -51,7 +51,8 @@ const selectedLocation = ref<{ lat: number; lng: number } | null>(null);
 const userStore = useUserStore();
 
 const skipLocationSetting = async () => {
-  await authenticationService.setInitialLogin(userStore.user?.id ?? "");
+  await authenticationService.setInitialLogin(userStore.user?.id ?? '');
+  userStore.setUser({ initialLoginPending: false });
   await router.push('/');
 };
 
@@ -76,9 +77,12 @@ const handleLocationSetting = async () => {
       longitude: selectedLocation.value.lng,
     };
 
-    // TODO-DONE uid has to be set
-    await userService.setLocation(userStore.user?.id ?? "", payload);
-    await authenticationService.setInitialLogin(userStore.user?.id ?? "");
+    await userService.setLocation(userStore.user?.id ?? '', payload);
+    userStore.setAddress(payload.latitude, payload.longitude);
+
+    await authenticationService.setInitialLogin(userStore.user?.id ?? '');
+    userStore.setUser({ initialLoginPending: false });
+
     await router.push('/');
 
     Snackbar.showSnackbar('Location was set successfully', SnackbarType.SUCCESS);
