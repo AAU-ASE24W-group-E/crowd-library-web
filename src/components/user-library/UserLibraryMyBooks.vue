@@ -55,6 +55,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { bookService } from '@/services/BookService';
 import { useUserStore } from '@/stores/user';
+import { SnackbarType } from '@/enums/snackbar.ts';
+import { Snackbar } from '@/utils/snackbar.ts';
 
 const userStore = useUserStore();
 
@@ -94,22 +96,43 @@ const toggleAddBook = () => {
   showAddBook.value = !showAddBook.value;
 };
 
-const handlePopUpClosed = (actionFinished, editedfields) => {
+const handleFlagPayload = (editedfields) => {
+    let payload = { };
+    if(editedfields.status.value == true) payload.status = "AVAILABLE"
+    else payload.status = "UNAVAILABLE"
+
+    payload.lendable = editedfields.lendable.value;
+    payload.exchangeable = editedfields.exchangeable.value;
+    payload.giftable = editedfields.giftable.value;
+    console.log(payload);
+    return payload;
+}
+
+const handlePopUpClosed = async (actionFinished, ownBook, editedfields) => {
+  showPopup.value = false;
+  if(userStore.user?.id == undefined) return;
+  if(ownBook == undefined) return;
+  if(editedfields == undefined) return;
+  
   if (actionFinished) {
     switch (popupTypeRef.value) {
       case 'EDIT':
-        // in editfields are the new values
-        // TODO update book
-        // SNackbar
+        await bookService
+          .updateBookFlags(userStore.user?.id, ownBook.book?.id, handleFlagPayload(editedfields))
+          .then(() => {
+            Snackbar.showSnackbar('Status of ' + ownBook.book?.title + ' was udpated.', SnackbarType.SUCCESS, 10);
+          })
+          .catch((error) => {
+            console.log(error.status);
+          });
         break;
       case 'DELETE':
         // TODO delete book
         // SNackbar
         break;
     }
-    // TODO get books
+    refreshMyBookList();
   }
-  showPopup.value = false;
 };
 </script>
 

@@ -179,7 +179,7 @@ function handleShowOnMap() {
 }
 
 function handleEditState() {
-  emit('handleAction', props.book, 'EDIT');
+  emit('handleAction', props.ownBook, 'EDIT');
 }
 
 function handleDelete() {
