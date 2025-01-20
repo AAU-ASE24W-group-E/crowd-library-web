@@ -1,5 +1,4 @@
 import type { Book } from '@/interfaces/book.ts';
-import type { Owner } from '@/interfaces/owner.ts';
 import { bookApiService } from '@/services/clients.ts';
 
 export interface AvailableBooksQuery {
@@ -40,8 +39,8 @@ class BookService {
 
 
   async findBookByQuicksearch(quicksearch:string) {
-    const booksbyTitle = (await this.findBooks(quicksearch, undefined)).data;
-    const booksByAuthor = (await this.findBooks(undefined, quicksearch)).data;
+    const booksbyTitle = (await this.findBooks(quicksearch)).data;
+    const booksByAuthor = (await this.findBooks(null, quicksearch)).data;
     return [...booksbyTitle, ...booksByAuthor].reduce((arr, item) => {
       if (!arr.some((existing:Book) => existing.id === item.id)) {
         arr.push(item);

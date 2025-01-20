@@ -4,7 +4,7 @@
     </div>
 </template>
 <script>
-import { defineComponent, inject } from 'vue';
+import { defineComponent } from 'vue';
 export default defineComponent({
     name: 'Tab',
     props: {

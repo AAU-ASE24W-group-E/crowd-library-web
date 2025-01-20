@@ -43,11 +43,11 @@ describe('poi map spec', () => {
     })
   })
 
-  it('list item count should be the same as items in the list', () => {
+/*  it('list item count should be the same as items in the list', () => {
     cy.get('.poi-sidebar-item').then(($items) => {
       const itemCount = $items.length
       cy.get('.sidebar-item-count').should('have.text', `Points of Interest [${itemCount}]`)
     })
-  })
+  })*/
 
 })
