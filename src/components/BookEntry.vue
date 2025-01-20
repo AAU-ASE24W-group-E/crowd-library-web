@@ -6,7 +6,7 @@
     <div class="flex flex-row w-full">
       <img
         :src="`${config.OPENLIBRARY_COVER_URL}${book.coverId}.jpg`"
-        alt="COVER"
+        alt="Cover"
         class="object-contain decoration-0 mr-3 w-[80px] max-[48px]:hidden"
       />
       <div class="flex flex-col flex-grow">
@@ -92,7 +92,7 @@
       <div
         class="flex flex-row w-full mt-2 space-x-16 max-md:space-x-6 ml-24 max-sm:space-x-0 max-sm:flex-col max-sm:space-y-4 max-sm:justify-center max-sm:ml-0"
       >
-        <button v-if="!isWishlist && isSearchBook" class="btn-primary btn-gray rounded-2xl">
+        <button v-if="!isWishlist && isSearchBook && false" class="btn-primary btn-gray rounded-2xl">
           Add to wishlist
         </button>
         <button v-if="isSearchBook && book.isAvailable" @click="openPopup" class="btn-primary btn-green rounded-2xl">Send Request</button>
@@ -122,7 +122,7 @@
           @click="handleAdd"
           class="add-btn-of-book btn-primary btn-green rounded-2xl"
         >
-          Add Book
+          Add to My Books
         </button>
       </div>
     </div>
@@ -168,14 +168,14 @@ const props = defineProps({
   },
 });
 
-const dropdownOpen = ref(false);
+const dropdownOpen = ref(false || props.isNewBook);
 
 function toggleDropdown() {
   dropdownOpen.value = !dropdownOpen.value;
 }
 
 function handleShowOnMap() {
-  emit('showOnMapClicked', props.book);
+  emit('showOnMapClicked', props.ownBook);
 }
 
 function handleEditState() {
