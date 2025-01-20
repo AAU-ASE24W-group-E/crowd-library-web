@@ -88,7 +88,7 @@ const mock_books = [
 
 const mockUserStore = {
   setUser: vi.fn(),
-  getUser: vi.fn().mockReturnValue({ id: "user" })
+  user: { id: "user" }
 };
 vi.mock('@/stores/user', () => ({
   useUserStore: () => mockUserStore,

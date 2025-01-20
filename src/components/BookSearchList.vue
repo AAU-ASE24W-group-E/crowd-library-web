@@ -37,27 +37,27 @@
             class="-right-4 w-[400px] max-sm:w-[200px] tw-dropdown-inner-layout p-3"
           >
             <div class="flex-col flex items-center justify-center space-y-3">
-              <span class="p-2 text-lg text-center">Filter by your preferences</span>
+              <span class="p-2 text-lg text-center dark:text-title-dark-mode-text">Filter by your preferences</span>
               <div class="flex flex-row space-x-2 w-[80%] max-sm:w-full">
-                <span class="w-[50%]">Distance:</span>
+                <span class="w-[50%] dark:text-title-dark-mode-text">Distance:</span>
                 <input class="w-[40%]" type="range" />
               </div>
               <div class="flex flex-row space-x-2 w-[80%] max-sm:w-full">
-                <span class="w-[50%]">Author:</span>
+                <span class="w-[50%] dark:text-title-dark-mode-text">Author:</span>
                 <input class="tw-input px-2 h-4 rounded-md w-[40%]" />
               </div>
               <div class="flex flex-row space-x-6 max-sm:flex-col max-sm:space-x-0">
                 <div class="flex items-center">
                   <input class="tw-checkbox" type="checkbox" />
-                  <span>lendable</span>
+                  <span class="dark:text-title-dark-mode-text">lendable</span>
                 </div>
                 <div class="flex items-center">
                   <input class="tw-checkbox" type="checkbox" />
-                  <span>exchangeable</span>
+                  <span class="dark:text-title-dark-mode-text">exchangeable</span>
                 </div>
                 <div class="flex items-center">
                   <input class="tw-checkbox" type="checkbox" />
-                  <span>giftable</span>
+                  <span class="dark:text-title-dark-mode-text">giftable</span>
                 </div>
               </div>
             </div>
@@ -79,7 +79,7 @@
       </div>
     </div>
 
-    <div class="space-y-6 w-full mt-4">
+    <div v-if="books.length > 0" class="space-y-6 w-full mt-4">
       <BookEntry
         v-for="(book, index) in books"
         :key="index"
@@ -90,12 +90,15 @@
         @showOnMapClicked="showOnMapClicked"
       />
     </div>
+    <div v-if="books.length <= 0" class="space-y-6 w-full mt-4 dark:text-title-dark-mode-text">
+      No books found. Enter a prompt to the search to find books!
+    </div>
   </div>
 </template>
 
 <script setup>
 import BookEntry from '@/components/BookEntry.vue';
-import { defineProps, onMounted, onUnmounted, ref } from 'vue';
+import { defineProps, onMounted, onUnmounted, ref, defineExpose } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faArrowDownWideShort, faChevronDown, faX } from '@fortawesome/free-solid-svg-icons';
 
@@ -146,11 +149,19 @@ const showOnMapClicked = (book) => {
   emits('showOnMapClicked', book);
 };
 
+const updateBooks = (newBooks) => {
+  books.value =  [...newBooks];
+};
+
 onMounted(() => {
   document.addEventListener('click', handleClickOutside);
 });
 
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside);
+});
+
+defineExpose({
+  updateBooks,
 });
 </script>

@@ -1,6 +1,20 @@
 import type { Book } from '@/interfaces/book.ts';
 import { bookApiService } from '@/services/clients.ts';
 
+export interface AvailableBooksQuery {
+  latitude: number
+  longitude: number
+  distance?: number
+  quickSearch?: string
+  author?: string
+  title?: string
+  lendable?: boolean
+  exchangeable?: boolean
+  giftable?: boolean
+  offset?: number
+  limit?: number
+}
+
 class BookService {
   readonly subdomain: string = '/book';
   readonly subdomain_owner: string = '/book-owner';
@@ -49,6 +63,11 @@ class BookService {
 
   async findOwnBooks(ownerId: string) {
     return await bookApiService.get(`${this.subdomain_owner}/${ownerId}/book`);
+  }
+
+  async getAvailableBooks(query: AvailableBooksQuery) {
+    console.log('fetching available books with query:', query);
+    return await bookApiService.get('/available-book', {params: query});
   }
 }
 

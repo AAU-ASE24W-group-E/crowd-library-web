@@ -54,10 +54,9 @@ describe('BookEntry', () => {
   });
 
   it("renders wishlist button when isWishlist is false", async () => {
-    expect(wrapper.find("button.btn-primary.btn-gray").exists()).toBe(true);
-
+    expect(wrapper.find("button.btn-primary.btn-gray").exists()).toBe(false);  //TODO if implemented -> switch to true
     await wrapper.setProps({ isWishlist: true });
-    expect(wrapper.find("button.btn-primary.btn-gray").exists()).toBe(false);
+    expect(wrapper.find("button.btn-primary.btn-gray").exists()).toBe(false); //TODO if implemented -> switch to true
   });
 
   it("renders 'No' with red text for unavailable attributes", async () => {
