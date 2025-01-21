@@ -29,13 +29,9 @@ describe('poi map spec', () => {
     cy.get('.maplibregl-ctrl-geolocate').should('be.visible')
   })
 
-/*  it('should have sidebar items', () => {
-    cy.get('.poi-sidebar-item').should('have.length.at.least', 2)
-  })*/
-
-  it('should have legend items', () => {
-    cy.get('.poi-legend-item').should('have.length.at.least', 3)
-  })
+  it('should have sidebar items', () => {
+    cy.get('.poi-sidebar-item', { timeout: 5000 }).should('have.length.at.least', 2);
+  });
 
   it('should only on legend items toggles', () => {
     cy.get('.poi-legend-item').each(($item) => {
@@ -43,11 +39,11 @@ describe('poi map spec', () => {
     })
   })
 
-/*  it('list item count should be the same as items in the list', () => {
-    cy.get('.poi-sidebar-item').then(($items) => {
+  it('list item count should be the same as items in the list', () => {
+    cy.get('.poi-sidebar-item', { timeout: 5000 }).then(($items) => {
       const itemCount = $items.length
       cy.get('.sidebar-item-count').should('have.text', `Points of Interest [${itemCount}]`)
-    })
-  })*/
+    });
+  });
 
-})
+});

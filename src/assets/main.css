@@ -353,7 +353,8 @@
         p-4 space-y-4
         max-sm:w-full
         max-sm:mt-20
-        max-h-[78vh];
+        max-h-[78vh]
+        dark:bg-dark-mode;
   }
 
   .map-sidebar-container {
@@ -361,11 +362,12 @@
         w-[95%]
         /* max-sm:w-full */
         mb-5 mt-5
+        
          flex-row max-sm:flex-col;
   }
 
   .map-container {
-    @apply flex-1 w-[75%] max-sm:w-full  bg-gray-50 p-8 max-sm:p-0;
+    @apply flex-1 w-[75%] max-sm:w-full  bg-gray-50 p-8 max-sm:p-0 dark:bg-dark-mode;
   }
 
   .snackbar {
