@@ -22,6 +22,7 @@ import { lendingService } from '@/services/LendingService.ts';
 import { userService } from '@/services/UserService.ts';
 import { bookService } from '@/services/BookService.ts';
 import { useUserStore } from '@/stores/user.ts';
+import { LendingStatus } from '@/enums/lendingStatus.ts';
 
 const showRequestList = ref(true);
 const userStore = useUserStore();
@@ -38,8 +39,12 @@ const fetchIncomingLendings = async ()  => {
       const lendings = await lendingService.getLendingsByOwnerId(ownerId);
       console.debug(lendings);
 
+      const filteredLendings = lendings.data.filter(
+        (lending) => (lending.status !== LendingStatus.LENDING_CANCELLED && lending.status !== LendingStatus.LENDING_DECLINED && lending.status !== LendingStatus.LENDING_COMPLETED)
+      );
+
       incomingRequests.value = await Promise.all(
-        lendings.data.map(async (lending) => {
+        filteredLendings.map(async (lending) => {
           const [readerData, bookData] = await Promise.all([
             userService.getUserById(lending.readerId),
             bookService.getBook(lending.bookId),
