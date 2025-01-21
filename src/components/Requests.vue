@@ -88,7 +88,7 @@ const fetchOutgoingLendingRequests = async ()  => {
         (lending) => (lending.status !== LendingStatus.LENDING_CANCELLED && lending.status !== LendingStatus.LENDING_DECLINED && lending.status !== LendingStatus.LENDING_COMPLETED)
       );
 
-      incomingRequests.value = await Promise.all(
+      outgoingRequests.value = await Promise.all(
         filteredLendings.map(async (lending) => {
           const [readerData, bookData] = await Promise.all([
             userService.getUserById(lending.ownerId),

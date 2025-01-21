@@ -25,6 +25,10 @@ class LendingService {
     return await lendingApiService.patch(this.subdomain + `/${lendingId}?status=LENDING_DECLINED`);
   }
 
+  async cancelLendingRequest(lendingId: string) {
+    return await lendingApiService.patch(this.subdomain + `/${lendingId}?status=LENDING_CANCELLED`);
+  }
+
   async getLending(lendingId: string) {
     return await lendingApiService.get(this.subdomain + `/${lendingId}`);
   }
