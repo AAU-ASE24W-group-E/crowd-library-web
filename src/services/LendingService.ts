@@ -5,7 +5,7 @@ export interface LendingRequestPayload {
   bookId: string,
   readerId: string,
   ownerId: string,
-  lendingStatus: LendingStatus
+  status: LendingStatus
 }
 
 export interface LendingMeetingPayload {
