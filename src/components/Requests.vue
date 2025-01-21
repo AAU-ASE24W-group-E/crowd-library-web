@@ -47,7 +47,7 @@ const fetchIncomingLendingRequests = async ()  => {
       console.debug(lendings);
 
       const filteredLendings = lendings.data.filter(
-        (lending) => (lending.status !== LendingStatus.READER_WITHDREW && lending.status !== LendingStatus.OWNER_DENIED && lending.status !== LendingStatus.LENDING_COMPLETED)
+        (lending) => (checkIsStatusValid(lending))
       );
 
       incomingRequests.value = await Promise.all(
@@ -85,7 +85,7 @@ const fetchOutgoingLendingRequests = async ()  => {
       console.debug(lendings);
 
       const filteredLendings = lendings.data.filter(
-        (lending) => (lending.status !== LendingStatus.READER_WITHDREW && lending.status !== LendingStatus.OWNER_DENIED && lending.status !== LendingStatus.LENDING_COMPLETED)
+        (lending) => (checkIsStatusValid(lending))
       );
 
       outgoingRequests.value = await Promise.all(
@@ -111,6 +111,15 @@ const fetchOutgoingLendingRequests = async ()  => {
       console.error(e);
     }
   }
+}
+
+const checkIsStatusValid = (lending) => {
+  return lending.status !== LendingStatus.READER_WITHDREW
+    && lending.status !== LendingStatus.OWNER_DENIED
+    && lending.status !== LendingStatus.LENDING_COMPLETED
+    && lending.status !== LendingStatus.BORROWED
+    && lending.status !== LendingStatus.READER_RETURNED_BOOK
+    && lending.status !== LendingStatus.OWNER_CONFIRMED_TRANSFER;
 }
 
 onMounted(() => {
