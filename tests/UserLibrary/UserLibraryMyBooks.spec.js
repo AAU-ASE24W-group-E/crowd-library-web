@@ -3,8 +3,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import UserLibraryMyBooks from '@/components/user-library/UserLibraryMyBooks.vue';
 import BookEntry from '@/components/BookEntry.vue';
 import UserLibraryAddBook from '@/components/user-library/UserLibraryAddBook.vue';
+
 import { Snackbar } from '@/utils/snackbar.ts';
+import { SnackbarType } from '@/enums/snackbar.ts';
 import { bookService } from '@/services/BookService';
+import { useUserStore } from '@/stores/user';
 
 import BookLibraryPopup from '@/components/user-library/BookLibraryPopup.vue';
 import { createPinia, setActivePinia } from 'pinia';
@@ -25,7 +28,7 @@ const mock_books = [
     lendable: true,
     giftable: true,
     exchangeable: false,
-    status: true, // Available
+    status: "AVAILABLE", // Available
     distance: 0,
     owner: {
       id: 'Owner1',
@@ -50,7 +53,7 @@ const mock_books = [
     lendable: false,
     giftable: false,
     exchangeable: true,
-    status: false, // Unavailable
+    status: "UNAVAILABLE", // Unavailable
     distance: 0,
     owner: {
       id: 'Owner2',
@@ -75,7 +78,7 @@ const mock_books = [
     lendable: true,
     giftable: false,
     exchangeable: false,
-    status: true, // Available
+    status: "AVAILABLE", // Available
     distance: 0,
     owner: {
       id: 'Owner3',
@@ -86,12 +89,13 @@ const mock_books = [
   },
 ];
 
-const mockUserStore = {
-  setUser: vi.fn(),
-  user: { id: "user" }
-};
 vi.mock('@/stores/user', () => ({
-  useUserStore: () => mockUserStore,
+  useUserStore: () => {
+    return{
+      setUser: vi.fn(),
+      user: { id: "user" }
+    }
+  },
 }));
 
 
@@ -101,7 +105,8 @@ vi.mock('@/services/BookService', () => ({
     findBookByQuicksearch: vi.fn(() => Promise.resolve(mock_books)),
     importBookByIsbn: vi.fn(() => Promise.resolve({data: mock_books[0]})),
     findOwnBooks: vi.fn(() => Promise.resolve({data: mock_books})),
-  },
+    updateBookFlags : vi.fn(() => Promise.resolve({}))
+    },
 }));
 
 vi.mock('@/services/Snackbar', () => ({
@@ -111,6 +116,7 @@ vi.mock('@/services/Snackbar', () => ({
 describe('UserLibraryMyBooks', () => {
   let wrapper;
   let addComponent;
+  let popUpComponent;
   let pinia;
 
   const createComponent = () => {
@@ -336,4 +342,34 @@ describe('UserLibraryMyBooks', () => {
     await addComponent.vm.handleSearch();
     expect(addComponent.vm.foundBooks).toEqual([]);
   });
+
+  it('returns early if user ID is undefined', async () => {
+    useUserStore().user = null;
+
+    await wrapper.vm.handlePopUpClosed(true, mock_books[0], {});
+    expect(bookService.updateBookFlags).not.toHaveBeenCalled();
+    expect(wrapper.vm.showPopup).toBe(false);
+  });
+
+  it('updates book flags successfully when popup type is EDIT', async () => {
+    const editedFields = { lendable: false, giftable: true };
+
+    await wrapper.vm.handlePopUpClosed(true, mock_books[0], editedFields);
+    expect(wrapper.vm.showPopup).toBe(false);
+  });
+
+  it('set status false based on other flags being all false using onToggleChange', async () => {
+    const editButton = wrapper.find('.edit-button');
+    await editButton.trigger('click');
+
+    popUpComponent = wrapper.findComponent(BookLibraryPopup);
+  
+    popUpComponent.vm.editable.lendable.value = false;
+    popUpComponent.vm.editable.giftable.value = false;
+    popUpComponent.vm.editable.exchangeable.value = false;
+  
+    popUpComponent.vm.onToggleChange();
+    expect(popUpComponent.vm.editable.status.value).toBe(false);
+  });
+
 });

@@ -95,7 +95,7 @@
         <button v-if="!isWishlist && isSearchBook && false" class="btn-primary btn-gray rounded-2xl">
           Add to wishlist
         </button>
-        <button v-if="isSearchBook && book.isAvailable" @click="openPopup" class="btn-primary btn-green rounded-2xl">Send Request</button>
+        <button v-if="isSearchBook && ownBook.status == 'AVAILABLE'" @click="openPopup" class="btn-primary btn-green rounded-2xl">Send Request</button>
         <button
           v-if="isSearchBook"
           @click="handleShowOnMap"
@@ -170,6 +170,8 @@ const props = defineProps({
 
 const dropdownOpen = ref(false || props.isNewBook);
 
+console.log(props.ownBook)
+
 function toggleDropdown() {
   dropdownOpen.value = !dropdownOpen.value;
 }
@@ -179,7 +181,7 @@ function handleShowOnMap() {
 }
 
 function handleEditState() {
-  emit('handleAction', props.book, 'EDIT');
+  emit('handleAction', props.ownBook, 'EDIT');
 }
 
 function handleDelete() {
