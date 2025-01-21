@@ -15,13 +15,15 @@ import { userService } from '@/services/UserService.ts';
 import { bookService } from '@/services/BookService.ts';
 
 const props = defineProps({
-  requests: Array,
-  incoming: Boolean,
+  requests: {
+    type: Array,
+    required: true,
+  },
+  incoming: {
+    type: Boolean,
+    required: true,
+  },
 });
-
-// Example array of book requests
-const requests = ref(props.requests);
-const incoming = ref(props.incoming);
 
 let dropdownSortOpen = ref(false);
 const dropdownRef = ref(null);
@@ -36,7 +38,7 @@ const handleClickOutside = (event) => {
 
 onMounted(() => {
     document.addEventListener('click', handleClickOutside);
-    console.log("Incoming: " + incoming.value);
+    // console.log("Incoming: " + incoming.value);
 });
 
 onUnmounted(() => {

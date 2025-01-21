@@ -3,10 +3,10 @@
         <div class="flex flex-row w-full justify-between items-center max-[480px]:justify-center" />
         <Tabs>
             <Tab title="Incoming Requests" name="incomingTab">
-                <RequestList v-show="showRequestList" :requests="getIncomingRequests(username, incomingRequests)" :incoming="true" />
+                <RequestList v-show="showRequestList" :requests="incomingRequests" :incoming="true" />
             </Tab>
             <Tab title="Outgoing Requests" name="outgoingTab">
-                <RequestList v-show="showRequestList" :requests="getOutgoingRequests(username, outgoingRequests)" :incoming="false" />
+                <RequestList v-show="showRequestList" :requests="outgoingRequests" :incoming="false" />
             </Tab>
         </Tabs>
     </div>
@@ -22,11 +22,8 @@ import { lendingService } from '@/services/LendingService.ts';
 import { userService } from '@/services/UserService.ts';
 import { bookService } from '@/services/BookService.ts';
 import { useUserStore } from '@/stores/user.ts';
-const showRequestList = ref(true);
 
-const route = useRoute();
-const query = route.query.q || null;
-const username = ref("User1")
+const showRequestList = ref(true);
 const userStore = useUserStore();
 const incomingRequests = ref([]);
 const outgoingRequests = ref([]);
@@ -64,14 +61,6 @@ const fetchIncomingLendings = async ()  => {
       console.error(e);
     }
   }
-}
-
-function getIncomingRequests(user, requests) {
-    return requests.filter(request => request.to === user);
-}
-
-function getOutgoingRequests(user, requests) {
-    return requests.filter(request => request.from === user);
 }
 
 onMounted(() => {
