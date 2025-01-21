@@ -168,7 +168,7 @@ const props = defineProps({
   },
 });
 
-const dropdownOpen = ref(false || props.isNewBook);
+const dropdownOpen = ref(props.isNewBook);
 
 console.log(props.ownBook)
 
