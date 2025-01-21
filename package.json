@@ -25,7 +25,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.7.1",
     "@fortawesome/free-solid-svg-icons": "^6.7.1",
     "@fortawesome/vue-fontawesome": "^3.0.8",
-    "@stadiamaps/maplibre-search-box": "^1.1.0",
+    "@stadiamaps/maplibre-search-box": "^2.0.0",
     "@tailwindcss/forms": "^0.5.9",
     "@turf/helpers": "^7.2.0",
     "@vitest/ui": "^3.0.1",
