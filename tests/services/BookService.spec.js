@@ -139,7 +139,7 @@ describe('BookService', () => {
 
     expect(bookService.findBooks).toHaveBeenCalledTimes(2);
     expect(bookService.findBooks).toHaveBeenCalledWith(quicksearch);
-    expect(bookService.findBooks).toHaveBeenCalledWith(null, quicksearch);
+    expect(bookService.findBooks).toHaveBeenCalledWith(undefined, quicksearch);
 
     expect(response.length).toEqual(1);
   });
@@ -161,7 +161,7 @@ describe('BookService', () => {
 
     expect(bookService.findBooks).toHaveBeenCalledTimes(2);
     expect(bookService.findBooks).toHaveBeenCalledWith(quicksearch);
-    expect(bookService.findBooks).toHaveBeenCalledWith(null, quicksearch);
+    expect(bookService.findBooks).toHaveBeenCalledWith(undefined, quicksearch);
 
     expect(response).toEqual([mockBook]);
   });
@@ -178,7 +178,7 @@ describe('BookService', () => {
 
     expect(bookService.findBooks).toHaveBeenCalledTimes(2);
     expect(bookService.findBooks).toHaveBeenCalledWith(quicksearch);
-    expect(bookService.findBooks).toHaveBeenCalledWith(null, quicksearch);
+    expect(bookService.findBooks).toHaveBeenCalledWith(undefined, quicksearch);
 
     expect(response).toEqual([]);
   });
