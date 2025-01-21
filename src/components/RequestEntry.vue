@@ -39,8 +39,7 @@
     }" class="transition-all duration-300 ease-in-out w-full">
       <div
         class="flex flex-row w-full mt-2 space-x-16 max-md:space-x-6 ml-24 max-sm:space-x-0 max-sm:flex-col max-sm:space-y-4 max-sm:justify-center max-sm:ml-0">
-        <button v-if="!incoming" @click="cancelOutgoingLending" v-show="dropdownOpen" id="withdrawBtn" class="btn-primary btn-gray rounded-2xl">Cancel</button>
-<!--        <button v-if="!incoming" v-show="dropdownOpen" id="withdrawBtn" class="btn-primary btn-gray rounded-2xl">Withdraw</button>-->
+        <button v-if="!incoming" @click="cancelOutgoingLending" v-show="dropdownOpen" id="withdrawBtn" class="btn-primary btn-gray rounded-2xl">Withdraw</button>
         <button v-if="incoming" @click="declineIncomingLending" v-show="dropdownOpen" id="declineBtn" class="btn-primary btn-gray rounded-2xl">Decline</button>
         <button v-if="incoming" @click="openPopup" v-show="dropdownOpen" id="suggestMeetingBtn" class="btn-primary btn-green rounded-2xl">Suggest
           Meeting</button>

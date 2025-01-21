@@ -22,11 +22,11 @@ class LendingService {
   }
 
   async declineLendingRequest(lendingId: string) {
-    return await lendingApiService.patch(this.subdomain + `/${lendingId}?status=LENDING_DECLINED`);
+    return await lendingApiService.patch(this.subdomain + `/${lendingId}?status=OWNER_DENIED`);
   }
 
   async cancelLendingRequest(lendingId: string) {
-    return await lendingApiService.patch(this.subdomain + `/${lendingId}?status=LENDING_CANCELLED`);
+    return await lendingApiService.patch(this.subdomain + `/${lendingId}?status=READER_WITHDREW`);
   }
 
   async getLending(lendingId: string) {

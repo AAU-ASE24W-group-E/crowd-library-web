@@ -47,7 +47,7 @@ const fetchIncomingLendingRequests = async ()  => {
       console.debug(lendings);
 
       const filteredLendings = lendings.data.filter(
-        (lending) => (lending.status !== LendingStatus.LENDING_CANCELLED && lending.status !== LendingStatus.LENDING_DECLINED && lending.status !== LendingStatus.LENDING_COMPLETED)
+        (lending) => (lending.status !== LendingStatus.READER_WITHDREW && lending.status !== LendingStatus.OWNER_DENIED && lending.status !== LendingStatus.LENDING_COMPLETED)
       );
 
       incomingRequests.value = await Promise.all(
@@ -85,7 +85,7 @@ const fetchOutgoingLendingRequests = async ()  => {
       console.debug(lendings);
 
       const filteredLendings = lendings.data.filter(
-        (lending) => (lending.status !== LendingStatus.LENDING_CANCELLED && lending.status !== LendingStatus.LENDING_DECLINED && lending.status !== LendingStatus.LENDING_COMPLETED)
+        (lending) => (lending.status !== LendingStatus.READER_WITHDREW && lending.status !== LendingStatus.OWNER_DENIED && lending.status !== LendingStatus.LENDING_COMPLETED)
       );
 
       outgoingRequests.value = await Promise.all(

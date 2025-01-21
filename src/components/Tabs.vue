@@ -26,13 +26,11 @@ export default {
         // Activate the tab based on its index
         const activateTab = (index) => {
             activeTab.value = index;
-            console.log("Active: " + index);
         };
 
         // Register a tab component (called by Tab.vue)
         const registerTab = (tab) => {
             tabs.value.push(tab);
-            console.log("Registered " + tab.title);
         };
 
         return {
