@@ -6,10 +6,13 @@
               <RequestList v-show="showRequestList"
                            :requests="incomingRequests"
                            :incoming="true"
-                           @refreshRequests="fetchIncomingLendings" />
+                           @refreshIncomingRequests="fetchIncomingLendingRequests" />
             </Tab>
             <Tab title="Outgoing Requests" name="outgoingTab">
-                <RequestList v-show="showRequestList" :requests="outgoingRequests" :incoming="false" />
+              <RequestList v-show="showRequestList"
+                           :requests="outgoingRequests"
+                           :incoming="false"
+                           @refreshOutgoingRequests="fetchOutgoingLendingRequests" />
             </Tab>
         </Tabs>
     </div>
@@ -25,6 +28,8 @@ import { userService } from '@/services/UserService.ts';
 import { bookService } from '@/services/BookService.ts';
 import { useUserStore } from '@/stores/user.ts';
 import { LendingStatus } from '@/enums/lendingStatus.ts';
+import { Snackbar } from '@/utils/snackbar.ts';
+import { SnackbarType } from '@/enums/snackbar.ts';
 
 const showRequestList = ref(true);
 const userStore = useUserStore();
@@ -32,7 +37,7 @@ const incomingRequests = ref([]);
 const outgoingRequests = ref([]);
 
 // TODO add fetchOutgoingLendings, richtig die einzelnen properties ins entry einsetzen
-const fetchIncomingLendings = async ()  => {
+const fetchIncomingLendingRequests = async ()  => {
   const ownerId = userStore.user.id;
 
   if(ownerId) {
@@ -64,14 +69,53 @@ const fetchIncomingLendings = async ()  => {
       );
 
     } catch(e) {
-      // TODO proper handling
+      Snackbar.showSnackbar('There was an error fetching incomming request list, check console.', SnackbarType.ERROR);
+      console.error(e);
+    }
+  }
+}
+
+const fetchOutgoingLendingRequests = async ()  => {
+  const readerId = userStore.user.id;
+
+  if(readerId) {
+    try {
+      console.debug("Reader Id" + readerId);
+      const lendings = await lendingService.getLendingsByReaderId(readerId);
+      console.debug(lendings);
+
+      const filteredLendings = lendings.data.filter(
+        (lending) => (lending.status !== LendingStatus.LENDING_CANCELLED && lending.status !== LendingStatus.LENDING_DECLINED && lending.status !== LendingStatus.LENDING_COMPLETED)
+      );
+
+      incomingRequests.value = await Promise.all(
+        filteredLendings.map(async (lending) => {
+          const [readerData, bookData] = await Promise.all([
+            userService.getUserById(lending.ownerId),
+            bookService.getBook(lending.bookId),
+          ]);
+
+          console.log(readerData);
+          console.log(bookData);
+
+          return {
+            lending,
+            user: readerData,
+            book: bookData,
+          };
+        })
+      );
+
+    } catch(e) {
+      Snackbar.showSnackbar('There was an error fetching outgoing request list, check console.', SnackbarType.ERROR);
       console.error(e);
     }
   }
 }
 
 onMounted(() => {
-  fetchIncomingLendings();
+  fetchIncomingLendingRequests();
+  fetchOutgoingLendingRequests();
 })
 
 </script>

@@ -40,7 +40,7 @@
       <div
         class="flex flex-row w-full mt-2 space-x-16 max-md:space-x-6 ml-24 max-sm:space-x-0 max-sm:flex-col max-sm:space-y-4 max-sm:justify-center max-sm:ml-0">
         <button v-if="!incoming" v-show="dropdownOpen" id="withdrawBtn" class="btn-primary btn-gray rounded-2xl">Withdraw</button>
-        <button v-if="incoming" @click="declineLending" v-show="dropdownOpen" id="declineBtn" class="btn-primary btn-gray rounded-2xl">Decline</button>
+        <button v-if="incoming" @click="declineIncomingLending" v-show="dropdownOpen" id="declineBtn" class="btn-primary btn-gray rounded-2xl">Decline</button>
         <button v-if="incoming" @click="openPopup" v-show="dropdownOpen" id="suggestMeetingBtn" class="btn-primary btn-green rounded-2xl">Suggest
           Meeting</button>
       </div>
@@ -72,7 +72,7 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['refreshRequests']);
+const emit = defineEmits(['refreshIncomingRequests', 'refreshOutgoingRequests']);
 const lending = props.request.lending;
 const user = props.request.user.data;
 const book = props.request.book.data;
@@ -83,11 +83,11 @@ console.log(toRaw(book));*/
 
 const dropdownOpen = ref(false);
 
-const declineLending = async () => {
+const declineIncomingLending = async () => {
   try {
     await lendingService.declineLendingRequest(lending.id);
     Snackbar.showSnackbar('Lending successfully declined!', SnackbarType.SUCCESS);
-    emit('refreshRequests');
+    emit('refreshIncomingRequests');
   } catch (error) {
     console.error("Error declining request: ", error);
     Snackbar.showSnackbar('There was an error declining lending request. Check console', SnackbarType.ERROR);

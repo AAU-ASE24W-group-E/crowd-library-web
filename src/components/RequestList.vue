@@ -5,7 +5,9 @@
                         :key="index"
                         :incoming="incoming"
                         :request="request"
-                        @refreshRequests="refreshRequests" />
+                        @refreshIcomingRequests="refreshIncomingRequests"
+                        @refreshOutgoingRequests="refreshOutgoingRequests"
+          />
         </div>
     </div>
 </template>
@@ -28,10 +30,14 @@ const props = defineProps({
 let dropdownSortOpen = ref(false);
 const dropdownRef = ref(null);
 
-const emit = defineEmits(['refreshRequests']);
+const emit = defineEmits(['refreshIncomingRequests', 'refreshOutgoingRequests']);
 
-const refreshRequests = () => {
-  emit('refreshRequests');
+const refreshIncomingRequests = () => {
+  emit('refreshIncomingRequests');
+}
+
+const refreshOutgoingRequests = () => {
+  emit('refreshOutgoingRequests');
 };
 
 const handleClickOutside = (event) => {
