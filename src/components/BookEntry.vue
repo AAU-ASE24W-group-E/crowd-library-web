@@ -95,7 +95,7 @@
         <button v-if="!isWishlist && isSearchBook && false" class="btn-primary btn-gray rounded-2xl">
           Add to wishlist
         </button>
-        <button v-if="isSearchBook && book.isAvailable" @click="openPopup" class="btn-primary btn-green rounded-2xl">Send Request</button>
+        <button v-if="isSearchBook && ownBook.status == 'AVAILABLE'" @click="openPopup" class="btn-primary btn-green rounded-2xl">Send Request</button>
         <button
           v-if="isSearchBook"
           @click="handleShowOnMap"
