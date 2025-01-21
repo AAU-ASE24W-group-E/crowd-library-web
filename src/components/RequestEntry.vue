@@ -24,6 +24,7 @@
           <div class="flex flex-col">
 <!--            TODO wohin damit?-->
             <span class="tw-book-entry-info-title">Due date: <span class="tw-book-entry-info-value">{{ request.due_date }}</span></span>
+<!--            <span class="tw-book-entry-info-title">Lending status: <span class="tw-book-entry-info-value">{{ lending.status }}</span></span>-->
           </div>
         </div>
       </div>

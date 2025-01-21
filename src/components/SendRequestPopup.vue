@@ -71,6 +71,9 @@ const requestBook = async () => {
       case 'InvalidOwnerReaderException':
         Snackbar.showSnackbar('Owner cannot create lending request for their own book', SnackbarType.ERROR);
         break;
+      case 'LendingRequestExistsException':
+        Snackbar.showSnackbar('A lending request of this book already exists. Close or finish your old one', SnackbarType.ERROR);
+        break;
       default:
         console.error("Error creating lending request", e);
         Snackbar.showSnackbar('Unexpected error while creating lending request. Check console.', SnackbarType.ERROR);
