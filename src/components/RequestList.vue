@@ -5,7 +5,7 @@
                         :key="index"
                         :incoming="incoming"
                         :request="request"
-                        @refreshIcomingRequests="refreshIncomingRequests"
+                        @refreshIncomingRequests="refreshIncomingRequests"
                         @refreshOutgoingRequests="refreshOutgoingRequests"
           />
         </div>
@@ -34,7 +34,7 @@ const emit = defineEmits(['refreshIncomingRequests', 'refreshOutgoingRequests'])
 
 const refreshIncomingRequests = () => {
   emit('refreshIncomingRequests');
-}
+};
 
 const refreshOutgoingRequests = () => {
   emit('refreshOutgoingRequests');
