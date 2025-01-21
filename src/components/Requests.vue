@@ -3,7 +3,10 @@
         <div class="flex flex-row w-full justify-between items-center max-[480px]:justify-center" />
         <Tabs>
             <Tab title="Incoming Requests" name="incomingTab">
-                <RequestList v-show="showRequestList" :requests="incomingRequests" :incoming="true" />
+              <RequestList v-show="showRequestList"
+                           :requests="incomingRequests"
+                           :incoming="true"
+                           @refreshRequests="fetchIncomingLendings" />
             </Tab>
             <Tab title="Outgoing Requests" name="outgoingTab">
                 <RequestList v-show="showRequestList" :requests="outgoingRequests" :incoming="false" />
@@ -14,7 +17,6 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
 import RequestList from './RequestList.vue';
 import Tabs from './Tabs.vue';
 import Tab from './Tab.vue';

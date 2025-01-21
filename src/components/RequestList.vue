@@ -1,7 +1,11 @@
 <template>
     <div class="tw-component-container px-0 w-full" ref="dropdownRef">
         <div class="space-y-6 w-full mt-4">
-            <RequestEntry v-for="(request, index) in requests" :key="index" :request="request" :incoming="incoming"/>
+          <RequestEntry v-for="(request, index) in requests"
+                        :key="index"
+                        :incoming="incoming"
+                        :request="request"
+                        @refreshRequests="refreshRequests" />
         </div>
     </div>
 </template>
@@ -23,6 +27,12 @@ const props = defineProps({
 
 let dropdownSortOpen = ref(false);
 const dropdownRef = ref(null);
+
+const emit = defineEmits(['refreshRequests']);
+
+const refreshRequests = () => {
+  emit('refreshRequests');
+};
 
 const handleClickOutside = (event) => {
     if (dropdownSortOpen.value && dropdownRef.value && !dropdownRef.value.contains(event.target)) {

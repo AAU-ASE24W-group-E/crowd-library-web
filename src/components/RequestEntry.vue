@@ -72,6 +72,7 @@ const props = defineProps({
   }
 });
 
+const emit = defineEmits(['refreshRequests']);
 const lending = props.request.lending;
 const user = props.request.user.data;
 const book = props.request.book.data;
@@ -86,6 +87,7 @@ const declineLending = async () => {
   try {
     await lendingService.declineLendingRequest(lending.id);
     Snackbar.showSnackbar('Lending successfully declined!', SnackbarType.SUCCESS);
+    emit('refreshRequests');
   } catch (error) {
     console.error("Error declining request: ", error);
     Snackbar.showSnackbar('There was an error declining lending request. Check console', SnackbarType.ERROR);
