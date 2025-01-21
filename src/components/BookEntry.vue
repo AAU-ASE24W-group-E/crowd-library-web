@@ -95,7 +95,7 @@
         <button v-if="!isWishlist && isSearchBook && false" class="btn-primary btn-gray rounded-2xl">
           Add to wishlist
         </button>
-        <button v-if="isSearchBook && book.isAvailable && book.ownerId !== userStore.user.id" @click="openPopup" class="btn-primary btn-green rounded-2xl">Send Request</button>
+        <button v-if="isSearchBook && ownBook.status === 'AVAILABLE' && props.ownBook.owner.id !== userStore.user.id" @click="openPopup" class="btn-primary btn-green rounded-2xl">Send Request</button>
         <button
           v-if="isSearchBook"
           @click="handleShowOnMap"
@@ -127,16 +127,17 @@
       </div>
     </div>
   </div>
-  <SendRequestPopup ref="requestPopup" :book="book"/>
+  <SendRequestPopup ref="requestPopup" :book="ownBook"/>
 </template>
 
 <script setup>
-import { defineProps, ref } from 'vue';
+import { defineProps, onMounted, ref } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import config from '@/config.json';
 import SendRequestPopup from './SendRequestPopup.vue';
 import { useUserStore } from '@/stores/user.ts';
+import { userService } from '@/services/UserService.ts';
 
 const emit = defineEmits(['showOnMapClicked', 'handleAction', 'handleAdd']);
 
@@ -196,4 +197,22 @@ function handleAdd() {
 const openPopup = () => {
   requestPopup.value.show();
 };
+
+const fetchOwnerDetails = async () => {
+  if (props.ownBook && props.ownBook.owner.id) {
+    try {
+      const ownerDetails = await userService.getUserById(props.ownBook.owner.id);
+      console.debug("Fetched owner: ", ownerDetails.data.username);
+      props.ownBook.owner = { ...props.ownBook.owner, username: ownerDetails.data.username };
+    } catch (error) {
+      console.error('Error fetching owner details:', error);
+    }
+  }
+};
+
+onMounted(() => {
+  if(props.isSearchBook){
+    fetchOwnerDetails();
+  }
+});
 </script>
