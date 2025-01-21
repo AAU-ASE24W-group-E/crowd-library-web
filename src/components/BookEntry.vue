@@ -170,6 +170,8 @@ const props = defineProps({
 
 const dropdownOpen = ref(false || props.isNewBook);
 
+console.log(props.ownBook)
+
 function toggleDropdown() {
   dropdownOpen.value = !dropdownOpen.value;
 }

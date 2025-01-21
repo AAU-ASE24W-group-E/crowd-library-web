@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import UserLibraryMyBooks from '@/components/user-library/UserLibraryMyBooks.vue';
 import BookEntry from '@/components/BookEntry.vue';
 import UserLibraryAddBook from '@/components/user-library/UserLibraryAddBook.vue';
+
 import { Snackbar } from '@/utils/snackbar.ts';
 import { SnackbarType } from '@/enums/snackbar.ts';
 import { bookService } from '@/services/BookService';
@@ -115,6 +116,7 @@ vi.mock('@/services/Snackbar', () => ({
 describe('UserLibraryMyBooks', () => {
   let wrapper;
   let addComponent;
+  let popUpComponent;
   let pinia;
 
   const createComponent = () => {
@@ -354,6 +356,20 @@ describe('UserLibraryMyBooks', () => {
 
     await wrapper.vm.handlePopUpClosed(true, mock_books[0], editedFields);
     expect(wrapper.vm.showPopup).toBe(false);
+  });
+
+  it('set status false based on other flags being all false using onToggleChange', async () => {
+    const editButton = wrapper.find('.edit-button');
+    await editButton.trigger('click');
+
+    popUpComponent = wrapper.findComponent(BookLibraryPopup);
+  
+    popUpComponent.vm.editable.lendable.value = false;
+    popUpComponent.vm.editable.giftable.value = false;
+    popUpComponent.vm.editable.exchangeable.value = false;
+  
+    popUpComponent.vm.onToggleChange();
+    expect(popUpComponent.vm.editable.status.value).toBe(false);
   });
 
 });

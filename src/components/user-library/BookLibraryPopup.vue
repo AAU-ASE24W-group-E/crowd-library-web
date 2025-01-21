@@ -30,6 +30,8 @@
                 checkedBg="#6584ad"
                 uncheckedBg="grey"
                 class="flag-toggle text-center"
+                :id="'toggle_' + key"
+                @click="onToggleChange"
                 :disabled="!editable.status.value"
               />
             </div>
@@ -108,9 +110,17 @@ export default {
       this.$emit('close', false);
     },
     okButtonClicked() {
-      console.log(this.editable)
       this.$emit('close', true, this.popupBook, this.editable);
     },
+
+    onToggleChange(){
+      let all_flags_false = true;
+      for(let key of Object.keys(this.editable)){
+        if(key == "status") continue;
+        if(this.editable[key].value == true) all_flags_false = false;
+      }
+      if(all_flags_false) this.editable.status.value = false;
+    }
   },
 };
 </script>
