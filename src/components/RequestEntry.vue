@@ -40,12 +40,15 @@
         class="flex flex-row w-full mt-2 space-x-16 max-md:space-x-6 ml-24 max-sm:space-x-0 max-sm:flex-col max-sm:space-y-4 max-sm:justify-center max-sm:ml-0">
         <button v-if="!incoming" @click="cancelOutgoingLending" v-show="dropdownOpen" id="withdrawBtn" class="btn-primary btn-gray rounded-2xl">Withdraw</button>
         <button v-if="incoming" @click="declineIncomingLending" v-show="dropdownOpen" id="declineBtn" class="btn-primary btn-gray rounded-2xl">Decline</button>
-        <button v-if="incoming" @click="openPopup" v-show="dropdownOpen" id="suggestMeetingBtn" class="btn-primary btn-green rounded-2xl">Suggest
-          Meeting</button>
+        <button v-if="incoming && lending.status === LendingStatus.READER_CREATED_REQUEST" @click="openPopup" v-show="dropdownOpen" id="suggestMeetingBtn" class="btn-primary btn-green rounded-2xl">Suggest Meeting</button>
       </div>
     </div>
   </div>
-  <MeetingPopup ref="meetingPopup" :request="request"/>
+  <MeetingPopup ref="meetingPopup"
+                :request="request"
+                @refreshIncomingRequests="$emit('refreshIncomingRequests')"
+                @refreshOutgoingRequests="$emit('refreshOutgoingRequests')"
+  />
 </template>
 
 <script setup>
@@ -57,6 +60,7 @@ import config from '@/config.json';
 import { lendingService } from '@/services/LendingService.ts';
 import { Snackbar } from '@/utils/snackbar.ts';
 import { SnackbarType } from '@/enums/snackbar.ts';
+import { LendingStatus } from '@/enums/lendingStatus.ts';
 
 const meetingPopup = ref(null);
 
@@ -70,6 +74,7 @@ const props = defineProps({
     required: true,
   }
 });
+
 
 const emit = defineEmits(['refreshIncomingRequests', 'refreshOutgoingRequests']);
 const lending = props.request.lending;

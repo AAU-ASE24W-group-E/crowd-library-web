@@ -98,6 +98,7 @@ const props = defineProps({
     required: true,
   },
 });
+const emit = defineEmits(['refreshIncomingRequests', 'refreshOutgoingRequests']);
 
 const initializeDates = () => {
   const today = new Date().toISOString().split('T')[0];
@@ -138,6 +139,7 @@ const show = () => {
 };
 
 const hide = () => {
+  meetingForm.location = '';
   isVisible.value = false;
 };
 
@@ -158,6 +160,8 @@ const sendMeetingRequest = async () => {
     await lendingService.createLendingMeeting(props.request.lending.id, payload);
 
     Snackbar.showSnackbar('Successfully proposed meeting!', SnackbarType.SUCCESS);
+    emit('refreshIncomingRequests');
+    emit('refreshOutgoingRequests');
     hide();
   } catch (e) {
     const type = e.response?.data?.type;
@@ -173,9 +177,6 @@ const sendMeetingRequest = async () => {
   } finally {
     isLoading.value = false;
   }
-
-
-  console.log('Meeting Request Submitted:', meetingForm);
 };
 
 defineExpose({

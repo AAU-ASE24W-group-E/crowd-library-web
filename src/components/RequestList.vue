@@ -50,7 +50,6 @@ const handleClickOutside = (event) => {
 
 onMounted(() => {
     document.addEventListener('click', handleClickOutside);
-    // console.log("Incoming: " + incoming.value);
 });
 
 onUnmounted(() => {
