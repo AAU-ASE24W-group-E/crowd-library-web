@@ -9,10 +9,6 @@
 <script setup>
 import RequestEntry from '@/components/RequestEntry.vue';
 import { defineProps, onMounted, onUnmounted, ref } from 'vue';
-import { useUserStore } from '@/stores/user.ts';
-import { lendingService } from '@/services/LendingService.ts';
-import { userService } from '@/services/UserService.ts';
-import { bookService } from '@/services/BookService.ts';
 
 const props = defineProps({
   requests: {

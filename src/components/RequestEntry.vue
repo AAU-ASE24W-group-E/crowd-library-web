@@ -24,7 +24,7 @@
           <div class="flex flex-col">
 <!--            TODO wohin damit?-->
             <span class="tw-book-entry-info-title">Due date: <span class="tw-book-entry-info-value">{{ request.due_date }}</span></span>
-<!--            <span class="tw-book-entry-info-title">Lending status: <span class="tw-book-entry-info-value">{{ lending.status }}</span></span>-->
+            <span class="tw-book-entry-info-title">Lending status: <span class="tw-book-entry-info-value">{{ lending.status }}</span></span>
           </div>
         </div>
       </div>
@@ -40,7 +40,7 @@
       <div
         class="flex flex-row w-full mt-2 space-x-16 max-md:space-x-6 ml-24 max-sm:space-x-0 max-sm:flex-col max-sm:space-y-4 max-sm:justify-center max-sm:ml-0">
         <button v-if="!incoming" v-show="dropdownOpen" id="withdrawBtn" class="btn-primary btn-gray rounded-2xl">Withdraw</button>
-        <button v-if="incoming" v-show="dropdownOpen" id="declineBtn" class="btn-primary btn-gray rounded-2xl">Decline</button>
+        <button v-if="incoming" @click="declineLending" v-show="dropdownOpen" id="declineBtn" class="btn-primary btn-gray rounded-2xl">Decline</button>
         <button v-if="incoming" @click="openPopup" v-show="dropdownOpen" id="suggestMeetingBtn" class="btn-primary btn-green rounded-2xl">Suggest
           Meeting</button>
       </div>
@@ -55,6 +55,9 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import MeetingPopup from './MeetingPopup.vue';
 import config from '@/config.json';
+import { lendingService } from '@/services/LendingService.ts';
+import { Snackbar } from '@/utils/snackbar.ts';
+import { SnackbarType } from '@/enums/snackbar.ts';
 
 const meetingPopup = ref(null);
 
@@ -78,6 +81,16 @@ console.log(toRaw(user));
 console.log(toRaw(book));*/
 
 const dropdownOpen = ref(false);
+
+const declineLending = async () => {
+  try {
+    await lendingService.declineLendingRequest(lending.id);
+    Snackbar.showSnackbar('Lending successfully declined!', SnackbarType.SUCCESS);
+  } catch (error) {
+    console.error("Error declining request: ", error);
+    Snackbar.showSnackbar('There was an error declining lending request. Check console', SnackbarType.ERROR);
+  }
+}
 
 function toggleDropdown() {
   dropdownOpen.value = !dropdownOpen.value;
