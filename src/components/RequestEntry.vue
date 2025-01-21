@@ -18,12 +18,11 @@
           </div>
           <div class="flex flex-col">
             <span class="tw-book-entry-info-title">ISBN: <span class="tw-book-entry-info-value">{{ book.isbn }}</span></span>
-            <span class="tw-book-entry-info-title">Date: <span class="tw-book-entry-info-value">{{ lending.lendingMeeting?.meetingTime || 'No meeting' }}</span></span>
+            <span class="tw-book-entry-info-title">Meeting Date: <span class="tw-book-entry-info-value">{{ lending.lendingMeeting?.meetingTime ? formatDate(lending.lendingMeeting.meetingTime) : 'No meeting' }}</span></span>
             <span class="tw-book-entry-info-title">Location: <span class="tw-book-entry-info-value">{{ lending.lendingMeeting?.meetingLocation || 'No meeting' }}</span></span>
           </div>
           <div class="flex flex-col">
-<!--            TODO wohin damit?-->
-            <span class="tw-book-entry-info-title">Due date: <span class="tw-book-entry-info-value">{{ request.due_date }}</span></span>
+            <span class="tw-book-entry-info-title">Due date: <span class="tw-book-entry-info-value">{{ lending.lendingMeeting?.deadline ? formatDate(lending.lendingMeeting.deadline) : 'No deadline set' }}</span></span>
             <span class="tw-book-entry-info-title">Lending status: <span class="tw-book-entry-info-value">{{ lending.status }}</span></span>
           </div>
         </div>
@@ -76,12 +75,17 @@ const emit = defineEmits(['refreshIncomingRequests', 'refreshOutgoingRequests'])
 const lending = props.request.lending;
 const user = props.request.user.data;
 const book = props.request.book.data;
+const dropdownOpen = ref(false);
 
 /*console.log(toRaw(lending));
 console.log(toRaw(user));
 console.log(toRaw(book));*/
 
-const dropdownOpen = ref(false);
+const formatDate = (isoDate) => {
+  if (!isoDate) return 'No date available';
+  const date = new Date(isoDate);
+  return new Intl.DateTimeFormat('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(date);
+};
 
 const declineIncomingLending = async () => {
   try {
