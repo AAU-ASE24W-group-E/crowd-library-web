@@ -31,17 +31,20 @@
             <span class="tw-book-entry-info-title"
               >ISBN: <span class="tw-book-entry-info-value">{{ book.isbn }}</span></span
             >
-            <span v-if="isSearchBook" class="tw-book-entry-info-title"
+            <span v-if="isSearchBook || deadline != null" class="tw-book-entry-info-title"
               >Owner: <span class="tw-book-entry-info-value">{{ ownBook.owner.name }}</span></span
             >
-            <span v-if="!isNewBook" class="tw-book-entry-info-title"
+            <span v-if="deadline != null" class="tw-book-entry-info-title font-semibold"
+              >Deadline: <span class="tw-book-entry-info-value">{{ deadline }}</span></span
+            >
+            <span v-if="!isNewBook && deadline == null" class="tw-book-entry-info-title"
               >Status:
               <span :class="{ 'text-green-500': ownBook.status == 'AVAILABLE', 'text-red-500': ownBook.status == 'UNAVAILABLE' }">
                 {{ ownBook.status }}</span
               ></span
             >
           </div>
-          <div v-if="!isNewBook && ownBook.status" class="flex flex-col">
+          <div v-if="!isNewBook && ownBook.status && deadline == null" class="flex flex-col">
             <span class="tw-book-entry-info-title"
               >Lendable:
               <span
@@ -104,6 +107,13 @@
           Show on Map
         </button>
         <button
+          v-if="deadline != null"
+          @click="handleShowReturnBook"
+          class="btn-primary btn-green rounded-2xl"
+        >
+          Return Book
+        </button>
+        <button
           v-if="isMyBook"
           @click="handleEditState"
           class="edit-button btn-primary btn-green rounded-2xl"
@@ -137,7 +147,7 @@ import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import config from '@/config.json';
 import SendRequestPopup from './SendRequestPopup.vue';
 
-const emit = defineEmits(['showOnMapClicked', 'handleAction', 'handleAdd']);
+const emit = defineEmits(['showOnMapClicked', 'handleAction', 'handleAdd', 'handleReturnBook']);
 
 const requestPopup = ref(null);
 
@@ -166,11 +176,13 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  deadline: {
+    type: String,
+    default: null,
+  },
 });
 
 const dropdownOpen = ref(props.isNewBook);
-
-console.log(props.ownBook)
 
 function toggleDropdown() {
   dropdownOpen.value = !dropdownOpen.value;
@@ -190,6 +202,10 @@ function handleDelete() {
 
 function handleAdd() {
   emit('handleAdd', props.book);
+}
+
+function handleReturnBook(){
+  emit("handleReturnBook", props.deadline, props.ownBook)
 }
 
 // Function to open the popup

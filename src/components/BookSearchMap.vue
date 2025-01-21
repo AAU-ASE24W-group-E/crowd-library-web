@@ -208,7 +208,7 @@ export default {
       let feature = getBookFeatureByIsbn(book.ISBN)
       if(!feature) return
       map.flyTo({
-        center: [book.owner.longitude - 0.0025, book.owner.latitude], 
+        center: [book.owner.longitude - 0.0032, book.owner.latitude], 
         zoom: 17,
         speed: 4,
         curve: 1.5

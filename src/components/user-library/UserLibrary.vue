@@ -22,7 +22,7 @@
       <UserLibraryMyBooks />
     </div>
     <div v-show="activeTab === 'borrowedBooksTab'">
-      <!-- BorrowedBooks COmponent TODO -->
+      <UserLibraryBorrowedBooks/>
     </div>
   </div>
 </template>
@@ -30,6 +30,7 @@
 <script setup>
 import { ref } from 'vue';
 import UserLibraryMyBooks from '@/components/user-library/UserLibraryMyBooks.vue';
+import UserLibraryBorrowedBooks from '@/components/user-library/UserLibraryBorrowedBooks.vue';
 
 const activeTab = ref('myBooksTab');
 
