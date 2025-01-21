@@ -2,31 +2,28 @@
   <div @click="toggleDropdown"
     class="tw-component-container w-full bg-white dark:bg-dark-mode-inside shadow-md rounded-lg border border-gray-200 dark:border-gray-600 transition duration-500 ease-in-out hover:scale-101 animate-fade-in relative cursor-pointer">
     <div class="flex flex-row w-full">
-      <img src="../assets/logo_simple.png" alt="logo" class="object-contain decoration-0 mr-3 max-[480px]:hidden" />
+      <img
+        :src="`${config.OPENLIBRARY_COVER_URL}${book.coverId}.jpg`"
+        alt="Cover"
+        class="object-contain decoration-0 mr-3 w-[80px] max-sm:hidden"
+      />
       <div class="flex flex-col flex-grow">
-        <span class="text-xl font-semibold dark:text-title-dark-mode-text">Request for {{ request.for }} (by {{
-          request.from
-        }}): {{ request.book.title }}</span>
+        <span class="text-xl font-semibold dark:text-title-dark-mode-text">Request by {{user.username}}: {{ book.title }}</span>
         <div class="flex flex-row max-sm:flex-col max-sm:mt-2 sm:space-x-8 max-sm:space-y-2">
           <div class="flex flex-col">
-            <span class="tw-book-entry-info-title">Publisher: <span class="tw-book-entry-info-value">{{
-              request.book.publisher }}</span></span>
-            <span class="tw-book-entry-info-title">Format: <span class="tw-book-entry-info-value">{{ request.book.format
-                }}</span></span>
-            <span class="tw-book-entry-info-title">Language: <span class="tw-book-entry-info-value">{{
-              request.book.language }}</span></span>
+            <span class="tw-book-entry-info-title">Publisher: <span class="tw-book-entry-info-value">{{ book.publisher }}</span></span>
+            <span class="tw-book-entry-info-title">Format: <span class="tw-book-entry-info-value">{{ book.format }}</span></span>
+            <span class="tw-book-entry-info-title">Language: <span class="tw-book-entry-info-value">
+                {{ book.languages && book.languages.length > 0 ? `${book.languages[0].toUpperCase()}` : 'No language found' }}</span></span>
           </div>
           <div class="flex flex-col">
-            <span class="tw-book-entry-info-title">ISBN: <span class="tw-book-entry-info-value">{{ request.book.ISBN
-                }}</span></span>
-            <span class="tw-book-entry-info-title">Date: <span class="tw-book-entry-info-value">{{ request.date
-                }}</span></span>
-            <span class="tw-book-entry-info-title">Place: <span class="tw-book-entry-info-value">{{ request.place
-                }}</span></span>
+            <span class="tw-book-entry-info-title">ISBN: <span class="tw-book-entry-info-value">{{ book.isbn }}</span></span>
+            <span class="tw-book-entry-info-title">Date: <span class="tw-book-entry-info-value">{{ lending.lendingMeeting?.meetingTime || 'No meeting' }}</span></span>
+            <span class="tw-book-entry-info-title">Location: <span class="tw-book-entry-info-value">{{ lending.lendingMeeting?.meetingLocation || 'No meeting' }}</span></span>
           </div>
           <div class="flex flex-col">
-            <span class="tw-book-entry-info-title">Due date: <span class="tw-book-entry-info-value">{{ request.due_date
-                }}</span></span>
+<!--            TODO wohin damit?-->
+            <span class="tw-book-entry-info-title">Due date: <span class="tw-book-entry-info-value">{{ request.due_date }}</span></span>
           </div>
         </div>
       </div>
@@ -52,10 +49,11 @@
 </template>
 
 <script setup>
-import { defineProps, ref } from 'vue';
+import { defineProps, ref, toRaw } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import MeetingPopup from './MeetingPopup.vue';
+import config from '@/config.json';
 
 const meetingPopup = ref(null);
 
@@ -70,6 +68,14 @@ const props = defineProps({
   }
 });
 
+const lending = props.request.lending;
+const user = props.request.user.data;
+const book = props.request.book.data;
+
+/*console.log(toRaw(lending));
+console.log(toRaw(user));
+console.log(toRaw(book));*/
+
 const dropdownOpen = ref(false);
 
 function toggleDropdown() {
@@ -79,6 +85,5 @@ function toggleDropdown() {
 // Function to open the popup
 const openPopup = () => {
   meetingPopup.value.show();
-  console.log("Open Popup called");
 };
 </script>
