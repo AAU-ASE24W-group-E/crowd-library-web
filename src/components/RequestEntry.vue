@@ -41,6 +41,7 @@
         <button v-if="!incoming" @click="cancelOutgoingLending" v-show="dropdownOpen" id="withdrawBtn" class="btn-primary btn-gray rounded-2xl">Withdraw</button>
         <button v-if="incoming" @click="declineIncomingLending" v-show="dropdownOpen" id="declineBtn" class="btn-primary btn-gray rounded-2xl">Decline</button>
         <button v-if="incoming && lending.status === LendingStatus.READER_CREATED_REQUEST" @click="openPopup" v-show="dropdownOpen" id="suggestMeetingBtn" class="btn-primary btn-green rounded-2xl">Suggest Meeting</button>
+        <button v-if="!incoming && lending.status === LendingStatus.OWNER_SUGGESTED_MEETING" @click="confirmMeeting" v-show="dropdownOpen" id="suggestMeetingBtn" class="btn-primary btn-green rounded-2xl">Confirm Meeting</button>
       </div>
     </div>
   </div>
@@ -111,6 +112,18 @@ const cancelOutgoingLending = async () => {
   } catch (error) {
     console.error("Error cancelling request: ", error);
     Snackbar.showSnackbar('There was an error cancelling lending request. Check console', SnackbarType.ERROR);
+  }
+}
+
+const confirmMeeting = async () => {
+  try {
+    await lendingService.updateLendingStatus(lending.id, LendingStatus.READER_ACCEPTED_MEETING);
+    Snackbar.showSnackbar('Lending successfully accepted!', SnackbarType.SUCCESS);
+    emit('refreshOutgoingRequests');
+    emit('refreshIncomingRequests');
+  } catch (error) {
+    console.error("Error accepting meeting: ", error);
+    Snackbar.showSnackbar('There was an error accepting meeting. Check console', SnackbarType.ERROR);
   }
 }
 
