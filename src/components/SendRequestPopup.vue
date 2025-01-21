@@ -5,7 +5,7 @@
             <div class="popup-content" @click.stop>
                 <button @click="hide" class="popup-close-btn" id="closeBtn">X</button>
               <div class="flex items-center flex-col space-y-3">
-                <h1 class="popup-title">Send a Request to {{ book.owner }}</h1>
+                <h1 class="popup-title">Send a request to {{ book.owner.username || 'the owner' }}?</h1>
                 <span class="dark:text-dark-mode-text">Are you sure that you want to send a request to get this book?</span>
               </div>
 <!--                <div class="input-field mt-4">
@@ -45,34 +45,36 @@ const props = defineProps({
     }
 });
 
-// Function to show the popup
 const show = () => {
     isVisible.value = true;
-    console.log("Popup show called");
-  console.log(props.book);
 };
 
-// Function to hide the popup
 const hide = () => {
     isVisible.value = false;
 };
 
-// TODO owner not defined
-const requestBook = () => {
-  // TODO
+// TODO prevent that same person can create same lending request again
+const requestBook = async () => {
   try {
     const payload = {
-      bookId: props.book.id,
+      bookId: props.book.book.id,
       readerId: userStore.user.id,
-      ownerId: props.book.ownerId,
-      lendingStatus: LendingStatus.READER_CREATED_REQUEST
+      ownerId: props.book.owner.id,
+      status: LendingStatus.READER_CREATED_REQUEST
     }
     console.debug("Trying to create lending request with following payload: ", payload);
-    lendingService.createLending(payload);
+    await lendingService.createLending(payload);
     Snackbar.showSnackbar('Lending Request successfully created!', SnackbarType.SUCCESS);
   } catch(e) {
-    console.error("Error creating lending request", e);
-    Snackbar.showSnackbar('Unexpected error while creating lending request. Check console.', SnackbarType.ERROR);
+    const type = e.response?.data?.type;
+    switch (type) {
+      case 'InvalidOwnerReaderException':
+        Snackbar.showSnackbar('Owner cannot create lending request for their own book', SnackbarType.ERROR);
+        break;
+      default:
+        console.error("Error creating lending request", e);
+        Snackbar.showSnackbar('Unexpected error while creating lending request. Check console.', SnackbarType.ERROR);
+    }
   }
 
   hide();
