@@ -372,4 +372,32 @@ describe('UserLibraryMyBooks', () => {
     expect(popUpComponent.vm.editable.status.value).toBe(false);
   });
 
+  it('if status is set false other flags are set false', async () => {
+    const editButton = wrapper.find('.edit-button');
+    await editButton.trigger('click');
+
+    popUpComponent = wrapper.findComponent(BookLibraryPopup);
+  
+    popUpComponent.vm.editable.status.value = false;
+  
+    popUpComponent.vm.onAvailableChanged();
+    expect(popUpComponent.vm.editable.giftable.value).toBe(false);
+    expect(popUpComponent.vm.editable.lendable.value).toBe(false);
+    expect(popUpComponent.vm.editable.exchangeable.value).toBe(false);
+  });
+
+  it('if status is set false other flags are set false', async () => {
+    const editButton = wrapper.find('.edit-button');
+    await editButton.trigger('click');
+
+    popUpComponent = wrapper.findComponent(BookLibraryPopup);
+  
+    popUpComponent.vm.editable.status.value = true;
+  
+    popUpComponent.vm.onAvailableChanged();
+    expect(popUpComponent.vm.editable.giftable.value).toBe(true);
+    expect(popUpComponent.vm.editable.lendable.value).toBe(true);
+    expect(popUpComponent.vm.editable.exchangeable.value).toBe(true);
+  });
+
 });
