@@ -1,13 +1,7 @@
 import { mount } from '@vue/test-utils';
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import BookSearchList from '@/components/BookSearchList.vue';
-import Snackbar from '@/utils/snackbar.ts';
-import { SnackbarType } from '@/enums/snackbar.ts';
-import { bookService } from '@/services/BookService';
-import { useUserStore } from '@/stores/user';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createRouter, createWebHistory } from 'vue-router';
 import BookSearch from '@/components/BookSearch.vue';
-import maplibregl from 'maplibre-gl';
 
 vi.mock('maplibre-gl', () => {
     const Map = vi.fn().mockImplementation(() => ({
@@ -34,23 +28,23 @@ vi.mock('maplibre-gl', () => {
         style: { cursor: '' },
       })),
     }));
-  
+
     const Popup = vi.fn(() => ({
       setLngLat: vi.fn().mockReturnThis(),
       setHTML: vi.fn().mockReturnThis(),
       addTo: vi.fn(),
       remove: vi.fn(),
     }));
-  
+
     const NavigationControl = vi.fn();
     const GeolocateControl = vi.fn();
-  
+
     return {
       default: { Map, Popup, NavigationControl, GeolocateControl },
     };
   });
 
-  
+
 vi.mock('@/services/BookService', () => ({
   bookService: {
     getAvailableBooks: vi.fn(() => Promise.resolve({

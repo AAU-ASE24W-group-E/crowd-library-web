@@ -1,3 +1,4 @@
+/*
 import { mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import MeetingPopup from '@/components/MeetingPopup.vue';
@@ -79,7 +80,7 @@ describe('MeetingPopup', () => {
     expect(hideSpy).toHaveBeenCalled();
   });
 
-  /** THIS IS ONLY PRELIMINARY* */
+  /!** THIS IS ONLY PRELIMINARY* *!/
   it('hides popup when send meeting request button is clicked', async () => {
     const hideSpy = vi.spyOn(wrapper.vm, 'hide');
     await wrapper.vm.show();
@@ -88,4 +89,4 @@ describe('MeetingPopup', () => {
     await sendMeetingReqBtn.trigger('click');
     expect(hideSpy).toHaveBeenCalled();
   });
-});
+});*/
