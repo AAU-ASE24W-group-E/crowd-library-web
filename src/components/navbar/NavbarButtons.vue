@@ -3,13 +3,13 @@
     class="flex items-center flex-row justify-between space-x-6 max-lg:space-x-5 max-sm:space-x-6"
     ref="dropdownRef"
   >
-    <div v-if="loggedIn" class="tw-navbar-dropdown-container">
+    <div v-if="loggedIn" class="tw-navbar-dropdown-container max-sm:hidden">
       <router-link to="/my-books" class="navbar-button-container btn-primary">
         <font-awesome-icon class="tw-icon text-3xl max-sm:text-2xl" :icon="faBook" />
       </router-link>
     </div>
 
-    <div v-if="loggedIn" class="tw-navbar-dropdown-container">
+    <div v-if="loggedIn" class="tw-navbar-dropdown-container max-sm:hidden">
       <router-link to="/my-requests" class="navbar-button-container btn-primary">
         <font-awesome-icon class="tw-icon text-3xl max-sm:text-2xl" :icon="faMessage" />
       </router-link>
@@ -153,9 +153,22 @@
 
           <div class="tw-dropdown-separator"></div>
 
-          <router-link to="/wishlist" class="tw-dropdown-inner-action-layout">
-            <font-awesome-icon class="tw-navbar-dropdown-icon" :icon="faHeart"></font-awesome-icon>
-            My Wishlist
+          <router-link to="/my-books" class="tw-dropdown-inner-action-layout">
+            <font-awesome-icon
+              class="tw-navbar-dropdown-icon"
+              :icon="faBook"
+            ></font-awesome-icon>
+            My Books
+          </router-link>
+
+          <div class="tw-dropdown-separator"></div>
+
+          <router-link to="/my-requests" class="tw-dropdown-inner-action-layout">
+            <font-awesome-icon
+              class="tw-navbar-dropdown-icon"
+              :icon="faMessage"
+            ></font-awesome-icon>
+            My Requests
           </router-link>
 
           <div class="tw-dropdown-separator"></div>

@@ -32,16 +32,18 @@
           These are not the <em>books</em> that you are looking for? Do you want to add a new
           book / edition via ISBN?</a
         >
+        <div class="flex flex-row w-full justify-center space-x-5">
         <input
-          class="tw-input sm:w-[20%] w-full p-2"
+          class="tw-input w-full max-md:w-[30%] p-2"
           v-model="isbnInput"
           id="isbn-input"
           type="text"
-          :placeholder="'Enter ISBN of the book you want to import'"
+          :placeholder="'Enter bok ISBN to import'"
         />
         <button class="import-btn btn-primary btn-green" @click="handleImport">
           Try importing
         </button>
+        </div>
       </div>
     </div>
   </div>
@@ -72,6 +74,7 @@ const handleAdd = async (book) => {
       Snackbar.showSnackbar(book.title + ' was added to your library.', SnackbarType.SUCCESS, 10);
     })
     .catch((error) => {
+      Snackbar.showSnackbar('There was an error adding the book. Check console.', SnackbarType.ERROR);
       console.log(error.status);
     });
 };
@@ -118,6 +121,6 @@ const handleImport = async () => {
 }
 
 .add-book-by-isbn {
-  @apply flex flex-col sm:flex-row w-full sm:items-center items-center justify-center sm:justify-end sm:space-x-5 space-y-2 sm:space-y-0;
+  @apply flex flex-row max-md:flex-col w-full sm:items-center items-center justify-center sm:justify-end sm:space-x-5 space-y-2 sm:space-y-0;
 }
 </style>
