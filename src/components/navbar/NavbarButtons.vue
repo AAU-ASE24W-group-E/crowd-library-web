@@ -153,13 +153,6 @@
 
           <div class="tw-dropdown-separator"></div>
 
-          <router-link to="/wishlist" class="tw-dropdown-inner-action-layout">
-            <font-awesome-icon class="tw-navbar-dropdown-icon" :icon="faHeart"></font-awesome-icon>
-            My Wishlist
-          </router-link>
-
-          <div class="tw-dropdown-separator"></div>
-
           <router-link to="/bookish-map" class="tw-dropdown-inner-action-layout">
             <font-awesome-icon class="tw-navbar-dropdown-icon" :icon="faMap"></font-awesome-icon>
             Bookish Map
