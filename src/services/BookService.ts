@@ -77,6 +77,11 @@ class BookService {
     return await bookApiService.get('/available-book', {params: query});
   }
 
+  async getAvailableBook(ownerId: string, bookId: string) {
+    console.log(ownerId, bookId)
+    return await bookApiService.get(`/available-book/${bookId}/owner/${ownerId}`);
+  }
+
   async updateBookFlags(ownerId: string, bookId: string, flags:BookFlagsPayload) {
     return await bookApiService.put(`${this.subdomain_owner}/${ownerId}/book/${bookId}`, flags);
   }

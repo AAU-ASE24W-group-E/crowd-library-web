@@ -31,17 +31,20 @@
             <span class="tw-book-entry-info-title"
               >ISBN: <span class="tw-book-entry-info-value">{{ book.isbn }}</span></span
             >
-            <span v-if="isSearchBook" class="tw-book-entry-info-title"
+            <span v-if="isSearchBook || deadline != null" class="tw-book-entry-info-title"
               >Owner: <span class="tw-book-entry-info-value">{{ ownBook.owner.name }}</span></span
             >
-            <span v-if="!isNewBook" class="tw-book-entry-info-title"
+            <span v-if="deadline != null" class="tw-book-entry-info-title font-semibold"
+              >Deadline: <span class="tw-book-entry-info-value">{{ deadline }}</span></span
+            >
+            <span v-if="!isNewBook && deadline == null" class="tw-book-entry-info-title"
               >Status:
               <span :class="{ 'text-green-500': ownBook.status == 'AVAILABLE', 'text-red-500': ownBook.status == 'UNAVAILABLE' }">
                 {{ ownBook.status }}</span
               ></span
             >
           </div>
-          <div v-if="!isNewBook && ownBook.status" class="flex flex-col">
+          <div v-if="!isNewBook && ownBook.status && deadline == null" class="flex flex-col">
             <span class="tw-book-entry-info-title"
               >Lendable:
               <span
@@ -104,8 +107,17 @@
           Show on Map
         </button>
         <button
+          v-if="deadline != null"
+          @click="handleReturnBook"
+          :disabled = "returnedBook"
+          class="btn-primary btn-green rounded-2xl"
+        >
+          {{ returnedBookButtonText }}
+        </button>
+        <button
           v-if="isMyBook"
           @click="handleEditState"
+          :disabled="ownBook.status == 'LENT'"
           class="edit-button btn-primary btn-green rounded-2xl"
         >
           Edit State
@@ -124,6 +136,13 @@
         >
           Add to My Books
         </button>
+        <button
+          v-if="ownBook?.lendingState?.isReturned"
+          @click="handleConfirmReturnBook"
+          class="confirm-return-btn-of-book btn-primary btn-green rounded-2xl"
+        >
+          Confirm Return of Book
+        </button>
       </div>
     </div>
   </div>
@@ -139,10 +158,12 @@ import SendRequestPopup from './SendRequestPopup.vue';
 import { useUserStore } from '@/stores/user.ts';
 import { userService } from '@/services/UserService.ts';
 
-const emit = defineEmits(['showOnMapClicked', 'handleAction', 'handleAdd']);
+const emit = defineEmits(['showOnMapClicked', 'handleAction', 'handleAdd', 'handleReturnBook']);
 
 const requestPopup = ref(null);
 const userStore = useUserStore();
+const returnedBookButtonText = ref("Returned Book")
+const returnedBook = ref(false)
 
 const props = defineProps({
   book: {
@@ -169,6 +190,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  deadline: {
+    type: String,
+    default: null,
+  },
 });
 
 const dropdownOpen = ref(props.isNewBook);
@@ -191,6 +216,16 @@ function handleDelete() {
 
 function handleAdd() {
   emit('handleAdd', props.book);
+}
+
+function handleConfirmReturnBook(){
+  emit('handleAction', props.ownBook, "CONFIRM_RETURN")
+}
+
+function handleReturnBook(){
+  returnedBook.value = true;
+  returnedBookButtonText.value = "Wait for owner confirmation"
+  emit("handleReturnBook", props.deadline, props.ownBook)
 }
 
 // Function to open the popup

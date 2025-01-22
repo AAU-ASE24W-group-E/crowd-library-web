@@ -2,13 +2,25 @@ import { mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import UserLibrary from '@/components/user-library/UserLibrary.vue'; 
 import UserLibraryMyBooks from '@/components/user-library/UserLibraryMyBooks.vue';
+import { useUserStore } from '@/stores/user';
+import { createPinia, setActivePinia } from 'pinia';
 
+vi.mock('@/stores/user', () => ({
+  useUserStore: () => {
+    return{
+      setUser: vi.fn(),
+      user: { id: "user" }
+    }
+  },
+}));
 describe('UserLibrary', () => {
   let wrapper;
+  let pinia;
 
   beforeEach(() => {
     wrapper = mount(UserLibrary, {
       global: {
+        plugins: [pinia],
         stubs: ['UserLibraryMyBooks'],
       },
       props: {
@@ -50,6 +62,9 @@ describe('UserLibrary', () => {
         ]
       }
     });
+
+    pinia = createPinia();
+    setActivePinia(pinia);
   });
 
   afterEach(() => {

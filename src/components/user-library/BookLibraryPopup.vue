@@ -17,6 +17,7 @@
             uncheckedText="Unavailable"
             checkedBg="green"
             uncheckedBg="grey"
+            @click="onAvailableChanged"
             class="available-toggle"
           />
           <div v-for="(toggle, key) in editable" :key="key" class="flex justify-center items-center">
@@ -42,6 +43,17 @@
       <div v-if="popupType == 'DELETE'">
         <div class="modal-header">
           <h2 class="modal-title">Are you sure you want to delete your book?</h2>
+          <button @click="closeModal" class="close-button">✕</button>
+        </div>
+
+        <div class="modal-body">
+          {{ popupBook.title }}
+        </div>
+      </div>
+
+      <div v-if="popupType == 'CONFIRM_RETURN'">
+        <div class="modal-header">
+          <h2 class="modal-title">Did you really get this book back?</h2>
           <button @click="closeModal" class="close-button">✕</button>
         </div>
 
@@ -111,6 +123,12 @@ export default {
     },
     okButtonClicked() {
       this.$emit('close', true, this.popupBook, this.editable);
+    },
+
+    onAvailableChanged(){
+      for(let key of Object.keys(this.editable)){
+        this.editable[key].value = this.editable.status.value;
+      }
     },
 
     onToggleChange(){

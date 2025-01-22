@@ -15,6 +15,7 @@
       />
     </div>
     <div class="space-y-6 w-full m-4">
+      <div  v-if="foundBooks.length > 0">
       <BookEntry
         v-for="(book, index) in foundBooks"
         :key="index"
@@ -22,6 +23,7 @@
         :isNewBook="true"
         @handleAdd="handleAdd"
       />
+    </div>
       <hr class="divide-line mt-10" />
       <div class="add-book-by-isbn">
         <a
