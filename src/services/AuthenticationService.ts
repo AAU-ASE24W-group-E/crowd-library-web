@@ -45,6 +45,30 @@ class AuthenticationService {
     return response;
   }
 
+  async requestReset(email: string){
+    console.log("Requested forgot password", email)
+    const response = await userApiService.post<LoginResponse>(
+      `${this.subdomain}/forgot-password`,
+      {
+        email: email
+      }
+    );
+    return response;
+  }
+
+
+  async resetPassword(token: string, password: string){
+    console.log("Changed password")
+    const response = await userApiService.post<LoginResponse>(
+      `${this.subdomain}/reset-password`,
+      {
+        token: token,
+        newPassword: password
+      }
+    );
+    return response;
+  }
+
   async setInitialLogin(uid: string) {
     return await userApiService.put(`${this.subdomain}/${uid}/set-initial-login`);
   }

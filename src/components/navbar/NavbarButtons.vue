@@ -250,6 +250,7 @@ const handleThemeDropdownClick = () => {
 
 const logout = () => {
   authStore.clearToken();
+  userStore.clearUser();
   console.log('User logged out');
   router.push("/");
 };
