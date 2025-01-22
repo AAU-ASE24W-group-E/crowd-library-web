@@ -1,4 +1,3 @@
-/*
 import { mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import MeetingPopup from '@/components/MeetingPopup.vue';
@@ -17,7 +16,7 @@ function checkInputRendering(wrapper, id, labelText, inputType, hasPlaceholder, 
 
 function checkButton(button, text) {
   expect(button.exists()).toBe(true);
-  expect(button.text()).toBe(text);
+  expect(button.text()).toContain(text);
 }
 
 vi.mock('vue-router', () => ({
@@ -33,9 +32,16 @@ describe('MeetingPopup', () => {
     wrapper = mount(MeetingPopup, {
       props: {
         request: {
-          from: 'User1',
-        }
-      }
+          user: {
+            data: {
+              username: 'User1',
+            },
+          },
+          lending: {
+            id: 123,
+          },
+        },
+      },
     });
   });
 
@@ -49,7 +55,7 @@ describe('MeetingPopup', () => {
 
     expect(wrapper.find('.popup-overlay').exists()).toBe(true);
     expect(wrapper.find('.popup-content').exists()).toBe(true);
-    expect(wrapper.find('h1.popup-title').text()).toBe('Send a Meeting Suggestion to User1');
+    expect(wrapper.find('h1.popup-title').text()).toBe('Send a Meeting Suggestion to User1?');
 
     // Check buttons and their text
     checkButton(wrapper.find('#closeBtn'), 'X');
@@ -57,7 +63,7 @@ describe('MeetingPopup', () => {
     checkButton(wrapper.find('#sendMeetingReqBtn'), 'Send Meeting Request');
 
     // Check labels and their input
-    checkInputRendering(wrapper, "place", "Place", "text", true, "Enter place");
+    checkInputRendering(wrapper, "location", "Location", "text", true, "Enter location");
     checkInputRendering(wrapper, "date", "Date", "date", false, null);
     checkInputRendering(wrapper, "deadline", "Deadline", "date", false, null);
   });
@@ -80,13 +86,27 @@ describe('MeetingPopup', () => {
     expect(hideSpy).toHaveBeenCalled();
   });
 
-  /!** THIS IS ONLY PRELIMINARY* *!/
-  it('hides popup when send meeting request button is clicked', async () => {
-    const hideSpy = vi.spyOn(wrapper.vm, 'hide');
+  it('validates form and displays errors on blur', async () => {
     await wrapper.vm.show();
-    await wrapper.vm.$nextTick();
-    const sendMeetingReqBtn = wrapper.find('#sendMeetingReqBtn');
-    await sendMeetingReqBtn.trigger('click');
-    expect(hideSpy).toHaveBeenCalled();
+    const locationInput = wrapper.find('#location');
+
+    // Trigger blur without entering a value
+    await locationInput.trigger('blur');
+
+    // Check if the error message is displayed
+    expect(wrapper.find('.tw-input-error-label').exists()).toBe(true);
+    expect(wrapper.find('.tw-input-error-label').text()).toBe('This field is required');
   });
-});*/
+
+  it('displays error message when form validation fails', async () => {
+    await wrapper.vm.show();
+    const submitButton = wrapper.find('button[type="submit"]');
+
+    // Attempt to submit without filling required fields
+    await submitButton.trigger('click');
+
+    // Check if the error message is displayed
+    expect(wrapper.find('.tw-input-error-label').exists()).toBe(true);
+    expect(wrapper.find('.tw-input-error-label').text()).toBe('This field is required');
+  });
+});
