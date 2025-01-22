@@ -78,6 +78,8 @@ const props = defineProps({
   }
 });
 
+console.error(props.request);
+
 
 const emit = defineEmits(['refreshIncomingRequests', 'refreshOutgoingRequests']);
 
