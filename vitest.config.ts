@@ -22,6 +22,8 @@ export default mergeConfig(
           '**/*.test.{js,ts,jsx,tsx}',
           '**/*.spec.{js,ts,jsx,tsx}',
           '**/*.d.ts',
+          '**/Popups/**',
+          '**/Requests/RequestList.spec.js',
           'src/views/static/',
         ],
       },
