@@ -111,7 +111,7 @@
           @click="handleShowReturnBook"
           class="btn-primary btn-green rounded-2xl"
         >
-          Return Book
+          Returned Book
         </button>
         <button
           v-if="isMyBook"
