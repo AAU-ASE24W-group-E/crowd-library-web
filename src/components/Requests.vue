@@ -76,7 +76,7 @@ const fetchIncomingLendingRequests = async () => {
       );
 
     } catch (e) {
-      Snackbar.showSnackbar('There was an error fetching incomming request list, check console.', SnackbarType.ERROR);
+      Snackbar.showSnackbar('There was an error fetching incoming request list, check console.', SnackbarType.ERROR);
       console.error(e);
     }
   }
