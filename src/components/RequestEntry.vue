@@ -41,9 +41,9 @@
         <button v-if="!incoming" @click="cancelOutgoingLending" v-show="dropdownOpen" id="withdrawBtn" class="btn-primary btn-gray rounded-2xl">Withdraw</button>
         <button v-if="incoming" @click="declineIncomingLending" v-show="dropdownOpen" id="declineBtn" class="btn-primary btn-gray rounded-2xl">Decline</button>
         <button v-if="incoming && lending.status === LendingStatus.READER_CREATED_REQUEST" @click="openPopup" v-show="dropdownOpen" id="suggestMeetingBtn" class="btn-primary btn-green rounded-2xl">Suggest Meeting</button>
-        <button v-if="!incoming && lending.status === LendingStatus.OWNER_SUGGESTED_MEETING" @click="confirmMeeting" v-show="dropdownOpen" id="suggestMeetingBtn" class="btn-primary btn-green rounded-2xl">Confirm Meeting</button>
-        <button v-if="incoming && lending.status === LendingStatus.READER_ACCEPTED_MEETING" @click="confirmTransferOwner" v-show="dropdownOpen" id="suggestMeetingBtn" class="btn-primary btn-green rounded-2xl">Confirm Transfer</button>
-        <button v-if="!incoming && lending.status === LendingStatus.OWNER_CONFIRMED_TRANSFER" @click="confirmTransferReader" v-show="dropdownOpen" id="suggestMeetingBtn" class="btn-primary btn-green rounded-2xl">Confirm Transfer</button>
+        <button v-if="!incoming && lending.status === LendingStatus.OWNER_SUGGESTED_MEETING" @click="confirmMeeting" v-show="dropdownOpen" id="confirmMeetingBtn" class="btn-primary btn-green rounded-2xl">Confirm Meeting</button>
+        <button v-if="incoming && lending.status === LendingStatus.READER_ACCEPTED_MEETING" @click="confirmTransferOwner" v-show="dropdownOpen" id="confirmTransferOwnerBtn" class="btn-primary btn-green rounded-2xl">Confirm Transfer</button>
+        <button v-if="!incoming && lending.status === LendingStatus.OWNER_CONFIRMED_TRANSFER" @click="confirmTransferReader" v-show="dropdownOpen" id="confirmTransferReaderBtn" class="btn-primary btn-green rounded-2xl">Confirm Transfer</button>
       </div>
     </div>
   </div>
