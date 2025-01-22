@@ -48,9 +48,10 @@ const setActiveTab = (tab) => {
 }
 
 .tabs-wrapper {
-  @apply w-[90%]
+  @apply w-[95%]
   mt-5
-  p-2
+  py-2
+  px-6
   max-sm:w-full;
 }
 .tabs-header button {
