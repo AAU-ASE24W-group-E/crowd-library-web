@@ -1,21 +1,31 @@
 import {mount} from '@vue/test-utils';
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import BookSearchList from "@/components/BookSearchList.vue";
+import { createPinia, setActivePinia } from 'pinia';
 
 
 const push = vi.fn();
+const query = vi.fn();
 vi.mock('vue-router', () => ({
   useRouter: () => ({
     push,
+  }),
+  useRoute: () => ({
+    query,
   }),
 }));
 
 describe('BookEntry', () => {
   let wrapper;
+  let pinia;
 
   beforeEach(() => {
+    pinia = createPinia();
+    setActivePinia(pinia);
+
     wrapper = mount(BookSearchList, {
       global: {
+        plugins: [pinia],
         stubs: ['router-link', 'font-awesome-icon'],
       },
       props: {

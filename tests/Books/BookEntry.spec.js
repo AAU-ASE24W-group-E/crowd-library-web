@@ -1,6 +1,7 @@
 import {mount} from '@vue/test-utils';
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import BookEntry from "@/components/BookEntry.vue";
+import { createPinia, setActivePinia } from 'pinia';
 
 const mockBook = {
   book: {
@@ -33,9 +34,13 @@ vi.mock('vue-router', () => ({
 }));
 
 describe('BookEntry', () => {
+  let pinia;
   let wrapper;
 
   beforeEach(() => {
+    pinia = createPinia();
+    setActivePinia(pinia);
+
     wrapper = mount(BookEntry, {
       props: {
         book: mockBook.book,
@@ -44,6 +49,7 @@ describe('BookEntry', () => {
         isSearchBook: true
       },
       global: {
+        plugins: [pinia],
         stubs: ['router-link', 'font-awesome-icon'],
       },
     });

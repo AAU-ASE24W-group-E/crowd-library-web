@@ -18,6 +18,10 @@ export interface PasswordPayload {
 class UserService {
   readonly subdomain: string = '/user';
 
+  async getUserById(uid: string) {
+    return await userApiService.get(`${this.subdomain}/${uid}`);
+  }
+
   async setLocation(uid: string, payload: LocationPayload) {
     return await userApiService.post(`${this.subdomain}/${uid}/address`, payload);
   }
@@ -26,14 +30,14 @@ class UserService {
     return await userApiService.put(`${this.subdomain}/${uid}/address`, payload);
   }
 
-  async updateUserInfo(uid: string, payload: UserPayload ) {
-    console.log("Send update user request", payload);
+  async updateUserInfo(uid: string, payload: UserPayload) {
+    console.log('Send update user request', payload);
     return await userApiService.put(`${this.subdomain}/${uid}/`, payload);
 
   }
 
   async updatePassword(uid: string, payload: PasswordPayload) {
-    console.log("Send update password request");
+    console.log('Send update password request');
     return await userApiService.put(`${this.subdomain}/${uid}/password`, payload);
   }
 }
