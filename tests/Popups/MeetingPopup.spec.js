@@ -90,10 +90,8 @@ describe('MeetingPopup', () => {
     await wrapper.vm.show();
     const locationInput = wrapper.find('#location');
 
-    // Trigger blur without entering a value
     await locationInput.trigger('blur');
 
-    // Check if the error message is displayed
     expect(wrapper.find('.tw-input-error-label').exists()).toBe(true);
     expect(wrapper.find('.tw-input-error-label').text()).toBe('This field is required');
   });
@@ -102,10 +100,8 @@ describe('MeetingPopup', () => {
     await wrapper.vm.show();
     const submitButton = wrapper.find('button[type="submit"]');
 
-    // Attempt to submit without filling required fields
     await submitButton.trigger('click');
 
-    // Check if the error message is displayed
     expect(wrapper.find('.tw-input-error-label').exists()).toBe(true);
     expect(wrapper.find('.tw-input-error-label').text()).toBe('This field is required');
   });
