@@ -10,7 +10,7 @@
         <div class="modal-body">
           <div class="book-title">{{ popupBook.title }}</div>
           <VueToggles
-            v-model="editable.isAvailable.value"
+            v-model="editable.status.value"
             :height="30"
             :width="140"
             checkedText="Available"
@@ -20,7 +20,7 @@
             class="available-toggle"
           />
           <div v-for="(toggle, key) in editable" :key="key" class="flex justify-center items-center">
-            <div v-if="toggle && 'checkedText' in toggle">
+            <div v-if="toggle &&  toggle?.checkedText">
               <VueToggles
                 v-model="editable[key].value"
                 :height="30"
@@ -30,7 +30,9 @@
                 checkedBg="#6584ad"
                 uncheckedBg="grey"
                 class="flag-toggle text-center"
-                :disabled="!editable.isAvailable.value"
+                :id="'toggle_' + key"
+                @click="onToggleChange"
+                :disabled="!editable.status.value"
               />
             </div>
           </div>
@@ -77,20 +79,23 @@ export default {
     },
   },
   setup(props) {
+    console.log(props.popupBook.status)
+    let bookStatus = false;
+    if(props.popupBook.status == "AVAILABLE") bookStatus = true;
     const editable = ref({
-      isAvailable: {
-        value: props.popupBook.isAvailable,
+      status: {
+        value: bookStatus
       },
-      isLendable: {
-        value: props.popupBook.isLendable,
+      lendable: {
+        value: props.popupBook.lendable,
         checkedText: "Lendable"
       },
-      isExchangeable:{
-        value: props.popupBook.isExchangeable,
+      exchangeable:{
+        value: props.popupBook.exchangeable,
         checkedText: "Exchangeable"
       },
-      isGiftable: {
-        value: props.popupBook.isGiftable,
+      giftable: {
+        value: props.popupBook.giftable,
         checkedText: "Giftable"
       }
     });
@@ -105,8 +110,17 @@ export default {
       this.$emit('close', false);
     },
     okButtonClicked() {
-      this.$emit('close', true, this.editable);
+      this.$emit('close', true, this.popupBook, this.editable);
     },
+
+    onToggleChange(){
+      let all_flags_false = true;
+      for(let key of Object.keys(this.editable)){
+        if(key == "status") continue;
+        if(this.editable[key].value == true) all_flags_false = false;
+      }
+      if(all_flags_false) this.editable.status.value = false;
+    }
   },
 };
 </script>

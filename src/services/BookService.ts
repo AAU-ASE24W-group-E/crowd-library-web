@@ -15,6 +15,13 @@ export interface AvailableBooksQuery {
   limit?: number
 }
 
+export interface BookFlagsPayload{
+  lendable?: boolean
+  exchangeable?: boolean
+  giftable?: boolean
+  status?: string
+}
+
 class BookService {
   readonly subdomain: string = '/book';
   readonly subdomain_owner: string = '/book-owner';
@@ -68,6 +75,10 @@ class BookService {
   async getAvailableBooks(query: AvailableBooksQuery) {
     console.log('fetching available books with query:', query);
     return await bookApiService.get('/available-book', {params: query});
+  }
+
+  async updateBookFlags(ownerId: string, bookId: string, flags:BookFlagsPayload) {
+    return await bookApiService.put(`${this.subdomain_owner}/${ownerId}/book/${bookId}`, flags);
   }
 }
 

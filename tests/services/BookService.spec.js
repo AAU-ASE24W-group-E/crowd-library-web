@@ -12,7 +12,6 @@ vi.mock('@/services/clients.ts', () => ({
   },
 }));
 
-
 describe('BookService', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -34,7 +33,7 @@ describe('BookService', () => {
     lendable: true,
     giftable: true,
     exchangeable: false,
-    status: true, // Available
+    status: true,
     distance: 0,
     owner: {
       id: 'Owner1',
@@ -45,6 +44,7 @@ describe('BookService', () => {
   };
 
   const mockBookId = 'test-book-id';
+  const mockOwnerId = 'test-owner-id';
   const mockIsbn = '1234567890';
 
   it('should call POST /book to create a book', async () => {
@@ -103,83 +103,63 @@ describe('BookService', () => {
     expect(response.data).toEqual(mockResponse);
   });
 
-  it('should call GET /book without optional parameters to find books', async () => {
+  it('should call POST /book-owner/:ownerId/book/:bookId to create book ownership', async () => {
+    bookApiService.post.mockResolvedValue({ data: 'success' });
+
+    const response = await bookService.createBookOwnership(mockBookId, mockOwnerId);
+
+    expect(bookApiService.post).toHaveBeenCalledWith(
+      `/book-owner/${mockOwnerId}/book/${mockBookId}`
+    );
+    expect(response.data).toEqual('success');
+  });
+
+  it('should call GET /book-owner/:ownerId/book to find owned books', async () => {
     const mockResponse = [mockBook];
 
     bookApiService.get.mockResolvedValue({ data: mockResponse });
 
-    const response = await bookService.findBooks();
+    const response = await bookService.findOwnBooks(mockOwnerId);
 
-    expect(bookApiService.get).toHaveBeenCalledWith('/book', {
-      params: new URLSearchParams({
-        maxResults: '10',
-      }),
-    });
-
+    expect(bookApiService.get).toHaveBeenCalledWith(`/book-owner/${mockOwnerId}/book`);
     expect(response.data).toEqual(mockResponse);
   });
 
+  it('should call GET /available-book with query parameters to retrieve available books', async () => {
+    const mockResponse = [mockBook];
+    const query = {
+      latitude: 40.712776,
+      longitude: -74.005974,
+      distance: 10,
+      quickSearch: 'Forest',
+      lendable: true,
+    };
 
-  it('should call findBooks twice and merge results for quick search', async () => {
-    const mockResponseByTitle = [mockBook];
-    const mockResponseByAuthor = [
-      {
-        ...mockBook,
-        book: { ...mockBook.book, id: '2', title: 'Another Title' },
-      },
-    ];
-    const quicksearch = 'The Forgotten Forest';
+    bookApiService.get.mockResolvedValue({ data: mockResponse });
 
-    bookService.findBooks = vi
-      .fn()
-      .mockResolvedValueOnce({ data: mockResponseByTitle })
-      .mockResolvedValueOnce({ data: mockResponseByAuthor });
+    const response = await bookService.getAvailableBooks(query);
 
-    const response = await bookService.findBookByQuicksearch(quicksearch);
-
-    expect(bookService.findBooks).toHaveBeenCalledTimes(2);
-    expect(bookService.findBooks).toHaveBeenCalledWith(quicksearch);
-    expect(bookService.findBooks).toHaveBeenCalledWith(undefined, quicksearch);
-
-    expect(response.length).toEqual(1);
+    expect(bookApiService.get).toHaveBeenCalledWith('/available-book', { params: query });
+    expect(response.data).toEqual(mockResponse);
   });
 
-  it('should deduplicate books by ID in quick search', async () => {
-    const duplicateBook = { ...mockBook, book: { ...mockBook.book } };
-    const mockResponseByTitle = [mockBook];
-    const mockResponseByAuthor = [duplicateBook];
+  it('should call PUT /book-owner/:ownerId/book/:bookId to update book flags', async () => {
+    const flags = {
+      lendable: true,
+      giftable: false,
+      exchangeable: true,
+      status: 'available',
+    };
 
-    const quicksearch = 'The Forgotten Forest';
+    bookApiService.put.mockResolvedValue({ data: 'success' });
 
+    const response = await bookService.updateBookFlags(mockOwnerId, mockBookId, flags);
 
-    bookService.findBooks = vi
-      .fn()
-      .mockResolvedValueOnce({ data: mockResponseByTitle })
-      .mockResolvedValueOnce({ data: mockResponseByAuthor });
-
-    const response = await bookService.findBookByQuicksearch(quicksearch);
-
-    expect(bookService.findBooks).toHaveBeenCalledTimes(2);
-    expect(bookService.findBooks).toHaveBeenCalledWith(quicksearch);
-    expect(bookService.findBooks).toHaveBeenCalledWith(undefined, quicksearch);
-
-    expect(response).toEqual([mockBook]);
+    expect(bookApiService.put).toHaveBeenCalledWith(
+      `/book-owner/${mockOwnerId}/book/${mockBookId}`,
+      flags
+    );
+    expect(response.data).toEqual('success');
   });
-
-  it('should handle empty results for quick search', async () => {
-    const quicksearch = 'Nonexistent Book';
-
-    bookService.findBooks = vi
-      .fn()
-      .mockResolvedValueOnce({ data: [] })
-      .mockResolvedValueOnce({ data: [] });
-
-    const response = await bookService.findBookByQuicksearch(quicksearch);
-
-    expect(bookService.findBooks).toHaveBeenCalledTimes(2);
-    expect(bookService.findBooks).toHaveBeenCalledWith(quicksearch);
-    expect(bookService.findBooks).toHaveBeenCalledWith(undefined, quicksearch);
-
-    expect(response).toEqual([]);
-  });
+  
 });

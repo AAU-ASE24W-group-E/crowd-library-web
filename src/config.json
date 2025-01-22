@@ -27,10 +27,10 @@
       "raster-tiles": {
         "type": "raster",
         "tiles": [
-          "https://tile.openstreetmap.de/{z}/{x}/{y}.png"
+          "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}@2x.png"
         ],
         "tileSize": 256,
-        "attribution": "OpenStreetMap"
+        "attribution": "StadiaMaps"
       }
     },
     "layers": [
