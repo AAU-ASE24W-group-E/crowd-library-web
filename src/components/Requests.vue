@@ -1,21 +1,25 @@
 <template>
-    <div class="tw-component-container" ref="dropdownRef">
-        <div class="flex flex-row w-full justify-between items-center max-[480px]:justify-center" />
-        <Tabs>
-            <Tab title="Incoming Requests" name="incomingTab">
-              <RequestList v-show="showRequestList"
-                           :requests="incomingRequests"
-                           :incoming="true"
-                           @refreshIncomingRequests="fetchIncomingLendingRequests" />
-            </Tab>
-            <Tab title="Outgoing Requests" name="outgoingTab">
-              <RequestList v-show="showRequestList"
-                           :requests="outgoingRequests"
-                           :incoming="false"
-                           @refreshOutgoingRequests="fetchOutgoingLendingRequests" />
-            </Tab>
-        </Tabs>
-    </div>
+  <div class="tw-component-container" ref="dropdownRef">
+    <div class="flex flex-row w-full justify-between items-center max-[480px]:justify-center" />
+    <Tabs>
+      <Tab :title="incomingRequestTitle" name="incomingTab">
+        <RequestList
+          v-show="showRequestList"
+          :requests="incomingRequests"
+          :incoming="true"
+          @refreshIncomingRequests="fetchIncomingLendingRequests"
+        />
+      </Tab>
+      <Tab :title="outgoingRequestTitle" name="outgoingTab">
+        <RequestList
+          v-show="showRequestList"
+          :requests="outgoingRequests"
+          :incoming="false"
+          @refreshOutgoingRequests="fetchOutgoingLendingRequests"
+        />
+      </Tab>
+    </Tabs>
+  </div>
 </template>
 
 <script setup>
@@ -36,19 +40,22 @@ const userStore = useUserStore();
 const incomingRequests = ref([]);
 const outgoingRequests = ref([]);
 
-// TODO add fetchOutgoingLendings, richtig die einzelnen properties ins entry einsetzen
-const fetchIncomingLendingRequests = async ()  => {
+const incomingRequestTitle = ref('Incoming Requests (0)');
+const outgoingRequestTitle = ref('Outgoing Requests (0)');
+const fetchIncomingLendingRequests = async () => {
   const ownerId = userStore.user.id;
 
-  if(ownerId) {
+  if (ownerId) {
     try {
-      console.debug("Owner Id" + ownerId);
+      console.debug('Owner Id' + ownerId);
       const lendings = await lendingService.getLendingsByOwnerId(ownerId);
       console.debug(lendings);
 
       const filteredLendings = lendings.data.filter(
-        (lending) => (checkIsStatusValid(lending))
+        (lending) => (checkIsStatusValid(lending)),
       );
+
+      incomingRequestTitle.value = `Incoming Requests (${filteredLendings.length.toString()})`;
 
       incomingRequests.value = await Promise.all(
         filteredLendings.map(async (lending) => {
@@ -65,28 +72,30 @@ const fetchIncomingLendingRequests = async ()  => {
             user: readerData,
             book: bookData,
           };
-        })
+        }),
       );
 
-    } catch(e) {
+    } catch (e) {
       Snackbar.showSnackbar('There was an error fetching incomming request list, check console.', SnackbarType.ERROR);
       console.error(e);
     }
   }
-}
+};
 
-const fetchOutgoingLendingRequests = async ()  => {
+const fetchOutgoingLendingRequests = async () => {
   const readerId = userStore.user.id;
 
-  if(readerId) {
+  if (readerId) {
     try {
-      console.debug("Reader Id" + readerId);
+      console.debug('Reader Id' + readerId);
       const lendings = await lendingService.getLendingsByReaderId(readerId);
       console.debug(lendings);
 
       const filteredLendings = lendings.data.filter(
-        (lending) => (checkIsStatusValid(lending))
+        (lending) => (checkIsStatusValid(lending)),
       );
+
+      outgoingRequestTitle.value = `Outgoing Requests (${filteredLendings.length.toString()})`;
 
       outgoingRequests.value = await Promise.all(
         filteredLendings.map(async (lending) => {
@@ -103,15 +112,15 @@ const fetchOutgoingLendingRequests = async ()  => {
             user: readerData,
             book: bookData,
           };
-        })
+        }),
       );
 
-    } catch(e) {
+    } catch (e) {
       Snackbar.showSnackbar('There was an error fetching outgoing request list, check console.', SnackbarType.ERROR);
       console.error(e);
     }
   }
-}
+};
 
 const checkIsStatusValid = (lending) => {
   return lending.status !== LendingStatus.READER_WITHDREW
@@ -120,11 +129,11 @@ const checkIsStatusValid = (lending) => {
     && lending.status !== LendingStatus.BORROWED
     && lending.status !== LendingStatus.READER_RETURNED_BOOK
     && lending.status !== LendingStatus.OWNER_CONFIRMED_TRANSFER;
-}
+};
 
 onMounted(() => {
   fetchIncomingLendingRequests();
   fetchOutgoingLendingRequests();
-})
+});
 
 </script>
