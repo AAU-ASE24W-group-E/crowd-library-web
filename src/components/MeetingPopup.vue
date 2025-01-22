@@ -144,7 +144,9 @@ const hide = () => {
 };
 
 const sendMeetingRequest = async () => {
+  if(isLoading.value) return;
   if (!validateForm()) return;
+
   isLoading.value = true;
 
   try {
