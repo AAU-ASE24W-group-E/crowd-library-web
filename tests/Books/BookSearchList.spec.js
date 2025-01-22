@@ -4,9 +4,13 @@ import BookSearchList from "@/components/BookSearchList.vue";
 
 
 const push = vi.fn();
+const query = vi.fn();
 vi.mock('vue-router', () => ({
   useRouter: () => ({
     push,
+  }),
+  useRoute: () => ({
+    query,
   }),
 }));
 
