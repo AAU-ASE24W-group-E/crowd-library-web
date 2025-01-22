@@ -8,19 +8,21 @@
         <div class="flex flex-row items-center space-x-2">
           <span class="dark:text-title-dark-mode-text">Sort&nbsp;by:</span>
 
-<!--          <div v-if="selectedCategories.length > 0" class="flex flex-row w-full mt-4 space-x-2">-->
-<!--            <div v-for="category in selectedCategories" :key="category">-->
-<!--              <div class="rounded-2xl bg-gray-200 dark:bg-dark-mode-inside py-1 px-2 space-x-2">-->
-<!--                <font-awesome-icon-->
-<!--                  id="remove-category"-->
-<!--                  @click="removeSelectedCategory(category)"-->
-<!--                  :icon="faX"-->
-<!--                  class="text-base w-4 h-4 tw-icon"-->
-<!--                />-->
-<!--                <span class="dark:text-title-dark-mode-text">{{ category }}</span>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
+<!--
+          <div v-if="selectedCategories.length > 0" class="flex flex-row w-full mt-4 space-x-2">
+            <div v-for="category in selectedCategories" :key="category">
+              <div class="rounded-2xl bg-gray-200 dark:bg-dark-mode-inside py-1 px-2 space-x-2">
+                <font-awesome-icon
+                  id="remove-category"
+                  @click="removeSelectedCategory(category)"
+                  :icon="faX"
+                  class="text-base w-4 h-4 tw-icon"
+                />
+                <span class="dark:text-title-dark-mode-text">{{ category }}</span>
+              </div>
+            </div>
+          </div>
+-->
 
           <div class="relative">
             <select
@@ -267,7 +269,7 @@ function sortBooks() {
   books.value.sort(cc)
 }
 
-const handleSelection = (event) => {
+const handleSelection = (event: any) => {
   const selectedValue = event.target.value;
   if (selectedValue) {
     categories.value = categories.value.filter((category) => category !== selectedValue);

@@ -29,9 +29,7 @@ import { useUserStore } from '@/stores/user.ts';
 const userStore = useUserStore();
 console.log(userStore.user?.address);
 
-const emit = defineEmits<{
-  (e: 'locationSelected', location: { lat: number; lng: number } | null): void;
-}>();
+const emit = defineEmits<(e: 'locationSelected', location: { lat: number; lng: number } | null) => void>();
 const clickedLocation = ref<{ lat: number; lng: number } | null>(null);
 
 let userLocation = ref<{ lat: number; lng: number } | null>(null);

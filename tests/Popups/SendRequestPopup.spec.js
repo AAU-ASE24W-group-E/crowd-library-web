@@ -1,19 +1,9 @@
-/*
 import { mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import MeetingPopup from '@/components/MeetingPopup.vue';
+import SendRequestPopup from '@/components/SendRequestPopup.vue';
+import { createPinia, setActivePinia } from 'pinia';
 
 const push = vi.fn();
-
-function checkInputRendering(wrapper, id, labelText, inputType, hasPlaceholder, placeHolderText) {
-  expect(wrapper.find(`label[for="${id}"]`).exists()).toBe(true);
-  expect(wrapper.find(`label[for="${id}"]`).text()).toBe(labelText);
-  expect(wrapper.find(`input[id="${id}"]`).exists()).toBe(true);
-  expect(wrapper.find(`input[id="${id}"]`).element.type).toBe(inputType);
-  if (hasPlaceholder) {
-    expect(wrapper.find(`input[id="${id}"]`).element.placeholder).toBe(placeHolderText);
-  }
-}
 
 function checkButton(button, text) {
   expect(button.exists()).toBe(true);
@@ -26,14 +16,22 @@ vi.mock('vue-router', () => ({
   }),
 }));
 
-describe('MeetingPopup', () => {
+describe('SendRequestPopup', () => {
   let wrapper;
+  let pinia;
 
   beforeEach(() => {
-    wrapper = mount(MeetingPopup, {
+    pinia = createPinia();
+    setActivePinia(pinia);
+
+    wrapper = mount(SendRequestPopup, {
+      plugins: [pinia],
       props: {
-        request: {
-          from: 'User1',
+        book: {
+          owner: "User1",
+          isLendable: true,
+          isExchangeable: true,
+          isGiftable: true
         }
       }
     });
@@ -49,17 +47,15 @@ describe('MeetingPopup', () => {
 
     expect(wrapper.find('.popup-overlay').exists()).toBe(true);
     expect(wrapper.find('.popup-content').exists()).toBe(true);
-    expect(wrapper.find('h1.popup-title').text()).toBe('Send a Meeting Suggestion to User1');
+    expect(wrapper.find('h1.popup-title').text()).toBe('Send a request to the owner?');
+    expect(wrapper.find('span.dark\\:text-dark-mode-text').text()).toBe(
+      'Are you sure that you want to send a request to get this book?'
+    );
 
-    // Check buttons and their text
+    // Check the buttons and their text
     checkButton(wrapper.find('#closeBtn'), 'X');
     checkButton(wrapper.find('#cancelBtn'), 'Cancel');
-    checkButton(wrapper.find('#sendMeetingReqBtn'), 'Send Meeting Request');
-
-    // Check labels and their input
-    checkInputRendering(wrapper, "place", "Place", "text", true, "Enter place");
-    checkInputRendering(wrapper, "date", "Date", "date", false, null);
-    checkInputRendering(wrapper, "deadline", "Deadline", "date", false, null);
+    checkButton(wrapper.find('button[type="submit"]'), 'Request Book');
   });
 
   it('hides popup when close button is clicked', async () => {
@@ -80,13 +76,14 @@ describe('MeetingPopup', () => {
     expect(hideSpy).toHaveBeenCalled();
   });
 
-  /!** THIS IS ONLY PRELIMINARY* *!/
-  it('hides popup when send meeting request button is clicked', async () => {
-    const hideSpy = vi.spyOn(wrapper.vm, 'hide');
+  it('displays loading animation when submitting', async () => {
     await wrapper.vm.show();
+
+    wrapper.vm.isLoading = true;
     await wrapper.vm.$nextTick();
-    const sendMeetingReqBtn = wrapper.find('#sendMeetingReqBtn');
-    await sendMeetingReqBtn.trigger('click');
-    expect(hideSpy).toHaveBeenCalled();
+
+    const submitButton = wrapper.find('button[type="submit"]');
+    expect(submitButton.find('.tw-loading-animation').exists()).toBe(true);
   });
-});*/
+
+});

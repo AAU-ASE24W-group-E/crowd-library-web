@@ -55,7 +55,7 @@
 </template>
 
 <script setup>
-import { computed, defineProps, ref, toRaw } from 'vue';
+import { defineProps, ref } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import MeetingPopup from './MeetingPopup.vue';

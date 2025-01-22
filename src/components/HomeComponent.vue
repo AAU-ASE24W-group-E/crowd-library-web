@@ -9,7 +9,7 @@
           Your community-powered resource for sharing knowledge and ideas.
         </p>
         <div class="mt-6">
-          <img src="/images/bookshelf.jpg" alt="Community library image" class="w-full rounded-lg shadow-md">
+          <img src="/images/bookshelf.jpg" alt="Community library" class="w-full rounded-lg shadow-md">
         </div>
       </section>
 

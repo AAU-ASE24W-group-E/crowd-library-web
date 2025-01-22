@@ -43,7 +43,6 @@
         ></font-awesome-icon>
       </button>
 
-      <!--      TODO -->
       <div v-if="themeDropdownOpen" class="right-0 w-28 tw-dropdown-inner-layout">
         <a
           @click="selectTheme(Theme.Light)"
@@ -122,8 +121,7 @@
       >
         <font-awesome-icon class="tw-icon text-3xl max-sm:text-2xl" :icon="faCircleUser" />
       </button>
-      <!--      TODO dynamic width-->
-      <div v-if="accountDropdownOpen" class="-right-4 w-44 tw-dropdown-inner-layout">
+      <div v-if="accountDropdownOpen" class="-right-4 w-44 tw-dropdown-inner-layout z-[9999]">
         <div v-if="loggedIn">
           <a
             class="px-2 py-2 text-base text-gray-700 dark:text-title-dark-mode-text flex items-center cursor-default"
@@ -223,17 +221,16 @@ import {
   faCircleUser,
   faDesktop,
   faGear,
-  faHeart,
   faLocationDot,
   faMap,
-  faMoon,
   faMessage,
+  faMoon,
   faRightFromBracket,
   faRightToBracket,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useUserStore } from '@/stores/user.ts';
 import { Theme } from '@/enums/theme.ts';

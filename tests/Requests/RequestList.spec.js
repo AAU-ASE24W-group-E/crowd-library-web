@@ -1,7 +1,8 @@
-/*
 import {mount} from '@vue/test-utils';
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import RequestList from "@/components/RequestList.vue";
+import Tab from '@/components/Tab.vue';
+import Tabs from '@/components/Tabs.vue';
 
 
 const push = vi.fn();
@@ -9,6 +10,25 @@ vi.mock('vue-router', () => ({
   useRouter: () => ({
     push,
   }),
+}));
+
+vi.mock('@/services/LendingService.ts', () => ({
+  lendingService: {
+    getLendingsByOwnerId: vi.fn().mockResolvedValue({ data: [] }),
+    getLendingsByReaderId: vi.fn().mockResolvedValue({ data: [] }),
+  },
+}));
+
+vi.mock('@/services/UserService.ts', () => ({
+  userService: {
+    getUserById: vi.fn().mockResolvedValue({}),
+  },
+}));
+
+vi.mock('@/services/BookService.ts', () => ({
+  bookService: {
+    getBook: vi.fn().mockResolvedValue({}),
+  },
 }));
 
 const mockRequest = {
@@ -45,10 +65,14 @@ describe('RequestEntry', () => {
     beforeEach(() => {
       wrapper = mount(RequestList, {
         global: {
-          stubs: ['router-link', 'font-awesome-icon'],
+          stubs: {
+            Tabs,
+            Tab,
+            'router-link': true,
+            'font-awesome-icon': true,
+          },
         },
         props: {
-          requests: mockRequest
         }
       });
     });
@@ -62,7 +86,6 @@ describe('RequestEntry', () => {
       wrapper.unmount();
       expect(removeEventListenerSpy).toHaveBeenCalledWith("click", expect.any(Function));
     });
-
 
     it("closes dropdown when clicking outside", async () => {
       wrapper.vm.dropdownSortOpen = true;
@@ -78,4 +101,3 @@ describe('RequestEntry', () => {
       expect(wrapper.vm.incoming).toBe(false);
     });
   });
-*/
