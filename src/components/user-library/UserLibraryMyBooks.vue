@@ -57,6 +57,8 @@ import { bookService } from '@/services/BookService';
 import { useUserStore } from '@/stores/user';
 import { SnackbarType } from '@/enums/snackbar.ts';
 import { Snackbar } from '@/utils/snackbar.ts';
+import { lendingService } from '@/services/LendingService';
+import { LendingStatus } from '@/enums/lendingStatus';
 
 const userStore = useUserStore();
 
@@ -78,11 +80,30 @@ onMounted(() => {
   refreshMyBookList();
 });
 
+const checkIfLentBookWasReturned = async (book) => {
+  return lendingService.getLendingsByOwnerId(userStore.user.id).then((lendings) => {
+    for (let l of lendings.data) {
+      if (l.bookId == book.book.id && l.status == "READER_RETURNED_BOOK") {
+        return { "lendingId": l.id, "isReturned": true};
+      }
+    }
+    return undefined;
+  });
+};
+
 const refreshMyBookList = async () => {
   if(userStore.user == undefined) return
   await bookService
     .findOwnBooks(userStore.user?.id)
-    .then((books) => {
+    .then(async (books) => {
+      for(let b of books.data){
+        if(b.status == "LENT"){
+          await checkIfLentBookWasReturned(b).then((value) => {
+            b.lendingState = value;
+          });
+        }
+        else b.lendingState = undefined;
+      }
       mybooks.value = books.data;
     })
     .catch((error) => {
@@ -126,9 +147,15 @@ const handlePopUpClosed = async (actionFinished, ownBook, editedfields) => {
             console.log(error.status);
           });
         break;
-      case 'DELETE':
-        // TODO delete book
-        // SNackbar
+      case 'CONFIRM_RETURN':
+        await lendingService
+          .updateLendingStatus(ownBook.lendingState.lendingId, LendingStatus.OWNER_CONFIRMED_RETURNAL)
+          .then(() => {
+            Snackbar.showSnackbar('You confirmed that you got your book back!', SnackbarType.SUCCESS, 10);
+          })
+          .catch((error) => {
+            console.log(error.status);
+          });
         break;
     }
     refreshMyBookList();

@@ -51,6 +51,17 @@
         </div>
       </div>
 
+      <div v-if="popupType == 'CONFIRM_RETURN'">
+        <div class="modal-header">
+          <h2 class="modal-title">Did you really get this book back?</h2>
+          <button @click="closeModal" class="close-button">✕</button>
+        </div>
+
+        <div class="modal-body">
+          {{ popupBook.title }}
+        </div>
+      </div>
+
       <div class="modal-footer">
         <button @click="closeModal" class="cancel-popup-btn btn-primary btn-gray rounded-2xl">Cancel</button>
         <button @click="okButtonClicked" class="ok-popup-btn btn-primary btn-green rounded-2xl ok-button">

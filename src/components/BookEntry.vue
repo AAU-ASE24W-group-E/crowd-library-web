@@ -108,14 +108,16 @@
         </button>
         <button
           v-if="deadline != null"
-          @click="handleShowReturnBook"
+          @click="handleReturnBook"
+          :disabled = "returnedBook"
           class="btn-primary btn-green rounded-2xl"
         >
-          Returned Book
+          {{ returnedBookButtonText }}
         </button>
         <button
           v-if="isMyBook"
           @click="handleEditState"
+          :disabled="ownBook.status == 'LENT'"
           class="edit-button btn-primary btn-green rounded-2xl"
         >
           Edit State
@@ -133,6 +135,13 @@
           class="add-btn-of-book btn-primary btn-green rounded-2xl"
         >
           Add to My Books
+        </button>
+        <button
+          v-if="ownBook?.lendingState?.isReturned"
+          @click="handleConfirmReturnBook"
+          class="confirm-return-btn-of-book btn-primary btn-green rounded-2xl"
+        >
+          Confirm Return of Book
         </button>
       </div>
     </div>
@@ -153,6 +162,8 @@ const emit = defineEmits(['showOnMapClicked', 'handleAction', 'handleAdd', 'hand
 
 const requestPopup = ref(null);
 const userStore = useUserStore();
+const returnedBookButtonText = ref("Returned Book")
+const returnedBook = ref(false)
 
 const props = defineProps({
   book: {
@@ -207,7 +218,13 @@ function handleAdd() {
   emit('handleAdd', props.book);
 }
 
+function handleConfirmReturnBook(){
+  emit('handleAction', props.ownBook, "CONFIRM_RETURN")
+}
+
 function handleReturnBook(){
+  returnedBook.value = true;
+  returnedBookButtonText.value = "Wait for owner confirmation"
   emit("handleReturnBook", props.deadline, props.ownBook)
 }
 

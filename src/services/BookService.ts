@@ -78,7 +78,8 @@ class BookService {
   }
 
   async getAvailableBook(ownerId: string, bookId: string) {
-    return await bookApiService.get(`/available-book/${ownerId}/book/${bookId}`);
+    console.log(ownerId, bookId)
+    return await bookApiService.get(`/available-book/${bookId}/owner/${ownerId}`);
   }
 
   async updateBookFlags(ownerId: string, bookId: string, flags:BookFlagsPayload) {
