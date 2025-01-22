@@ -31,9 +31,9 @@
 <script setup lang="ts">
 import BookSearchList from '@/components/BookSearchList.vue';
 import BookSearchMap from '@/components/BookSearchMap.vue';
-import { computed, ref, shallowRef, triggerRef, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { bookService } from '@/services/BookService'
+import { computed, ref, shallowRef, type ShallowRef, watch } from 'vue'
+import { type LocationQuery, useRoute, useRouter } from 'vue-router'
+import { type AvailableBooksQuery, bookService } from '@/services/BookService'
 import { Snackbar } from '@/utils/snackbar.ts'
 import { SnackbarType } from '@/enums/snackbar.ts'
 import { useUserStore } from '@/stores/user.ts'
@@ -48,17 +48,18 @@ const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
 
-const currentBooks: OwnBook[] = shallowRef([])
+const currentBooks: ShallowRef<OwnBook[]> = shallowRef([])
 
 const isLoading = ref(false)
 
 // replace mock books in currentBooks by content loaded from the server using query parameter
-watch(() => route.query.q, fetchAvailableBooks, { immediate: true })
+watch(() => route.query, fetchAvailableBooks, { immediate: true })
 
-async function fetchAvailableBooks(q) {
+async function fetchAvailableBooks(q: LocationQuery) {
+  console.log('fetchAvailableBooks for query:', q)
   showBookList.value = true;
 
-  if (!q || q === '') {
+  if (!q || q.q === '') {
     console.log('No query parameter provided')
     return
   }
@@ -76,10 +77,15 @@ async function fetchAvailableBooks(q) {
   }
   // fetch books from the server
   console.log('fetching books with query:', q)
-  const query = {
+  const query: AvailableBooksQuery = {
     latitude: userLocation.latitude,
     longitude: userLocation.longitude,
-    quickSearch: q
+    quickSearch: q.q as string,
+    distance: q.distance ? parseInt(q.distance as string) : 10,
+    author: q.author as string,
+    lendable: q.lendable === 'true',
+    exchangeable: q.exchangeable === 'true',
+    giftable: q.giftable === 'true',
   }
   try {
     isLoading.value = true
