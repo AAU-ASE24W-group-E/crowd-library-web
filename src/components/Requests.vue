@@ -127,8 +127,7 @@ const checkIsStatusValid = (lending) => {
     && lending.status !== LendingStatus.OWNER_DENIED
     && lending.status !== LendingStatus.LENDING_COMPLETED
     && lending.status !== LendingStatus.BORROWED
-    && lending.status !== LendingStatus.READER_RETURNED_BOOK
-    && lending.status !== LendingStatus.OWNER_CONFIRMED_TRANSFER;
+    && lending.status !== LendingStatus.READER_RETURNED_BOOK;
 };
 
 onMounted(() => {
