@@ -1,62 +1,78 @@
 <template>
   <div class="flex items-center justify-center">
     <div
-      class="flex justify-start flex-col items-center relative rounded-lg w-[450px] max-sm:w-11/12 h-auto px-4 bg-white dark:bg-gray-700">
+      class="flex justify-start flex-col items-center relative rounded-lg w-[450px] max-sm:w-11/12 h-auto px-4 bg-white dark:bg-gray-700"
+    >
       <div class="tw-heading mb-5 mt-2">Reset Password</div>
       <form
         @submit.prevent="resetPassword"
         class="flex flex-col items-center w-full h-full mb-3"
       >
+        <!-- Token Input -->
         <div class="w-full mb-6">
-          <label for="token" class="tw-input-label">
-            Token
-          </label>
+          <label for="token" class="tw-input-label">Token</label>
           <div class="relative">
             <input
               class="tw-input"
-              v-bind:class="{ 'tw-input-error': isControlInvalid('token') }"
+              :class="{ 'tw-input-error': isControlInvalid('token') }"
               v-model="resetForm.token"
               id="token"
               type="text"
-              :placeholder="'Enter your reset token'"
+              placeholder="Enter your reset token"
               @blur="handleBlur('token')"
             />
-            <div :class="{
+            <div
+              :class="{
                 'opacity-100 visible': isControlInvalid('token'),
                 'opacity-0 invisible': !isControlInvalid('token'),
-              }" class="tw-input-error-label">
-              <div v-if="errors.token.required">
-                This field is required
-              </div>
+              }"
+              class="tw-input-error-label"
+            >
+              <div v-if="errors.token.required">This field is required</div>
             </div>
           </div>
         </div>
 
+        <!-- Password Input -->
         <div class="w-full mb-6">
-          <label for="password" class="tw-input-label">
-            New Password
-          </label>
+          <label for="password" class="tw-input-label">New Password</label>
           <div class="relative">
+            <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+              <font-awesome-icon class="tw-icon text-gray-500 dark:text-gray-300" :icon="faLock" />
+            </div>
             <input
               class="tw-input"
-              v-bind:class="{ 'tw-input-error': isControlInvalid('password') }"
+              :class="{ 'tw-input-error': isControlInvalid('password') }"
               v-model="resetForm.password"
               id="password"
-              type="password"
-              :placeholder="'Enter your new password'"
+              :type="hidePassword ? 'password' : 'text'"
+              placeholder="Enter your new password"
               @blur="handleBlur('password')"
             />
-            <div :class="{
+            <button
+              type="button"
+              @click="togglePasswordVisibility"
+              class="absolute inset-y-0 end-0 flex items-center pe-3 text-gray-500 dark:text-gray-400"
+            >
+              <font-awesome-icon
+                class="tw-icon text-gray-500 dark:text-gray-300"
+                :icon="hidePassword ? 'eye-slash' : 'eye'"
+                title="Toggle password visibility"
+              />
+            </button>
+            <div
+              :class="{
                 'opacity-100 visible': isControlInvalid('password'),
                 'opacity-0 invisible': !isControlInvalid('password'),
-              }" class="tw-input-error-label">
-              <div v-if="errors.password.required">
-                This field is required
-              </div>
+              }"
+              class="tw-input-error-label"
+            >
+              <div v-if="errors.password.required">This field is required</div>
             </div>
           </div>
         </div>
 
+        <!-- Submit Button -->
         <div class="w-full mb-2">
           <button
             :disabled="isLoading"
@@ -75,11 +91,16 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faLock, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { library } from '@fortawesome/fontawesome-svg-core';
 import { reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { Snackbar } from '@/utils/snackbar.ts';
 import { SnackbarType } from '@/enums/snackbar.ts';
 import { authenticationService } from '@/services/AuthenticationService.ts';
+
+library.add(faLock, faEye, faEyeSlash);
 
 const resetForm = reactive({
   token: '',
@@ -91,9 +112,9 @@ const errors = reactive({
   password: { required: false, touched: false },
 });
 
-const router = useRouter();
-
 const isLoading = ref(false);
+const hidePassword = ref(true);
+const router = useRouter();
 
 const isControlInvalid = (field) => {
   const value = resetForm[field];
@@ -107,14 +128,16 @@ const handleBlur = (field) => {
   isControlInvalid(field);
 };
 
+const togglePasswordVisibility = () => {
+  hidePassword.value = !hidePassword.value;
+};
+
 const validateForm = () => {
   const fields = ['token', 'password'];
-
   fields.forEach((field) => {
     errors[field].touched = true;
     isControlInvalid(field);
   });
-
   return fields.every((field) => !errors[field].required);
 };
 
