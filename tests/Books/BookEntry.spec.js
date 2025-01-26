@@ -82,7 +82,7 @@ describe('BookEntry', () => {
     expect(giftableSpan.text()).toBe("No");
   });
 
-  it("shows the rating details next to the username", async () => {
+  it("shows the rating details next to the username", () => {
     // Check if yellow star icon is rendered
     const starIcon = wrapper.find("#starIcon");
     expect(starIcon.exists()).toBe(true);
@@ -93,6 +93,5 @@ describe('BookEntry', () => {
     const avgRatingText = wrapper.find("#ratingDetails");
     expect(avgRatingText.exists()).toBe(true);
     expect(avgRatingText.text()).toBe("4.5 (102)");
-
   });
 });
