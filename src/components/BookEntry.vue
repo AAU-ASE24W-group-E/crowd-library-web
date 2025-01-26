@@ -32,7 +32,7 @@
               >ISBN: <span class="tw-book-entry-info-value">{{ book.isbn }}</span></span
             >
             <span v-if="isSearchBook || deadline != null" class="tw-book-entry-info-title"
-              >Owner: <span class="tw-book-entry-info-value">{{ ownBook.owner.name }} <span class="tw-book-entry-info-value">   ⭐ {{ mockRatingValue }} ({{ mockRatingNumber }})</span></span></span
+              >Owner: <span class="tw-book-entry-info-value">{{ ownBook.owner.name }} <span class="tw-book-entry-info-value"><font-awesome-icon :icon="faStar"/>{{ mockRatingValue }} ({{ mockRatingNumber }})</span></span></span
             >
             <span v-if="deadline != null" class="tw-book-entry-info-title font-semibold"
               >Deadline: <span class="tw-book-entry-info-value">{{ deadline }}</span></span
@@ -153,6 +153,7 @@
 import { defineProps, onMounted, ref } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 import config from '@/config.json';
 import SendRequestPopup from './SendRequestPopup.vue';
 import { useUserStore } from '@/stores/user.ts';
