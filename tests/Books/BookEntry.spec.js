@@ -79,4 +79,11 @@ describe('BookEntry', () => {
     const giftableSpan = wrapper.find(".tw-book-entry-info-title span.text-red-500");
     expect(giftableSpan.text()).toBe("No");
   });
+
+  it("shows the rating details next to the user name", async () => {
+    const starIcon = wrapper.find("#starIcon");
+    expect(starIcon.exists()).toBe(true);
+    expect(starIcon.classes().length).toBe(1);
+    expect(starIcon.classes().at(0)).toBe("text-yellow-500");
+  });
 });
