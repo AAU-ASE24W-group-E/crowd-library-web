@@ -1,10 +1,8 @@
 import { mount } from '@vue/test-utils';
 import { Snackbar } from '@/utils/snackbar.ts';
-import { SnackbarType } from '@/enums/snackbar.ts';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import EnterTokenComponent from '@/components/EnterTokenComponent.vue';
 import { createPinia, setActivePinia } from 'pinia';
-import { authenticationService } from '@/services/AuthenticationService.ts';
 import { useRouter } from 'vue-router';
 
 // Mock Vue Router
@@ -74,8 +72,9 @@ describe('EnterTokenComponent', () => {
   });
   it('clicks the reset button', async () => {
     const button = wrapper.find('button');
-    await button.trigger('click');
+    expect(button.exists()).toBe(true)
 
+    await button.trigger('click');
     console.log('Reset button clicked');
   });
 });

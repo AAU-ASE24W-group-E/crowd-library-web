@@ -80,6 +80,7 @@ describe('ResetPasswordComponent', () => {
   it('clicks the send reset link button', async () => {
     const button = wrapper.find('button');
     await button.trigger('click');
+    expect(button.exists()).toBe(true)
 
     console.log('Send Reset Link button clicked');
   });
