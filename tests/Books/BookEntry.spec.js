@@ -17,7 +17,9 @@ const mockBook = {
     name: "Library",
     latitude: 46.617415,
     longitude: 14.263625,
-    id: 'Owner1'
+    id: 'Owner1',
+    avgRating: 4.5,
+    numRatings: 102
   },
   status: true,
   lendable: true,
@@ -80,10 +82,17 @@ describe('BookEntry', () => {
     expect(giftableSpan.text()).toBe("No");
   });
 
-  it("shows the rating details next to the user name", async () => {
+  it("shows the rating details next to the username", async () => {
+    // Check if yellow star icon is rendered
     const starIcon = wrapper.find("#starIcon");
     expect(starIcon.exists()).toBe(true);
     expect(starIcon.classes().length).toBe(1);
     expect(starIcon.classes().at(0)).toBe("text-yellow-500");
+
+    // Check if rating details is rendered
+    const avgRatingText = wrapper.find("#ratingDetails");
+    expect(avgRatingText.exists()).toBe(true);
+    expect(avgRatingText.text()).toBe("4.5 (102)");
+
   });
 });

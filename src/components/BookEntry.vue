@@ -32,7 +32,7 @@
               >ISBN: <span class="tw-book-entry-info-value">{{ book.isbn }}</span></span
             >
             <span v-if="isSearchBook || deadline != null" class="tw-book-entry-info-title"
-              >Owner: <span class="tw-book-entry-info-value">{{ ownBook.owner.name }} <span class="tw-book-entry-info-value"><font-awesome-icon :icon="faStar" id="starIcon" class="text-yellow-500"/>{{ mockRatingValue }} ({{ mockRatingNumber }})</span></span></span
+              >Owner: <span class="tw-book-entry-info-value">{{ ownBook.owner.name }} <span class="tw-book-entry-info-value" id="ratingDetails"><font-awesome-icon :icon="faStar" id="starIcon" class="text-yellow-500"/>{{ mockRatingValue }} ({{ mockRatingNumber }})</span></span></span
             >
             <span v-if="deadline != null" class="tw-book-entry-info-title font-semibold"
               >Deadline: <span class="tw-book-entry-info-value">{{ deadline }}</span></span
