@@ -1,5 +1,6 @@
   
 export const getPopupHTML = (book_properties: any) => {
+  const starIconHTMLString = `<i class="fas fa-star text-yellow-500"></i>`;
   if(typeof book_properties == 'string') book_properties = JSON.parse(book_properties);
     return `
       <div class="text-center p-2 font-sans rounded-lg bg-white">
@@ -11,7 +12,7 @@ export const getPopupHTML = (book_properties: any) => {
             ? "text-green-600" 
             : "text-red-600"}">${book_properties.status === "AVAILABLE"  ? "Available" 
               : "Unavailable" } </p>
-          <p class="text-sm text-gray-700"><span class="font-semibold">Owner:</span> ${book_properties.owner.name}</p>
+          <p class="text-sm text-gray-700"><span class="font-semibold">Owner:</span> ${book_properties.owner.name} ${starIconHTMLString}</p>
           <p class="text-sm text-gray-700"><span class="font-semibold">Format:</span> ${book_properties.format}</p>
         </div>
       </div>`;
