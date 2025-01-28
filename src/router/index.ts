@@ -11,6 +11,8 @@ import HomeView from '@/views/HomeView.vue';
 import RequestView from '@/views/RequestView.vue';
 import ImprintView from '@/views/static/ImprintView.vue';
 import DataPrivacyView from '@/views/static/DataPrivacyView.vue';
+import ResetPasswordView from '@/views/ResetPasswordView.vue'
+import EnterTokenView from '@/views/EnterTokenView.vue'
 
 // TODO we have to add restrictions
 const router = createRouter({
@@ -25,6 +27,16 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginView,
+    },
+    {
+      path: '/reset-password',
+      name: 'reset-password',
+      component: ResetPasswordView,
+    },
+    {
+      path: '/enter-token',
+      name: 'enter-token',
+      component: EnterTokenView,
     },
     {
       path: '/register',
