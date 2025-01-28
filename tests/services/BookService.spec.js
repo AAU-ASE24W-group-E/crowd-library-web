@@ -161,5 +161,26 @@ describe('BookService', () => {
     );
     expect(response.data).toEqual('success');
   });
+
+  it('should call GET /available-book/:bookId/owner/:ownerId to retrieve an available book', async () => {
+    const mockResponse = mockBook;
+  
+    bookApiService.get.mockResolvedValue({ data: mockResponse });
+  
+    const response = await bookService.getAvailableBook(mockOwnerId, mockBookId);
+  
+    expect(bookApiService.get).toHaveBeenCalledWith(`/available-book/${mockBookId}/owner/${mockOwnerId}`);
+    expect(response.data).toEqual(mockResponse);
+  });
+  
+  it('should findBooks twice on quicksearch to find books', async () => {
+    const quickSearch = 'Forest';
+  
+    const findBooksSpy = vi.spyOn(bookService, 'findBooks').mockResolvedValue({data: []});
+  
+    await bookService.findBookByQuicksearch(quickSearch);
+    expect(findBooksSpy).toHaveBeenCalledTimes(2);
+  });
+  
   
 });
