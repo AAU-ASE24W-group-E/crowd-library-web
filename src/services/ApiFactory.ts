@@ -33,11 +33,11 @@ export function createApiClient(baseURL: string): AxiosInstance {
       }
 
       if (error.response?.status === 404) {
-        Snackbar.showSnackbar('Not found...', SnackbarType.WARN, 15)
+        Snackbar.showSnackbar('Not found...', SnackbarType.WARN)
       }
 
       if (error.response?.status === 400) {
-        Snackbar.showSnackbar('User error - ' + error.response?.data?.message, SnackbarType.WARN, 15)
+        Snackbar.showSnackbar('User error - ' + error.response?.data?.message, SnackbarType.WARN)
       }
 
       return Promise.reject(error);
