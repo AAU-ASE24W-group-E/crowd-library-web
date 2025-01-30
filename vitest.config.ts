@@ -23,6 +23,8 @@ export default mergeConfig(
           '**/*.spec.{js,ts,jsx,tsx}',
           '**/*.d.ts',
           'src/views/static/',
+          'src/components/POIMapComponent.vue',
+          'src/components/LocationSelectionMap.vue',
         ],
       },
     },
