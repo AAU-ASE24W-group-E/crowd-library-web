@@ -3,9 +3,9 @@ import { LendingStatus } from '@/enums/lendingStatus.ts';
 export const handleLendingStatus = (status: LendingStatus): string => {
   switch (status) {
     case LendingStatus.READER_CREATED_REQUEST:
-      return "Reader created a request, owner has to suggest meeting";
+      return "Reader created request, owner has to suggest meeting";
     case LendingStatus.OWNER_SUGGESTED_MEETING:
-      return "Owner suggested a meeting, reader needs to confirm meeting";
+      return "Owner suggested meeting, reader needs to confirm meeting";
     case LendingStatus.READER_ACCEPTED_MEETING:
       return "Reader accepted meeting, owner has to confirm transfer";
     case LendingStatus.READER_CONFIRMED_TRANSFER:
