@@ -106,7 +106,7 @@ describe('API Client - Interceptors', () => {
       mockError
     );
 
-    expect(Snackbar.showSnackbar).toHaveBeenCalledWith('Not found...', SnackbarType.WARN, 15);
+    expect(Snackbar.showSnackbar).toHaveBeenCalledWith('Not found...', SnackbarType.WARN);
   });
 
   it('should handle 400 error by showing a user error snackbar', async () => {
@@ -123,7 +123,7 @@ describe('API Client - Interceptors', () => {
       mockError
     );
 
-    expect(Snackbar.showSnackbar).toHaveBeenCalledWith('User error - Bad Request', SnackbarType.WARN, 15);
+    expect(Snackbar.showSnackbar).toHaveBeenCalledWith('User error - Bad Request', SnackbarType.WARN);
   });
 
 });
