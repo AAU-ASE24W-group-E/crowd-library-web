@@ -73,7 +73,7 @@ const handleAdd = async (book) => {
     .createBookOwnership(book.id, userStore.user?.id)
     .then((response) => {
       emit('bookAdded');
-      Snackbar.showSnackbar(book.title + ' was added to your library.', SnackbarType.SUCCESS, 10);
+      Snackbar.showSnackbar(book.title + ' was added to your library.', SnackbarType.SUCCESS);
     })
     .catch((error) => {
       Snackbar.showSnackbar('There was an error adding the book. Check console.', SnackbarType.ERROR);

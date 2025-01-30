@@ -23,7 +23,7 @@
           </div>
           <div class="flex flex-col">
             <span class="tw-book-entry-info-title">Due date: <span class="tw-book-entry-info-value">{{ props.request.lending.lendingMeeting?.deadline ? formatDate(props.request.lending.lendingMeeting.deadline) : 'No deadline set' }}</span></span>
-            <span class="tw-book-entry-info-title">Lending status: <span class="tw-book-entry-info-value">{{ props.request.lending.status }}</span></span>
+            <span class="tw-book-entry-info-title">Lending status: <span class="tw-book-entry-info-value">{{ handleLendingStatus(props.request.lending.status) }}</span></span>
           </div>
         </div>
       </div>
@@ -64,6 +64,7 @@ import { lendingService } from '@/services/LendingService.ts';
 import { Snackbar } from '@/utils/snackbar.ts';
 import { SnackbarType } from '@/enums/snackbar.ts';
 import { LendingStatus } from '@/enums/lendingStatus.ts';
+import { handleLendingStatus } from '../utils/handleLendingStatus.ts';
 
 const meetingPopup = ref(null);
 

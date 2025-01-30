@@ -134,14 +134,14 @@ const handlePopUpClosed = async (actionFinished, ownBook, editedfields) => {
   if(userStore.user?.id == undefined) return;
   if(ownBook == undefined) return;
   if(editedfields == undefined) return;
-  
+
   if (actionFinished) {
     switch (popupTypeRef.value) {
       case 'EDIT':
         await bookService
           .updateBookFlags(userStore.user?.id, ownBook.book?.id, handleFlagPayload(editedfields))
           .then(() => {
-            Snackbar.showSnackbar('Status of ' + ownBook.book?.title + ' was udpated.', SnackbarType.SUCCESS, 10);
+            Snackbar.showSnackbar('Status of ' + ownBook.book?.title + ' was udpated.', SnackbarType.SUCCESS);
           })
           .catch((error) => {
             console.log(error.status);
@@ -151,7 +151,7 @@ const handlePopUpClosed = async (actionFinished, ownBook, editedfields) => {
         await lendingService
           .updateLendingStatus(ownBook.lendingState.lendingId, LendingStatus.OWNER_CONFIRMED_RETURNAL)
           .then(() => {
-            Snackbar.showSnackbar('You confirmed that you got your book back!', SnackbarType.SUCCESS, 10);
+            Snackbar.showSnackbar('You confirmed that you got your book back!', SnackbarType.SUCCESS);
           })
           .catch((error) => {
             console.log(error.status);

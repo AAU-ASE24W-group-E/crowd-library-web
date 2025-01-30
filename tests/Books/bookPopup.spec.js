@@ -75,6 +75,18 @@ describe('bookPopup', () => {
     let unavailable_book = { ...valid_book, status: 'UNAVAILABLE' };
     const html = getPopupHTML(unavailable_book)
     expect(html).toContain("text-red")
+   });
+
+   it('returns empty popup for invalid JSON string input', () => {
+    const invalidJsonString = "{ invalid json }";
+    expect(() => getPopupHTML(invalidJsonString)).toThrowError(SyntaxError);
+  });
+
+  it('parses valid book_properties object input', () => {
+    const html = getPopupHTML(valid_book);
+    expect(html).toContain(valid_book.book.title);
+    expect(html).toContain(valid_book.owner.name);
+    expect(html).toContain("text-green-600"); 
   });
 
   it('shows the rating details next to the username', () => {

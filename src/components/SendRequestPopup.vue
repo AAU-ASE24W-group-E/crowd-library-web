@@ -77,7 +77,7 @@ const requestBook = async () => {
     };
     console.debug('Trying to create lending request with following payload: ', payload);
     await lendingService.createLending(payload);
-    Snackbar.showSnackbar('Lending Request successfully created!', SnackbarType.SUCCESS);
+    Snackbar.showSnackbar('Lending Request successfully created! Check your outgoing requests', SnackbarType.SUCCESS);
   } catch (e) {
     const type = e.response?.data?.type;
     switch (type) {
