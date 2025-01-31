@@ -40,7 +40,7 @@
           v-model="isbnInput"
           id="isbn-input"
           type="text"
-          :placeholder="'Enter bok ISBN to import'"
+          :placeholder="'Enter book ISBN to import'"
         />
         <button class="import-btn btn-primary btn-green" @click="handleImport">
           Try importing

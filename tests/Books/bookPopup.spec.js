@@ -3,29 +3,31 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { getPopupHTML } from '@/utils/bookPopup.ts';
 
 const push = vi.fn();
-    vi.mock('vue-router', () => ({
-      useRouter: () => ({
-        push,
-      }),
-    }));
+vi.mock('vue-router', () => ({
+  useRouter: () => ({
+    push,
+  }),
+}));
 
 describe('bookPopup', () => {
-  let valid_book = 
+  let valid_book =
   {
     book: {
-        title: "Sample Book",
-        year: 2021,
-        authors: ["John Doe"],
-        publisher: "Sample Publisher",
-        format: "Hardcover",
-        languages: ["English"],
-        ISBN: "123-4567890123",
+      title: "Sample Book",
+      year: 2021,
+      authors: ["John Doe"],
+      publisher: "Sample Publisher",
+      format: "Hardcover",
+      languages: ["English"],
+      ISBN: "123-4567890123",
     },
     owner: {
       name: "Library",
       latitude: 46.617415,
       longitude: 14.263625,
-      id: 'Owner1'
+      id: 'Owner1',
+      avgRating: 4.5,
+      numRatings: 102
     },
     status: "AVAILABLE",
     lendable: true,
@@ -36,40 +38,40 @@ describe('bookPopup', () => {
   it('returns popup with title for valid book', () => {
     const html = getPopupHTML(valid_book)
     expect(html).toContain(valid_book.title)
-   });
+  });
 
-   it('returns popup with author for valid book', () => {
+  it('returns popup with author for valid book', () => {
     const html = getPopupHTML(valid_book)
     expect(html).toContain(valid_book.author)
-   });
+  });
 
-   it('returns popup with status for valid book', () => {
+  it('returns popup with status for valid book', () => {
     const html = getPopupHTML(valid_book)
     const expectedValue = valid_book.status == "AVAILABLE" ? "Available" : "Unavailable";
     expect(html).toContain(expectedValue)
-   });
+  });
 
-   it('returns popup with status correct color for valid book', () => {
+  it('returns popup with status correct color for valid book', () => {
     const html = getPopupHTML(valid_book)
     expect(html).toContain("text-green")
-   });
+  });
 
-   it('does not return popup with status wrong color for valid book', () => {
+  it('does not return popup with status wrong color for valid book', () => {
     const html = getPopupHTML(valid_book)
     expect(html).not.toContain("text-red")
-   });
+  });
 
-   it('returns popup with owner for valid book', () => {
+  it('returns popup with owner for valid book', () => {
     const html = getPopupHTML(valid_book)
     expect(html).toContain(valid_book.owner.name)
-   });
+  });
 
-   it('returns popup with format for valid book', () => {
+  it('returns popup with format for valid book', () => {
     const html = getPopupHTML(valid_book)
     expect(html).toContain(valid_book.format)
-   });
+  });
 
-   it('returns popup with correct color for valid book (unavailable)', () => {
+  it('returns popup with correct color for valid book (unavailable)', () => {
     let unavailable_book = { ...valid_book, status: 'UNAVAILABLE' };
     const html = getPopupHTML(unavailable_book)
     expect(html).toContain("text-red")
@@ -86,5 +88,15 @@ describe('bookPopup', () => {
     expect(html).toContain(valid_book.owner.name);
     expect(html).toContain("text-green-600"); 
   });
-   
+
+  it('shows the rating details next to the username', () => {
+    // Check if yellow star icon is rendered
+    const html = getPopupHTML(valid_book);
+    const starIconExists = html.includes('<i class="fas fa-star text-yellow-500"></i>');
+    expect(starIconExists).toBe(true);
+
+    // Check if rating details is rendered
+    const ratingValueExists = html.includes('4.5 (102)');
+    expect(ratingValueExists).toBe(true);
+  });
 });
