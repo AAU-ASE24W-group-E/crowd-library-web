@@ -1,7 +1,7 @@
 <template>
   <div class="modal-backdrop">
     <div class="modal-container">
-      <div v-if="popupType == 'EDIT'">
+      <div v-if="popupType === 'EDIT'">
         <div class="modal-header">
           <h2 class="modal-title">Edit the state of your book</h2>
           <button @click="closeModal" class="close-button">✕</button>
@@ -40,7 +40,7 @@
         </div>
       </div>
 
-      <div v-if="popupType == 'DELETE'">
+      <div v-if="popupType === 'DELETE'">
         <div class="modal-header">
           <h2 class="modal-title">Are you sure you want to delete your book?</h2>
           <button @click="closeModal" class="close-button">✕</button>
@@ -51,7 +51,7 @@
         </div>
       </div>
 
-      <div v-if="popupType == 'CONFIRM_RETURN'">
+      <div v-if="popupType === 'CONFIRM_RETURN'">
         <div class="modal-header">
           <h2 class="modal-title">Did you really get this book back?</h2>
           <button @click="closeModal" class="close-button">✕</button>
@@ -65,7 +65,7 @@
       <div class="modal-footer">
         <button @click="closeModal" class="cancel-popup-btn btn-primary btn-gray rounded-2xl">Cancel</button>
         <button @click="okButtonClicked" class="ok-popup-btn btn-primary btn-green rounded-2xl ok-button">
-          {{ popupType }}
+          {{ getButtonTitle(popupType) }}
         </button>
       </div>
     </div>
@@ -118,6 +118,15 @@ export default {
     };
   },
   methods: {
+    getButtonTitle(title) {
+      switch(title) {
+        case 'CONFIRM_RETURN': return 'Confirm Return'
+        case 'DELETE': return 'Delete'
+        case 'EDIT':return 'Edit'
+        default: return 'Unknown'
+      }
+    },
+
     closeModal() {
       this.$emit('close', false);
     },
@@ -160,7 +169,7 @@ export default {
 .modal-container {
   @apply bg-white
   dark:bg-dark-mode-inside
-  rounded-lg 
+  rounded-lg
   shadow-lg
   w-1/3
   max-sm:w-[90%]
@@ -189,13 +198,13 @@ export default {
 }
 
 .modal-title {
-  @apply text-lg 
+  @apply text-lg
   font-semibold
   dark:text-white;
 }
 
 .book-title {
-  @apply text-lg 
+  @apply text-lg
   font-semibold
   dark:text-white;
 }
@@ -210,7 +219,7 @@ export default {
 }
 
 .modal-body {
-  
+
   @apply px-6
   py-4
   flex flex-col items-center justify-center
