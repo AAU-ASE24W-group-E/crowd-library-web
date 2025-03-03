@@ -32,7 +32,7 @@
               >ISBN: <span class="tw-book-entry-info-value">{{ book.isbn }}</span></span
             >
             <span v-if="isSearchBook || deadline != null" class="tw-book-entry-info-title"
-              >Owner: <span class="tw-book-entry-info-value">{{ ownBook.owner.name }}</span></span
+              >Owner: <span class="tw-book-entry-info-value">{{ ownBook.owner.name }} <span class="tw-book-entry-info-value" id="ratingDetails"><font-awesome-icon :icon="faStar" id="starIcon" class="text-yellow-500"/>{{ mockRatingValue }} ({{ mockRatingNumber }})</span></span></span
             >
             <span v-if="deadline != null" class="tw-book-entry-info-title font-semibold"
               >Deadline: <span class="tw-book-entry-info-value">{{ deadline }}</span></span
@@ -153,6 +153,7 @@
 import { defineProps, onMounted, ref } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 import config from '@/config.json';
 import SendRequestPopup from './SendRequestPopup.vue';
 import { useUserStore } from '@/stores/user.ts';
@@ -164,6 +165,8 @@ const requestPopup = ref(null);
 const userStore = useUserStore();
 const returnedBookButtonText = ref("Returned Book")
 const returnedBook = ref(false)
+const mockRatingValue = ref(4.5);
+const mockRatingNumber = ref(102);
 
 const props = defineProps({
   book: {
